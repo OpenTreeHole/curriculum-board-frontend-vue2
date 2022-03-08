@@ -15,7 +15,8 @@
     "vue-router": "^3.5.1",
     "vuetify": "^2.6.0",
     "vuex": "^3.6.2",
-    "webfontloader": "^1.6.28"
+    "webfontloader": "^1.6.28",
+    "webpack": "^5.70.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.4.0",
