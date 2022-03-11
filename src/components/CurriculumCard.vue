@@ -1,41 +1,48 @@
 <template>
-  <v-card max-width="374">
+  <v-card max-width="374" class="mx-auto rounded-md">
     <template>
-      <v-progress-linear color="blue" height="10"></v-progress-linear>
+      <v-progress-linear :active="false" height="10"></v-progress-linear>
     </template>
     <v-card-text class="pb-0 pt-1">
       <v-chip-group>
-        <v-chip>数学</v-chip>
-        <v-chip>工科试验班</v-chip>
+        <v-chip small>数学</v-chip>
+        <v-chip small>工科试验班</v-chip>
       </v-chip-group>
     </v-card-text>
     <v-card-title class="pt-0 pb-0">
       <v-col>
-        <v-row class="mb-2">
-          <div>离散数学</div>
-          <div>(PTSS110005.02)</div>
-        </v-row>
         <v-row>
-          <div class="my-1 text-subtitle-1">张建国</div>
+          <span class="grey--text subtitle-2" style="margin-top: 2px">
+            PTSS110005.02
+          </span>
+        </v-row>
+        <v-row class="mb-0">
+          <span class="text-h6">离散数学</span>
         </v-row>
       </v-col>
     </v-card-title>
-    <v-card-text>
-      <v-row class="mx-0">
-        <v-rating
-          v-model="rating"
-          background-color="orange lighten-3"
-          color="orange"
-          size="23"
-          half-increments
-        ></v-rating>
-        <div class="grey--text ms-4">4.5 (413)</div>
-      </v-row>
-      <v-row>
-        <v-col>
-          <p>进入</p>
-        </v-col>
-      </v-row>
+    <v-divider></v-divider>
+    <v-card-text class="pa-4">
+      <v-col class="pa-0">
+        <v-row class="mx-0">
+          <span class="text-caption mr-2" style="margin-top: 2px">
+            5 条测评
+          </span>
+          <v-spacer />
+          <v-rating
+            v-model="rating"
+            background-color="white"
+            color="orange accent-3"
+            dense
+            half-increments
+            hover
+            size="18"
+          ></v-rating>
+          <span class="grey--text caption ml-1" style="margin-top: 2px"
+            >(4.3)</span
+          >
+        </v-row>
+      </v-col>
     </v-card-text>
   </v-card>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar color="primary">
-      <h1 class="mx-4">蛋壳</h1>
+      <h1 class="mx-3 white--text">蛋壳</h1>
     </v-app-bar>
     <v-main style="background-color: white">
       <portal-page />
