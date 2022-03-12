@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="374" class="mx-auto rounded-md">
+  <v-card max-width="350" class="mx-auto rounded-md">
     <template>
       <v-progress-linear :active="false" height="10"></v-progress-linear>
     </template>
@@ -12,12 +12,14 @@
     <v-card-title class="pt-0 pb-0">
       <v-col>
         <v-row>
-          <span class="grey--text subtitle-2" style="margin-top: 2px">
-            PTSS110005.02
+          <span class="grey--text subtitle-1 ml-1" style="margin-top: 1px">
+            PTSS114514
           </span>
         </v-row>
-        <v-row class="mb-0">
-          <span class="text-h6">离散数学</span>
+        <v-row class="mb-0 mt-3">
+          <span class="text-h5 font-weight-black"
+            >习近平新时代中国特色社会主义重要思想概论</span
+          >
         </v-row>
       </v-col>
     </v-card-title>
