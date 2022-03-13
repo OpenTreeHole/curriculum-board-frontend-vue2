@@ -10,6 +10,9 @@
       fixed
       elevation="0"
     >
+      <div style="color: white">
+        <font-awesome-icon icon="fa-solid fa-egg" class="text-h5" />
+      </div>
       <h1 class="mx-3 white--text">蛋壳</h1>
     </v-app-bar>
     <v-main style="margin-top: 60px">
