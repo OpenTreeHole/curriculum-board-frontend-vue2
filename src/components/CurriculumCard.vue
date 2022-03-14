@@ -26,7 +26,7 @@
     <v-divider></v-divider>
     <v-card-text class="pa-4">
       <v-col class="pa-0">
-        <v-row class="mx-0">
+        <v-row class="mx-0" align="center">
           <span class="text-caption mr-2" style="margin-top: 2px">
             5 条测评
           </span>
@@ -39,9 +39,10 @@
             half-increments
             hover
             size="18"
+            readonly
           ></v-rating>
           <span class="grey--text caption ml-1" style="margin-top: 2px"
-            >(4.3)</span
+            >好评如潮</span
           >
         </v-row>
       </v-col>
