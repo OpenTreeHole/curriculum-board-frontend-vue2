@@ -10,8 +10,8 @@
 
 <script>
 export default {
-  name: "TopNavBar",
-};
+  name: 'TopNavBar'
+}
 </script>
 
 <style scoped></style>
