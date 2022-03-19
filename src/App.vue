@@ -1,12 +1,13 @@
 <template>
   <v-app>
     <v-app-bar
+      app
       style="
         background: rgba(3, 169, 244, 0.6);
         -webkit-backdrop-filter: saturate(200%) blur(20px);
         backdrop-filter: saturate(200%) blur(20px);
       "
-      max-height="60px"
+      max-height="64px"
       fixed
       elevation="0"
     >
@@ -15,7 +16,7 @@
       </div>
       <h1 class="mx-3 white--text">蛋壳</h1>
     </v-app-bar>
-    <v-main style="margin-top: 60px">
+    <v-main>
       <CurriculumPage />
       <PortalPage />
       <PortalPage />
