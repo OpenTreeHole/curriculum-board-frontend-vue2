@@ -25,12 +25,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import PortalPage from "./views/PortalPage.vue";
-import CurriculumPage from "./views/CurriculumPage.vue";
+import Vue from 'vue'
+import PortalPage from './views/PortalPage.vue'
+import CurriculumPage from './views/CurriculumPage.vue'
 
 export default Vue.extend({
-  name: "App",
+  name: 'App',
 
   data: () => ({
     //
@@ -38,7 +38,7 @@ export default Vue.extend({
   components: {
     // eslint-disable-next-line vue/no-unused-components
     PortalPage,
-    CurriculumPage,
-  },
-});
+    CurriculumPage
+  }
+})
 </script>

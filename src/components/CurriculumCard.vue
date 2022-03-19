@@ -52,13 +52,13 @@
 
 <script>
 export default {
-  name: "CurriculumCard",
+  name: 'CurriculumCard',
   data() {
     return {
-      rating: 4.5,
-    };
-  },
-};
+      rating: 4.5
+    }
+  }
+}
 </script>
 
 <style scoped></style>

@@ -14,30 +14,30 @@
   </v-container>
 </template>
 <script>
-import CurriculumCard from "../components/CurriculumCard.vue";
+import CurriculumCard from '../components/CurriculumCard.vue'
 
 export default {
-  name: "PortalPage",
+  name: 'PortalPage',
   data() {
     return {
       panel: null,
-      list: [1, 2, 3, 4, 5, 6],
-    };
+      list: [1, 2, 3, 4, 5, 6]
+    }
   },
   methods: {
     open_panel(index) {
-      console.log(index);
+      console.log(index)
       if (this.panel !== null) {
-        this.panel = null;
+        this.panel = null
       } else {
-        this.panel = index;
+        this.panel = index
       }
-    },
+    }
   },
   components: {
-    CurriculumCard,
-  },
-};
+    CurriculumCard
+  }
+}
 </script>
 
 <style scoped></style>

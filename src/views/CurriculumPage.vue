@@ -149,14 +149,14 @@
 
 <script>
 export default {
-  name: "CurriculumPage",
+  name: 'CurriculumPage',
   data: () => ({
     courses: [
-      { text: "马克思主义学院", disabled: false },
-      { text: "习近平新时代中国特色社会主义重要思想概论", disabled: true },
-    ],
-  }),
-};
+      { text: '马克思主义学院', disabled: false },
+      { text: '习近平新时代中国特色社会主义重要思想概论', disabled: true }
+    ]
+  })
+}
 </script>
 
 <style scoped></style>
