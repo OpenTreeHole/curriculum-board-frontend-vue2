@@ -3,6 +3,7 @@
     <v-row v-for="dex in list" :key="dex" class="pt-0">
       <v-col md="4">
         <curriculum-card />
+        <!-- TODO 筛选器 -->
       </v-col>
       <v-col md="4">
         <CurriculumCard />
