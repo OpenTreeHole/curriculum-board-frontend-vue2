@@ -7,9 +7,8 @@
         -webkit-backdrop-filter: saturate(200%) blur(20px);
         backdrop-filter: saturate(200%) blur(20px);
       "
-      max-height="64px"
       fixed
-      elevation="0"
+      max-height="64px"
     >
       <div style="color: white">
         <font-awesome-icon icon="fa-solid fa-egg" class="text-h5" />

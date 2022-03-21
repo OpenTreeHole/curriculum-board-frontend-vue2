@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <v-breadcrumbs class="secondary">
+    <v-breadcrumbs style="background-color: #fbfbfd">
       <v-breadcrumbs-item class="text-h6 font-weight-black"
         >&nbsp;马克思主义学院</v-breadcrumbs-item
       >
@@ -177,15 +177,19 @@
       </v-col>
       <v-col cols="8">
         <v-banner> 全部测评 筛选 </v-banner>
-        <v-card class="pa-3">
+        <v-card class="pa-3 pt-0 pr-0">
           <v-row no-gutters>
             <v-col cols="11">
-              <v-card-title> 老师很好, 课很好, 下学期还会再来 </v-card-title>
-              <v-card-subtitle class="pb-0"> user113</v-card-subtitle>
-              <v-card-subtitle class="pt-0">
-                张建国 (2021-2022-2), 2077年8月8日</v-card-subtitle
+              <v-card-title class="text-h5 font-weight-bold">
+                老师很好, 课很好, 下学期还会再来
+              </v-card-title>
+              <v-card-subtitle class="pb-0">
+                张建国 (2021-2022-2)</v-card-subtitle
               >
-              <v-card-text>
+              <v-card-subtitle class="pt-0 subtitle-1 grey--text">
+                user113</v-card-subtitle
+              >
+              <v-card-text class="body-1">
                 课程听感:
                 每节课最开始是热身，包括一套类似徒手操的组合、一套更深度热身的小组合。
                 然后是简单的舞蹈基本功，会教把杆动作（脚位，波浪腰，把杆压腿），以及做一些身体素质训练（高抬腿，开合跳，弓箭步跳）
@@ -199,49 +203,45 @@
                 期末是各班统一的那套健美操，也是五人一组，也要自己排队形、设计队形变换。
                 不过队形变换老师说是“锦上添花”，最重要的还是动作本身。但是秦朗老师不会扣动作，而是鼓励每个同学在动作里加自己的风格和个性，而且会在最终展示那节课上让某个动作做得很有味道的同学出来单独展示。
                 以及，最终考核中有一部分叫做学习态度。所以期中期末展示课的时候要多参与、发言、表达自己的感觉，这样其实自己的考试体验也会更开心。
-                成绩: 95
               </v-card-text>
             </v-col>
-            <v-col cols="1">
-              <v-row style="font-size: 40px" class="mt-3 ml-6">
+            <v-divider vertical />
+            <v-col cols="1" style="background-color: rgba(0, 0, 0, 0.03)">
+              <v-row
+                style="font-size: 40px; margin-left: 35%"
+                class="mt-4 grey--text"
+              >
                 <font-awesome-icon icon="fa-solid fa-caret-up" />
               </v-row>
-              <v-row class="text-h5 mt-0 ml-6"> -5 </v-row>
-              <v-row style="font-size: 40px" class="mt-0 ml-6">
+              <v-row class="text-h5 mt-0" style="margin-left: 35%"> -5 </v-row>
+              <v-row
+                style="font-size: 40px; margin-left: 35%"
+                class="mt-0 grey--text"
+              >
                 <font-awesome-icon icon="fa-solid fa-caret-down" />
               </v-row>
             </v-col>
           </v-row>
           <v-divider></v-divider>
-          <v-card-subtitle
-            class="pt-2 pb-0 subtitle-1 primary--text font-weight-bold"
-          >
-            > 评分
-          </v-card-subtitle>
-          <v-row no-gutters>
-            <v-col cols="3">
-              <v-card-text class="py-1">
-                总评分
-                <v-rating dense small></v-rating>
-              </v-card-text>
+          <v-row no-gutters class="ml-4">
+            <v-col cols="1">
+              <v-card-subtitle
+                class="pt-3 pb-0 subtitle-1 primary--text font-weight-bold"
+              >
+                > 评分
+              </v-card-subtitle>
             </v-col>
-            <v-col cols="3">
-              <v-card-text class="py-1">
-                总评分
-                <v-rating dense small></v-rating>
-              </v-card-text>
+            <v-col cols="2" class="mt-2">
+              <v-card-text class="py-1"> 总评分(5) </v-card-text>
             </v-col>
-            <v-col cols="3">
-              <v-card-text class="py-1">
-                总评分
-                <v-rating dense small></v-rating>
-              </v-card-text>
+            <v-col cols="2" class="mt-2">
+              <v-card-text class="py-1"> 课程内容(4) </v-card-text>
             </v-col>
-            <v-col cols="3">
-              <v-card-text class="py-1">
-                总评分
-                <v-rating dense small></v-rating>
-              </v-card-text>
+            <v-col cols="2" class="mt-2">
+              <v-card-text class="py-1"> 工作量(4) </v-card-text>
+            </v-col>
+            <v-col cols="2" class="mt-2">
+              <v-card-text class="py-1"> 考核(3) </v-card-text>
             </v-col>
           </v-row>
         </v-card>
