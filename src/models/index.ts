@@ -12,7 +12,7 @@ export interface IReviewData {
 
 export interface ICourse extends ICourseData {
   id: number
-  reviewList: IReview[]
+  reviewList: IReview[] | undefined
 }
 
 export interface ICourseData {
@@ -62,7 +62,7 @@ export class Course implements ICourse {
   id: number
   maxStudent: number
   name: string
-  reviewList: Review[]
+  reviewList: Review[] | undefined
   semester: number
   teachers: string
   weekHour: number
@@ -80,7 +80,7 @@ export class Course implements ICourse {
     this.teachers = course.teachers
     this.weekHour = course.weekHour
     this.year = course.year
-    this.reviewList = course.reviewList.map((v) => new Review(v))
+    this.reviewList = course.reviewList?.map((v) => new Review(v))
   }
 }
 

@@ -1,13 +1,4 @@
-import {
-  Course,
-  CourseGroup,
-  ICourse,
-  ICourseData,
-  ICourseGroup,
-  IReview,
-  IReviewData,
-  Review
-} from '@/models'
+import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, Review } from '@/models'
 import axios from '@/utils/axios'
 import { camelizeKeys } from '@/utils'
 
@@ -46,10 +37,7 @@ export const removeReview = async (reviewId: number): Promise<string> => {
   return response.data
 }
 
-export const modifyReview = async (
-  reviewId: number,
-  reviewData: IReviewData
-) => {
+export const modifyReview = async (reviewId: number, reviewData: IReviewData) => {
   const response = await axios.put(`/reviews/${reviewId}`, reviewData)
   const data: IReview = camelizeKeys(response)
   return new Review(data)

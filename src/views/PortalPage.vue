@@ -15,7 +15,7 @@
   </v-container>
 </template>
 <script>
-import CurriculumCard from '../components/CurriculumCard.vue'
+import CurriculumCard from '@/components/CurriculumCard.vue'
 
 export default {
   name: 'PortalPage',
