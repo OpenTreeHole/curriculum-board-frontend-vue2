@@ -65,11 +65,13 @@
     },
     "rules": {
       "@typescript-eslint/no-explicit-any": "off",
+      "linebreak-style": "off",
       "prettier/prettier": [
         "warn",
         {
           "#": "prettier config in here :)",
           "singleQuote": true,
+          "endOfLine" : "auto",
           "semi": false,
           "trailingComma": "none",
           "printWidth": 180
