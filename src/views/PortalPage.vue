@@ -1,15 +1,10 @@
 <template>
   <v-container>
     <v-row v-for="dex in list" :key="dex" class="pt-0">
-      <v-col md="4">
+      <v-col>
         <curriculum-card />
         <!-- TODO 筛选器 -->
-      </v-col>
-      <v-col md="4">
-        <CurriculumCard />
-      </v-col>
-      <v-col md="4">
-        <CurriculumCard />
+        <v-divider></v-divider>
       </v-col>
     </v-row>
   </v-container>

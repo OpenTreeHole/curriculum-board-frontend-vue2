@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="350" class="mx-auto rounded-md">
+  <v-sheet class="mx-auto">
     <template>
       <v-progress-linear :active="false" height="10"></v-progress-linear>
     </template>
@@ -30,7 +30,7 @@
         </v-row>
       </v-col>
     </v-card-text>
-  </v-card>
+  </v-sheet>
 </template>
 
 <script>
