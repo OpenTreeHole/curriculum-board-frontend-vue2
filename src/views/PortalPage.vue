@@ -1,38 +1,24 @@
 <template>
   <v-container>
-    <v-row v-for="dex in list" :key="dex" class="pt-0">
+    <v-row style="margin-top: 28vh">
+      <v-col cols="4"></v-col>
+      <v-col cols="4" style="text-align: center"><h1>请输入课程名称</h1></v-col>
+      <v-col cols="4"></v-col>
+    </v-row>
+    <v-row no-gutters class="mt-3">
+      <v-col cols="2">
+        <v-select label="搜索类别" filled outlined class="rounded-r-0"></v-select>
+      </v-col>
       <v-col>
-        <curriculum-card />
-        <!-- TODO 筛选器 -->
-        <v-divider></v-divider>
+        <v-combobox outlined class="rounded-l-0"></v-combobox>
       </v-col>
     </v-row>
   </v-container>
 </template>
-<script>
-import CurriculumCard from '@/components/CurriculumCard.vue'
 
+<script>
 export default {
-  name: 'PortalPage',
-  data() {
-    return {
-      panel: null,
-      list: [1, 2, 3, 4, 5, 6]
-    }
-  },
-  methods: {
-    open_panel(index) {
-      console.log(index)
-      if (this.panel !== null) {
-        this.panel = null
-      } else {
-        this.panel = index
-      }
-    }
-  },
-  components: {
-    CurriculumCard
-  }
+  name: 'PortalPage'
 }
 </script>
 
