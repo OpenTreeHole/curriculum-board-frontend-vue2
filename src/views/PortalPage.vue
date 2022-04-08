@@ -11,7 +11,7 @@
           <v-select label="搜索类别" filled outlined class="rounded-r-0"></v-select>
         </v-col>
         <v-col>
-          <v-text-field v-model="searchText"></v-text-field>
+          <v-text-field v-model="searchText" outlined class="rounded-l-0"></v-text-field>
         </v-col>
       </v-row>
       <transition name="fade">
