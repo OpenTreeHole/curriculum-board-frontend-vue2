@@ -1,7 +1,6 @@
 import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, Review } from '@/models'
 import axios from '@/utils/axios'
 import { camelizeKeys } from '@/utils'
-
 export const addCourse = async (courseData: ICourseData) => {
   const response = await axios.post('/courses', courseData)
   const data: ICourse = camelizeKeys(response.data)

@@ -13,7 +13,7 @@
         <h1 class="mx-3 white--text">蛋壳</h1>
       </v-container>
     </v-app-bar>
-    <v-main style="background-color: #ccffff">
+    <v-main>
       <router-view :key="$route.fullPath" />
     </v-main>
   </v-app>

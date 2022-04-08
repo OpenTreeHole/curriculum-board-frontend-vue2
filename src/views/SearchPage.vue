@@ -8,7 +8,7 @@
           <v-list color="transparent">
             <v-list-item v-for="n in 5" :key="n" link>
               <v-list-item-content>
-                <v-list-item-title> List Item {{ n }} </v-list-item-title>
+                <v-list-item-title> List Item {{ n }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
 
@@ -16,7 +16,7 @@
 
             <v-list-item link color="grey lighten-4">
               <v-list-item-content>
-                <v-list-item-title> Refresh </v-list-item-title>
+                <v-list-item-title> Refresh</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -39,6 +39,7 @@
 </template>
 <script>
 import CurriculumCard from '@/components/CurriculumCard.vue'
+import * as api from '@/apis'
 
 export default {
   name: 'PortalPage',
@@ -58,6 +59,7 @@ export default {
       }
     }
   },
+
   components: {
     CurriculumCard
   }
