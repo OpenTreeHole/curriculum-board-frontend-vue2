@@ -4,7 +4,7 @@
       <v-breadcrumbs-item class="text-h6 font-weight-black">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
       <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
       <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
-      <v-chip label class="subtitle-2 font-weight-bold ml-5" color="accent">4 学分</v-chip>
+      <v-chip :key='v' v-for='v in credits' label class="subtitle-2 font-weight-bold ml-5" color="accent">{{ v }} 学分</v-chip>
     </v-breadcrumbs>
     <v-row>
       <v-col cols="3">
@@ -175,6 +175,13 @@ export default Vue.extend({
       { text: '习近平新时代中国特色社会主义重要思想概论', disabled: true }
     ]
   }),
+  computed: {
+    credits() :number[]{
+      let creditsSet=new Set<number>()
+      this.courseGroup?.courseList.forEach(course=>creditsSet.add(course.credit))
+      return [...creditsSet]
+    }
+  },
   methods: {
     // Get or load a course group with all reviews loaded.
     async getOrLoadCourseGroup(groupId: number): Promise<CourseGroup | null> {
