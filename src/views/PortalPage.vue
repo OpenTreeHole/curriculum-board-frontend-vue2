@@ -1,11 +1,7 @@
 <template>
   <v-container>
     <div id="search-bar">
-      <v-row style="margin-top: 28vh">
-        <v-col cols="4"></v-col>
-        <v-col cols="4" style="text-align: center"><h1>请输入课程名称</h1></v-col>
-        <v-col cols="4"></v-col>
-      </v-row>
+      <h1 style="text-align: center; margin-top: 28vh">请输入课程名称</h1>
       <v-row no-gutters class="mt-3">
         <v-col cols="2">
           <v-select label="搜索类别" filled outlined class="rounded-r-0"></v-select>
