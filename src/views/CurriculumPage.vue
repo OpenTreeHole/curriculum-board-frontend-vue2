@@ -1,9 +1,9 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
     <v-breadcrumbs style="background-color: #fbfbfd">
-      <v-breadcrumbs-item class="text-h6 font-weight-black">&nbsp;马克思主义学院</v-breadcrumbs-item>
+      <v-breadcrumbs-item class="text-h6 font-weight-black">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
       <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
-      <v-breadcrumbs-item class="text-h6 font-weight-black">习近平新时代中国特色社会主义重要思想概论</v-breadcrumbs-item>
+      <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
       <v-chip label class="subtitle-2 font-weight-bold ml-5" color="accent">4 学分</v-chip>
     </v-breadcrumbs>
     <v-row>
@@ -162,16 +162,49 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { CourseGroup } from '@/models'
+import * as api from '@/apis'
 
 export default Vue.extend({
   name: 'CurriculumPage',
-  props: ['courseId'],
+  props: ['groupId'],
   data: () => ({
+    courseGroup: null as CourseGroup | null,
     courses: [
       { text: '马克思主义学院', disabled: false },
       { text: '习近平新时代中国特色社会主义重要思想概论', disabled: true }
     ]
-  })
+  }),
+  methods: {
+    // Get or load a course group with all reviews loaded.
+    async getOrLoadCourseGroup(groupId: number): Promise<CourseGroup | null> {
+      const loadReviews = async (courseGroup: CourseGroup) => {
+        if (courseGroup.courseList.some((course) => !course.reviewList)) {
+          const groupWithAllReviews = await api.getCourseGroup(groupId)
+          this.$store.commit('addCourseGroup', { newCourseGroup: groupWithAllReviews })
+          return groupWithAllReviews
+        }
+        return courseGroup
+      }
+      const getCourseGroup = async (groupId: number): Promise<CourseGroup | null> => {
+        const groups = this.$store.state.data.courseGroup as CourseGroup[]
+        const foundGroup = groups.find((group) => group.id == groupId)
+        console.log(foundGroup)
+        if (foundGroup) return await loadReviews(foundGroup)
+        return null
+      }
+
+      const result = await getCourseGroup(groupId)
+      if (result) return result
+      else {
+        this.$store.commit('addCourseGroup', { newCourseGroup: await api.getCourseGroup(groupId) })
+        return getCourseGroup(groupId)
+      }
+    }
+  },
+  async mounted() {
+    this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
+  }
 })
 </script>
 

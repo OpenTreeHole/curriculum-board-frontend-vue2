@@ -11,7 +11,7 @@ const routes: Array<RouteConfig> = [
     path: '/group/:id',
     component: CurriculumPage,
     props: (route: Route) => ({
-      courseId: parseInt(route.params.id)
+      groupId: parseInt(route.params.id)
     })
   },
   {

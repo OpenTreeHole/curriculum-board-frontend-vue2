@@ -13,6 +13,11 @@ export const getCourseGroups = async () => {
   return data.map((v) => new CourseGroup(v))
 }
 
+export const getCourseGroup = async (groupId: number) => {
+  const response = await axios.get(`/group/${groupId}`)
+  const data: ICourseGroup = camelizeKeys(response.data)
+  return new CourseGroup(data)
+}
 export const getCourse = async (courseId: number) => {
   const response = await axios.get(`/courses/${courseId}`)
   const data: ICourse = camelizeKeys(response.data)

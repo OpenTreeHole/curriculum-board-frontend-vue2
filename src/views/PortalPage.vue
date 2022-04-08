@@ -37,7 +37,6 @@ export default Vue.extend({
   data() {
     return {
       searchText: '',
-      courseGroup: [] as CourseGroup[],
       searchResult: [] as CourseGroup[],
       inSearch: false
     }
@@ -64,24 +63,26 @@ export default Vue.extend({
       }
 
       this.inSearch = true
-      this.searchResult = this.courseGroup.filter((course) => match(course.name, this.searchText) || [course.name, course.code].some((field) => field.includes(this.searchText)))
+
+      this.searchResult = (this.$store.state.data.courseGroup as CourseGroup[]).filter(
+        (course) => match(course.name, this.searchText) || [course.name, course.code].some((field) => field.includes(this.searchText))
+      )
     }
   },
   async mounted() {
     if (!isDebug()) {
-      this.courseGroup = await api.getCourseGroups()
-      this.$store.commit('addCourseGroup', { newCourseGroup: this.courseGroup })
+      this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
     }
 
-    this.courseGroup.push(
-      new CourseGroup({
+    this.$store.commit('addCourseGroup', {
+      newCourseGroup: new CourseGroup({
         code: 'JXT114514',
         courseList: [],
-        department: 's',
+        department: '嘉心糖',
         id: 1,
         name: '嘉然今天吃七海nana7mi'
       })
-    )
+    })
   }
 })
 </script>
