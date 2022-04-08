@@ -10,15 +10,17 @@ export interface IDataModuleState {
 const state: IDataModuleState = {
   courseGroup: []
 }
-
+function addCourseGroupImpl(state: IDataModuleState, { newCourseGroup }: { newCourseGroup: CourseGroup }) {
+  const oldIndex = state.courseGroup.findIndex((group) => group.id == newCourseGroup.id)
+  if (oldIndex < 0) state.courseGroup.push(newCourseGroup)
+  else state.courseGroup[oldIndex] = newCourseGroup
+}
 const dataModule: Module<IDataModuleState, RootState> = {
   state: () => state,
   mutations: {
-    addCourseGroup(state, { newCourseGroup }: { newCourseGroup: CourseGroup }) {
-      state.courseGroup.push(newCourseGroup)
-    },
+    addCourseGroup: addCourseGroupImpl,
     addCourseGroups(state, { newCourseGroups }: { newCourseGroups: CourseGroup[] }) {
-      state.courseGroup.push(...newCourseGroups)
+      newCourseGroups.forEach((element) => addCourseGroupImpl(state, { newCourseGroup: element }))
     },
     removeCourseGroups(state, { courseGroupId }: { courseGroupId: number }) {
       // According to the implementation of lodash.remove, this method should be able to trigger the reactive system of Vue.
