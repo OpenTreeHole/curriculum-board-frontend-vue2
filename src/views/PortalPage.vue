@@ -29,6 +29,7 @@ import * as api from '@/apis'
 import { CourseGroup } from '@/models'
 import Vue from 'vue'
 import gasp from 'gsap'
+import { match } from 'pinyin-pro'
 
 export default Vue.extend({
   name: 'PortalPage',
@@ -62,7 +63,7 @@ export default Vue.extend({
       }
 
       this.inSearch = true
-      this.searchResult = this.courseGroup.filter((course) => [course.name, course.code].some((field) => field.includes(this.searchText)))
+      this.searchResult = this.courseGroup.filter((course) => match(course.name, this.searchText) || [course.name, course.code].some((field) => field.includes(this.searchText)))
     }
   },
   async mounted() {
