@@ -13,7 +13,7 @@
       <transition name="fade">
         <v-list v-if="inSearch">
           <v-card v-for="(v, i) in searchResult" :key="i" class="pa-2 v-card--hover">
-            <div>
+            <div @click="$router.push('/group/' + v.id)">
               <p class="monospace grey--text mb-1">{{ v.code }}</p>
               <p class="headline">{{ v.name }}</p>
             </div>
@@ -30,6 +30,7 @@ import { CourseGroup } from '@/models'
 import Vue from 'vue'
 import gasp from 'gsap'
 import { match } from 'pinyin-pro'
+import { isDebug } from '@/utils'
 
 export default Vue.extend({
   name: 'PortalPage',
@@ -67,7 +68,12 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    this.courseGroup = [
+    if (!isDebug()) {
+      this.courseGroup = await api.getCourseGroups()
+      this.$store.commit('addCourseGroup', { newCourseGroup: this.courseGroup })
+    }
+
+    this.courseGroup.push(
       new CourseGroup({
         code: 'JXT114514',
         courseList: [],
@@ -75,7 +81,7 @@ export default Vue.extend({
         id: 1,
         name: '嘉然今天吃七海nana7mi'
       })
-    ]
+    )
   }
 })
 </script>

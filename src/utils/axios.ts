@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { backendAPI } from '@/config'
+import { isDebug } from '@/utils/index'
 
 axios.defaults.baseURL = backendAPI
 axios.interceptors.request.use((config) => {
   // Put token into header.
   const token = localStorage.getItem('token')
-  if (process.env.NODE_ENV == 'development') {
+  if (isDebug()) {
     // Put your test token here!
   }
 

@@ -14,3 +14,7 @@ export const camelizeKeys = (obj: any): any => {
   }
   return obj
 }
+
+export const isDebug = () => {
+  return process.env.NODE_ENV == 'development'
+}
