@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import * as api from '@/apis'
-import { CourseGroup } from '@/models'
+import { Course, CourseGroup } from '@/models'
 import Vue from 'vue'
 import gasp from 'gsap'
 import { match } from 'pinyin-pro'
@@ -77,7 +77,31 @@ export default Vue.extend({
     this.$store.commit('addCourseGroup', {
       newCourseGroup: new CourseGroup({
         code: 'JXT114514',
-        courseList: [],
+        courseList: [
+          new Course({
+            id: 1,
+            codeId: 'JXT114514.01',
+            code: 'JXT114514',
+            department: '嘉心糖',
+            teachers: '丁烷人',
+            credit: 4,
+            maxStudent: 114514,
+            semester: 1,
+            weekHour: 7,
+            year: '2022',
+            name: '嘉然今天吃七海nana7mi',
+            reviewList: [
+              {
+                id: 1,
+                timeCreated: '2022-04-09',
+                title: '绝世好课',
+                content: '每个脆脆鲨都应该来听的必修课程',
+                rank: '10',
+                remark: 10
+              }
+            ]
+          })
+        ],
         department: '嘉心糖',
         id: 1,
         name: '嘉然今天吃七海nana7mi'

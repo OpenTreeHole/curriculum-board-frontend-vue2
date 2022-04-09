@@ -1,3 +1,13 @@
+export class ReviewWithCourse {
+  review: Review
+  course: Course
+
+  constructor(review: Review, course: Course) {
+    this.review = review
+    this.course = course
+  }
+}
+
 export interface IReview extends IReviewData {
   id: number
   timeCreated: string
