@@ -21,22 +21,24 @@
       </v-col>
     </v-row>
     <v-divider></v-divider>
-    <v-row no-gutters class="ml-4">
-      <v-col cols="1">
-        <v-card-subtitle class="pt-3 pb-0 subtitle-1 primary--text font-weight-bold"> > 评分 </v-card-subtitle>
+    <v-row no-gutters>
+      <v-col cols="1" class="mt-1">
+        <v-card-subtitle class="pb-0 subtitle-1 primary--text font-weight-bold"> > 评分 </v-card-subtitle>
       </v-col>
-      <v-col cols="2" class="mt-2">
-        <v-card-text class="py-1"> 总评分(5) </v-card-text>
+      <v-col cols="2" class="mt-1">
+        <v-card-text> 总评分 <font-awesome-icon icon="fa-solid fa-face-grin-beam" /> </v-card-text>
       </v-col>
-      <v-col cols="2" class="mt-2">
-        <v-card-text class="py-1"> 课程内容(4) </v-card-text>
+      <v-col cols="2" class="mt-1">
+        <v-card-text> 课程内容 <font-awesome-icon icon="fa-solid fa-face-meh" /> </v-card-text>
       </v-col>
-      <v-col cols="2" class="mt-2">
-        <v-card-text class="py-1"> 工作量(4) </v-card-text>
+      <v-col cols="2" class="mt-1">
+        <v-card-text> 工作量(4) <font-awesome-icon icon="fa-solid fa-face-frown" /></v-card-text>
+        <v-progress-linear value="15" style="width: 70%"></v-progress-linear>
       </v-col>
-      <v-col cols="2" class="mt-2">
-        <v-card-text class="py-1"> 考核(3) </v-card-text>
+      <v-col cols="2" class="mt-1">
+        <v-card-text> 考核 <font-awesome-icon icon="fa-solid fa-face-sad-tear" /> </v-card-text>
       </v-col>
+      <v-col cols="3" />
     </v-row>
   </v-card>
 </template>
