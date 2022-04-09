@@ -33,7 +33,6 @@
       </v-col>
       <v-col cols="2" class="mt-1">
         <v-card-text> 工作量(4) <font-awesome-icon icon="fa-solid fa-face-frown" /></v-card-text>
-        <v-progress-linear value="15" style="width: 70%"></v-progress-linear>
       </v-col>
       <v-col cols="2" class="mt-1">
         <v-card-text> 考核 <font-awesome-icon icon="fa-solid fa-face-sad-tear" /> </v-card-text>
