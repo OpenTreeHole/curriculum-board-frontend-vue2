@@ -117,8 +117,8 @@
       </v-col>
     </v-row>
     <!-- 手机页面  -->
-    <div>
-      <v-row class="d-flex d-sm-none mt-0">
+    <div class="d-block d-sm-none">
+      <v-row class="mt-0">
         <v-col class="pt-1 pb-0">
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 评分</v-card-title>
           <v-expansion-panels flat multiple>
@@ -216,7 +216,7 @@
         </v-col>
       </v-row>
       <v-col>
-        <v-banner> 全部测评 筛选</v-banner>
+        <v-banner class="mb-3"> 全部测评 筛选</v-banner>
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
       </v-col>
     </div>
