@@ -112,7 +112,7 @@
         <v-banner style="text-align: center"> 发布测评或者评分</v-banner>
       </v-col>
       <v-col cols="8">
-        <v-banner> 全部测评 筛选</v-banner>
+        <review-filter class="my-2" />
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
       </v-col>
     </v-row>
@@ -216,7 +216,7 @@
         </v-col>
       </v-row>
       <v-col>
-        <v-banner class="mb-3"> 全部测评 筛选</v-banner>
+        <review-filter class="my-2" />
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
       </v-col>
     </div>
@@ -228,10 +228,11 @@ import Vue from 'vue'
 import { CourseGroup, Review, ReviewWithCourse } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
+import ReviewFilter from '@/components/ReviewFilter.vue'
 
 export default Vue.extend({
   name: 'CurriculumPage',
-  components: { ReviewCard },
+  components: { ReviewFilter, ReviewCard },
   props: ['groupId'],
   data: () => ({
     courseGroup: null as CourseGroup | null,
