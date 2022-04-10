@@ -109,7 +109,7 @@
             </v-chip-group>
           </v-card-actions>
         </v-card>
-        <v-banner style="text-align: center"> 发布测评或者评分</v-banner>
+        <v-banner style="text-align: center"> 发布测评 </v-banner>
       </v-col>
       <v-col cols="8">
         <review-filter class="my-2" />

@@ -2,25 +2,31 @@
   <v-container>
     <div id="search-bar">
       <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>
-      <h2 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h2>
-      <v-row no-gutters class="mt-3 mx-3">
-        <v-col cols="4" md="2" lg="2" sm="1" class="d-none d-sm-flex">
-          <v-select label="搜索类别" filled outlined class="rounded-r-0"></v-select>
-        </v-col>
+      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>
+      <v-row no-gutters class="mt-3 mx-6">
         <v-col>
-          <v-text-field v-model="searchText" outlined class="rounded-l-0 d-none d-sm-flex"></v-text-field>
-          <v-text-field v-model="searchText" outlined dense class="d-flex d-sm-none"></v-text-field>
+          <v-text-field prepend-inner-icon="mdi-magnify" v-model="searchText" outlined class="d-none d-sm-block rounded-pill" filled></v-text-field>
+          <v-text-field prepend-inner-icon="mdi-magnify" v-model="searchText" outlined dense class="d-block d-sm-none rounded-pill" filled></v-text-field>
         </v-col>
       </v-row>
       <transition name="fade">
-        <v-list v-if="inSearch">
-          <v-card v-for="(v, i) in searchResult" :key="i" class="pa-2 v-card--hover">
-            <div @click="$router.push('/group/' + v.id)">
-              <p class="monospace grey--text mb-1">{{ v.code }}</p>
-              <p class="headline">{{ v.name }}</p>
-            </div>
-          </v-card>
-        </v-list>
+        <v-row class="ma-0 pa-0">
+          <v-spacer />
+          <v-col cols="12" lg="6" class="ma-0 pa-0">
+            <v-list v-if="inSearch">
+              <v-card v-for="(v, i) in searchResult" :key="i" class="pa-3 v-card--hover">
+                <div @click="$router.push('/group/' + v.id)">
+                  <v-card-subtitle class="monospace grey--text pb-3">
+                    <span class="mr-3">{{ v.code }}</span>
+                    <v-chip label small>3学分</v-chip>
+                  </v-card-subtitle>
+                  <v-card-title class="pt-0">{{ v.name }}</v-card-title>
+                </div>
+              </v-card>
+            </v-list>
+          </v-col>
+          <v-spacer />
+        </v-row>
       </transition>
     </div>
   </v-container>
