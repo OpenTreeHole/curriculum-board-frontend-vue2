@@ -27,7 +27,6 @@
           <v-row v-for="dex in list" :key="dex" class="pt-0">
             <v-col>
               <curriculum-card />
-              <!-- TODO 筛选器 -->
               <v-divider></v-divider>
             </v-col>
           </v-row>
