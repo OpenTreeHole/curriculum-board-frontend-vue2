@@ -6,7 +6,7 @@
       <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
       <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-2 d-none d-sm-flex" color="accent">{{ v }} 学分 </v-chip>
       <v-row class="mt-1 d-flex d-sm-none">
-        <v-col>
+        <v-col class="pt-1">
           <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-2" color="accent">{{ v }} 学分 </v-chip>
         </v-col>
       </v-row>
@@ -119,7 +119,7 @@
     <!-- 手机页面  -->
     <div>
       <v-row class="d-flex d-sm-none mt-0">
-        <v-col>
+        <v-col class="pt-1 pb-0">
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 评分</v-card-title>
           <v-expansion-panels flat multiple>
             <v-expansion-panel class="py-0">
