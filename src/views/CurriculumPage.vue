@@ -4,9 +4,15 @@
       <v-breadcrumbs-item class="text-h6 font-weight-black">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
       <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
       <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
-      <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-5" color="accent">{{ v }} 学分 </v-chip>
+      <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-2 d-none d-sm-flex" color="accent">{{ v }} 学分 </v-chip>
+      <v-row class="mt-1 d-flex d-sm-none">
+        <v-col>
+          <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-2" color="accent">{{ v }} 学分 </v-chip>
+        </v-col>
+      </v-row>
     </v-breadcrumbs>
-    <v-row>
+    <!-- 电脑页面  -->
+    <v-row class="d-none d-sm-flex">
       <v-col cols="3">
         <v-card class="pb-4">
           <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 评分</v-card-title>
@@ -110,6 +116,110 @@
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
       </v-col>
     </v-row>
+    <!-- 手机页面  -->
+    <div>
+      <v-row class="d-flex d-sm-none mt-0">
+        <v-col>
+          <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 评分</v-card-title>
+          <v-expansion-panels flat multiple>
+            <v-expansion-panel class="py-0">
+              <v-expansion-panel-header class="subtitle-1 font-weight-bold secondary--text">
+                > 全部学期 (共{{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }}条)
+              </v-expansion-panel-header>
+              <v-expansion-panel-content class="py-0">
+                <v-row align="center" no-gutters>
+                  <v-col cols="3" align-self="end">
+                    <span class="subtitle-2 ml-1 mt-1 black--text">总体评分 </span>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                  </v-col>
+                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                </v-row>
+                <v-row align="center" no-gutters>
+                  <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
+                  <v-col cols="5">
+                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                  </v-col>
+                  <v-col cols="4" class="caption">8.5 (硬核)</v-col>
+                </v-row>
+                <v-row align="center" no-gutters>
+                  <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
+                  <v-col cols="5">
+                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                  </v-col>
+                  <v-col cols="4" class="caption">8.5 (轻松)</v-col>
+                </v-row>
+                <v-row align="center" no-gutters>
+                  <v-col cols="3" align-self="end">
+                    <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                  </v-col>
+                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                </v-row>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel class="py-0 mt-0">
+              <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text"> > 2021-2022-1 (共10条) </v-expansion-panel-header>
+              <v-expansion-panel-content class="py-0">
+                <v-row align="center" no-gutters>
+                  <v-col cols="3" align-self="end">
+                    <span class="subtitle-2 ml-1 mt-1 black--text">总体评分 </span>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                  </v-col>
+                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                </v-row>
+                <v-row align="center" no-gutters>
+                  <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
+                  <v-col cols="5">
+                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                  </v-col>
+                  <v-col cols="4" class="caption">8.5 (硬核)</v-col>
+                </v-row>
+                <v-row align="center" no-gutters>
+                  <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
+                  <v-col cols="5">
+                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                  </v-col>
+                  <v-col cols="4" class="caption">8.5 (轻松)</v-col>
+                </v-row>
+                <v-row align="center" no-gutters>
+                  <v-col cols="3" align-self="end">
+                    <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                  </v-col>
+                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                </v-row>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+          <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 授课教师</v-card-title>
+          <v-card-actions class="pt-1">
+            <v-chip-group class="ml-4">
+              <v-chip small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
+            </v-chip-group>
+          </v-card-actions>
+          <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 标签</v-card-title>
+          <v-card-actions class="pt-1">
+            <v-chip-group class="ml-4">
+              <v-chip small>专业课</v-chip>
+              <v-chip small>第三模块</v-chip>
+              <v-chip small>女</v-chip>
+            </v-chip-group>
+          </v-card-actions>
+        </v-col>
+      </v-row>
+      <v-col>
+        <v-banner> 全部测评 筛选</v-banner>
+        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
+      </v-col>
+    </div>
   </v-container>
 </template>
 
