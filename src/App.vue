@@ -6,7 +6,7 @@
       fixed
       max-height="64px"
     >
-      <v-container class="py-0 fill-height">
+      <v-container class="py-0 fill-height ml-0">
         <div style="color: white">
           <font-awesome-icon icon="fa-solid fa-egg" class="text-h5" />
         </div>
