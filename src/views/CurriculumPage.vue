@@ -109,7 +109,9 @@
             </v-chip-group>
           </v-card-actions>
         </v-card>
-        <v-banner style="text-align: center"> 发布测评或者评分</v-banner>
+        <div style="text-align: center" class="mt-3">
+          <v-btn @click="review_sheet = !review_sheet"> 发布测评 </v-btn>
+        </div>
       </v-col>
       <v-col cols="8">
         <review-filter class="my-2" />
@@ -220,6 +222,19 @@
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
       </v-col>
     </div>
+    <v-bottom-sheet v-model="review_sheet" inset hide-overlay>
+      <template class="ma-7">
+        <v-subheader>发表测评</v-subheader>
+        <v-row class="ml-7">
+          <v-col cols="4">
+            <v-form>
+              <v-text-field :counter="20" filled required dense label="标题"> </v-text-field>
+            </v-form>
+          </v-col>
+          <v-spacer />
+        </v-row>
+      </template>
+    </v-bottom-sheet>
   </v-container>
 </template>
 
@@ -235,6 +250,7 @@ export default Vue.extend({
   components: { ReviewFilter, ReviewCard },
   props: ['groupId'],
   data: () => ({
+    review_sheet: false,
     courseGroup: null as CourseGroup | null,
     courses: [
       { text: '马克思主义学院', disabled: false },
