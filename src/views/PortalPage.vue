@@ -15,7 +15,7 @@
       <transition name="fade">
         <v-list v-if="inSearch">
           <v-card v-for="(v, i) in searchResult" :key="i" class="pa-2 v-card--hover">
-            <div @click="$router.push('/group/' + v.id)">
+            <div @click="$router.push(`/group/${v.id}`)">
               <p class="monospace grey--text mb-1">{{ v.code }}</p>
               <p class="headline">{{ v.name }}</p>
             </div>
