@@ -34,12 +34,12 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)">
-        <v-col cols="3">
-          <v-card-text class="pa-1 pl-4 Caption grey--text">user113</v-card-text>
+        <v-col cols="3" class="shrink pr-0">
+          <v-card-text class="pa-1 pl-3 Caption grey--text">user113</v-card-text>
         </v-col>
-        <v-col cols="9" style="text-align: right" class="pr-3">
-          <v-card-text class="pa-1 caption">
-            总评分 <font-awesome-icon class="orange--text" icon="fa-solid fa-face-grin-beam" /> &nbsp;课程内容
+        <v-col cols="9" style="text-align: right" class="pr-2">
+          <v-card-text class="pa-1 pl-0 caption">
+            总评分 <font-awesome-icon class="orange--text" icon="fa-solid fa-face-grin-beam" /> &nbsp;内容
             <font-awesome-icon class="grey--text" icon="fa-solid fa-face-meh" />&nbsp;工作量 <font-awesome-icon icon="fa-solid fa-face-frown" />&nbsp;考核
             <font-awesome-icon class="red--text" icon="fa-solid fa-face-sad-tear" />
           </v-card-text>
