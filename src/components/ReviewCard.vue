@@ -3,7 +3,7 @@
     <v-card>
       <v-row no-gutters class="d-flex justify-space-between">
         <v-card class="pa-0 ma-0" flat>
-          <v-card-title class="text-h5 font-weight-bold pt-3 pb-2"> {{ review.review.title }} </v-card-title>
+          <v-card-title class="text-h6 font-weight-bold pt-3 pb-2"> {{ review.review.title }} </v-card-title>
           <v-row align="center" justify="start" class="ml-3 pb-3">
             <v-col class="shrink pr-0 pl-1">
               <v-chip small label outlined color="blue"><v-icon small> mdi-account-outline </v-icon>{{ review.course.teachers }}</v-chip>
