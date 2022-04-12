@@ -118,6 +118,7 @@
       <v-col cols="8">
         <review-filter class="my-2" />
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
+        <div :id="this.content" name="description"></div>
       </v-col>
     </v-row>
     <!-- 手机页面  -->
@@ -250,7 +251,9 @@
               <v-select required label="课程时间"></v-select>
             </v-col>
           </v-row>
-          <div :id="this.contentName" name="description"></div>
+          <v-row>
+            <div :id="this.content" name="description"></div>
+          </v-row>
           <v-divider class="mt-2" />
         </v-form>
         <v-card-title class="mb-2 mt-2"> 评分 </v-card-title>
@@ -306,6 +309,8 @@ export default Vue.extend({
   components: { ReviewFilter, ReviewCard },
   props: ['groupId'],
   data: () => ({
+    editor: null as Vditor | null,
+    content: '',
     review_sheet: false,
     courseGroup: null as CourseGroup | null,
     courses: [
@@ -371,13 +376,12 @@ export default Vue.extend({
   },
   async mounted() {
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
-    this.editor = new Vditor(this.contentName, {
-      height: window.innerHeight - 375,
+    this.editor = new Vditor(this.content, {
+      height: window.innerHeight,
       placeholder: '说些什么......',
       toolbarConfig: {
         pin: false
       },
-      toolbar: toolbar,
       icon: 'material',
       cache: {
         enable: true
@@ -391,13 +395,7 @@ export default Vue.extend({
           new Promise<null>((resolve) => {
             for (const file of files) {
               const reader = new FileReader()
-              reader.onload = async (e) => {
-                if (e.target) {
-                  const response = await this.$axios.post('/images', {
-                    image: (e.target.result as string).split(',')[1]
-                  })
-                  this.editor.insertValue(`![](${response.data.url})`)
-                }
+              reader.onload = async () => {
                 resolve(null)
               }
               reader.readAsDataURL(file)
