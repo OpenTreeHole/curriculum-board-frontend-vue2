@@ -101,11 +101,14 @@
           </v-card-actions>
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 标签</v-card-title>
           <v-card-actions class="pt-1">
-            <v-chip-group class="ml-4">
-              <v-chip small>专业课</v-chip>
-              <v-chip small>第三模块</v-chip>
-              <v-chip small>女</v-chip>
-            </v-chip-group>
+            <v-row align="center" justify="start" class="pl-4">
+              <v-col class="shrink pb-0 pr-0">
+                <v-chip small>第三模块</v-chip>
+              </v-col>
+              <v-col class="shrink pb-0 pr-0">
+                <v-chip small>女</v-chip>
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-card>
         <div style="text-align: center" class="mt-3">
@@ -208,38 +211,92 @@
           </v-card-actions>
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 标签</v-card-title>
           <v-card-actions class="pt-1">
-            <v-chip-group class="ml-4">
-              <v-chip small>专业课</v-chip>
-              <v-chip small>第三模块</v-chip>
-              <v-chip small>女</v-chip>
-            </v-chip-group>
+            <v-row align="center" justify="start" class="pl-4">
+              <v-col class="shrink pb-0 pr-0">
+                <v-chip small>第三模块</v-chip>
+              </v-col>
+              <v-col class="shrink pb-0 pr-0">
+                <v-chip small>女</v-chip>
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-col>
       </v-row>
       <v-col>
         <review-filter class="my-2" />
+        <div style="text-align: center" class="my-3">
+          <v-btn @click="review_sheet = !review_sheet"> 发布测评 </v-btn>
+        </div>
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
       </v-col>
     </div>
-    <v-bottom-sheet v-model="review_sheet" inset hide-overlay>
-      <template class="ma-7">
-        <v-subheader>发表测评</v-subheader>
-        <v-row class="ml-7">
-          <v-col cols="4">
-            <v-form>
-              <v-text-field :counter="20" filled required dense label="标题"> </v-text-field>
-            </v-form>
+    <!-- TODO pad以及手机端表单 -->
+    <v-dialog v-model="review_sheet" max-width="35%">
+      <v-card class="pa-4 ma-0">
+        <v-card-title>
+          <span class="text-h6">发表测评</span>
+        </v-card-title>
+        <v-form class="mx-6">
+          <v-row>
+            <v-col cols="11">
+              <v-text-field :counter="20" required label="标题" class="pt-1"> </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="pt-0 mt-0">
+            <v-col cols="5">
+              <v-select required label="任课教师"></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select required label="课程时间"></v-select>
+            </v-col>
+          </v-row>
+          <div :id="this.contentName" name="description"></div>
+          <v-divider class="mt-2" />
+        </v-form>
+        <v-card-title class="mb-2 mt-2"> 评分 </v-card-title>
+        <v-row class="mx-3">
+          <v-col cols="12" class="d-flex pb-2">
+            <span class="subtitle-1 mr-5">总体评分</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
           </v-col>
-          <v-spacer />
         </v-row>
-      </template>
-    </v-bottom-sheet>
+        <v-row class="mx-3 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-5">课程内容</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-3 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-9">工作量</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-3 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-5">考核要求</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
+          </v-col>
+        </v-row>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text> 取消 </v-btn>
+          <v-btn color="blue darken-1" text> 发布 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { CourseGroup, Review, ReviewWithCourse } from '@/models'
+import Vditor from 'vditor'
+import 'vditor/dist/index.css'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewFilter from '@/components/ReviewFilter.vue'
@@ -314,6 +371,42 @@ export default Vue.extend({
   },
   async mounted() {
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
+    this.editor = new Vditor(this.contentName, {
+      height: window.innerHeight - 375,
+      placeholder: '说些什么......',
+      toolbarConfig: {
+        pin: false
+      },
+      toolbar: toolbar,
+      icon: 'material',
+      cache: {
+        enable: true
+      },
+      counter: {
+        enable: true
+      },
+      upload: {
+        accept: 'image/*',
+        handler: (files: File[]) =>
+          new Promise<null>((resolve) => {
+            for (const file of files) {
+              const reader = new FileReader()
+              reader.onload = async (e) => {
+                if (e.target) {
+                  const response = await this.$axios.post('/images', {
+                    image: (e.target.result as string).split(',')[1]
+                  })
+                  this.editor.insertValue(`![](${response.data.url})`)
+                }
+                resolve(null)
+              }
+              reader.readAsDataURL(file)
+            }
+          }),
+        multiple: false,
+        fieldName: 'image'
+      }
+    })
   }
 })
 </script>
