@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <v-breadcrumbs style="background-color: #fbfbfd">
+    <v-breadcrumbs style="background-color: #fbfbfd" class="pl-4">
       <v-breadcrumbs-item class="text-h6 font-weight-black ml-0">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
       <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
       <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
@@ -240,7 +240,7 @@
         <v-form class="mx-6">
           <v-row>
             <v-col cols="11">
-              <v-text-field :counter="20" required label="标题" class="pt-1"> </v-text-field>
+              <v-text-field :counter="12" required label="标题" class="pt-1"> </v-text-field>
             </v-col>
           </v-row>
           <v-row class="pt-0 mt-0">
