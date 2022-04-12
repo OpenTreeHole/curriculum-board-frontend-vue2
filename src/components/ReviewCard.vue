@@ -2,7 +2,7 @@
   <v-container class="pa-0">
     <v-card>
       <v-row no-gutters class="d-flex justify-space-between">
-        <v-col class="pa-0 ma-0" cols="10">
+        <v-col class="pa-0 ma-0" cols="10" lg="11" md="11" sm="10">
           <v-card-title class="text-h6 font-weight-bold pt-3 pb-2"> {{ review.review.title }} </v-card-title>
           <v-row align="center" justify="start" class="ml-3 pb-3 mt-0 mb-2">
             <v-col class="shrink pr-0 pl-1 py-0">
@@ -13,11 +13,11 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col style="background-color: rgba(0, 0, 0, 0.03)" class="d-flex align-center" cols="2">
-          <v-divider vertical />
+        <v-divider vertical />
+        <v-col style="background-color: rgba(0, 0, 0, 0.03)" class="d-flex align-center justify-center" cols="2" lg="1" md="1" sm="2">
           <v-card class="pa-0 ma-0 mx-7 d-flex justify-space-between" flat>
             <div class="pl-1" style="background-color: rgba(0, 0, 0, 0.03)">
-              <v-row style="font-size: 30px" class="mt-1 grey--text align-self-start">
+              <v-row style="font-size: 30px" class="mt-0 grey--text align-self-start">
                 <font-awesome-icon icon="fa-solid fa-caret-up" class="blue--text" />
               </v-row>
               <v-row class="text-h7 mt-1 align-self-center"> {{ review.review.remark }} </v-row>
