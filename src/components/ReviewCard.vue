@@ -18,18 +18,22 @@
           <v-card class="pa-0 ma-0 mx-7 d-flex justify-space-between" flat>
             <div class="pl-1" style="background-color: rgba(0, 0, 0, 0.03)">
               <v-row style="font-size: 30px" class="mt-0 grey--text align-self-start">
-                <font-awesome-icon icon="fa-solid fa-caret-up" class="blue--text" />
+                <font-awesome-icon icon="fa-solid fa-caret-up" :class="this.like ? 'blue--text' : 'grey--text'" @click="upVote" />
               </v-row>
-              <v-row class="text-h7 mt-1 align-self-center"> {{ review.review.remark }} </v-row>
+              <v-row class="text-h5 mt-1">
+                <v-col class="ma-0 py-0" :style="this.remark < 0 ? 'padding-left: 1px; padding-right: 2px' : 'padding-left: 3px; padding-right: 5px'">
+                  {{ this.remark }}
+                </v-col>
+              </v-row>
               <v-row style="font-size: 30px" class="mt-0 pt-1 mb-1 grey--text align-self-end">
-                <font-awesome-icon icon="fa-solid fa-caret-down" />
+                <font-awesome-icon :class="this.unlike ? 'red--text' : 'grey--text'" icon="fa-solid fa-caret-down" @click="downVote" />
               </v-row>
             </div>
           </v-card>
         </v-col>
       </v-row>
       <v-divider></v-divider>
-      <v-card-text class="caption red--text pb-0 pt-3 shrink">* 此评论被多人反对, 请谨慎参考</v-card-text>
+      <v-card-text class="caption red--text pb-0 pt-3 shrink">* 此测评被多人反对, 请谨慎参考</v-card-text>
       <v-card-text class="body-2 black--text pt-3">
         {{ review.review.content }}
       </v-card-text>
@@ -69,12 +73,43 @@ export default Vue.extend({
   props: {
     review: ReviewWithCourse
   },
+  data: () => ({
+    remark: 0,
+    like: false,
+    unlike: false
+  }),
   methods: {
     async editForm(): Promise<void> {
       this.$emit('openEditForm')
     },
     async editPhoneForm(): Promise<void> {
       this.$emit('openPhoneEditForm')
+    },
+    async upVote(): Promise<void> {
+      if (this.unlike) {
+        this.unlike = false
+        this.like = true
+        this.remark = this.remark + 2
+      } else if (this.like) {
+        this.like = false
+        this.remark = this.remark - 1
+      } else {
+        this.like = true
+        this.remark = this.remark + 1
+      }
+    },
+    async downVote(): Promise<void> {
+      if (this.like) {
+        this.like = false
+        this.unlike = true
+        this.remark = this.remark - 2
+      } else if (this.unlike) {
+        this.unlike = false
+        this.remark = this.remark + 1
+      } else {
+        this.unlike = true
+        this.remark = this.remark - 1
+      }
     }
   }
 })
