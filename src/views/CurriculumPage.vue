@@ -1,16 +1,15 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
     <v-breadcrumbs style="background-color: #fbfbfd">
-      <v-breadcrumbs-item class="text-h6 font-weight-black">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
+      <v-breadcrumbs-item class="text-h6 font-weight-black ml-0">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
       <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
       <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
-      <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-2 d-none d-sm-flex" color="accent">{{ v }} 学分 </v-chip>
-      <v-row class="mt-1 d-flex d-sm-none">
-        <v-col class="pt-1">
-          <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-2" color="accent">{{ v }} 学分 </v-chip>
-        </v-col>
-      </v-row>
+      <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-3 d-none d-sm-flex" color="accent">{{ v }} 学分 </v-chip>
     </v-breadcrumbs>
+    <v-banner class="d-block d-sm-none mt-0 pt-0">
+      <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="accent">{{ v }} 学分 </v-chip>
+    </v-banner>
+    <!-- TODO pad页面 -->
     <!-- 电脑页面  -->
     <v-row class="d-none d-sm-flex">
       <v-col cols="3">
