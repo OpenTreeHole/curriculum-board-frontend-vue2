@@ -29,8 +29,13 @@
         </v-card>
       </v-row>
       <v-divider></v-divider>
-      <v-card-text class="body-2 black--text">
+      <v-card-text class="caption red--text pb-0 pt-3">* 此评论被多人反对, 请谨慎参考</v-card-text>
+      <v-card-text class="body-2 black--text pt-3">
         {{ review.review.content }}
+      </v-card-text>
+      <v-card-text class="caption grey--text pb-2 d-flex justify-end pr-4">
+        <div class="mr-2"><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-trash-can</v-icon><span>删除</span></div>
+        <div><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-pencil</v-icon><span>编辑</span></div>
       </v-card-text>
       <v-divider></v-divider>
       <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)">
