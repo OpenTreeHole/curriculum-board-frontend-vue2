@@ -33,10 +33,15 @@
       <v-card-text class="body-2 black--text pt-3">
         {{ review.review.content }}
       </v-card-text>
-      <v-card-text class="caption grey--text pb-2 d-flex justify-end pr-4 pt-0">
-        <v-chip x-small label style="margin-top: 2px; margin-right: 15px">已编辑</v-chip>
-        <div class="mr-2"><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-trash-can</v-icon><span>删除</span></div>
-        <div><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-pencil</v-icon><span>编辑</span></div>
+      <v-card-text class="caption grey--text pb-2 d-flex justify-end pr-3 pt-0">
+        <v-chip x-small label style="margin-top: 1px; margin-right: 10px">已编辑</v-chip>
+        <v-btn text x-small color="grey"><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-trash-can</v-icon><span>删除</span></v-btn>
+        <v-btn class="d-none d-sm-flex" text x-small color="grey" @click="editForm">
+          <v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-pencil</v-icon><span>编辑</span>
+        </v-btn>
+        <v-btn class="d-flex d-sm-none" @click="editPhoneForm" text x-small color="grey"
+          ><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-pencil</v-icon><span>编辑</span></v-btn
+        >
       </v-card-text>
       <v-divider></v-divider>
       <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)">
@@ -63,6 +68,14 @@ export default Vue.extend({
   name: 'ReviewCard',
   props: {
     review: ReviewWithCourse
+  },
+  methods: {
+    async editForm(): Promise<void> {
+      this.$emit('openEditForm')
+    },
+    async editPhoneForm(): Promise<void> {
+      this.$emit('openPhoneEditForm')
+    }
   }
 })
 </script>

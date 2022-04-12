@@ -9,7 +9,7 @@
     <v-banner class="d-block d-sm-none mt-0 pt-0">
       <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="accent">{{ v }} 学分 </v-chip>
     </v-banner>
-    <!-- TODO pad页面 -->
+    <!-- TODO pad页面以及表单 -->
     <!-- 电脑页面  -->
     <v-row class="d-none d-sm-flex">
       <v-col cols="3">
@@ -112,12 +112,12 @@
           </v-card-actions>
         </v-card>
         <div style="text-align: center" class="mt-3">
-          <v-btn @click="review_sheet = !review_sheet"> 发布测评 </v-btn>
+          <v-btn @click="changeFormView"> 发布测评 </v-btn>
         </div>
       </v-col>
       <v-col cols="8">
         <review-filter class="my-2" />
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
+        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView"></review-card>
         <div :id="this.content" name="description"></div>
       </v-col>
     </v-row>
@@ -226,12 +226,11 @@
       <v-col>
         <review-filter class="my-2" />
         <div style="text-align: center" class="my-3">
-          <v-btn @click="review_sheet_phone = !review_sheet_phone"> 发布测评 </v-btn>
+          <v-btn @click="changePhoneFormView"> 发布测评 </v-btn>
         </div>
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
+        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openPhoneEditForm="changePhoneFormView"></review-card>
       </v-col>
     </div>
-    <!-- TODO pad以及手机端表单 -->
     <!-- 电脑表单  -->
     <v-dialog v-model="review_sheet" max-width="35%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
@@ -410,6 +409,12 @@ export default Vue.extend({
     }
   },
   methods: {
+    async changeFormView(): Promise<void> {
+      this.review_sheet = !this.review_sheet
+    },
+    async changePhoneFormView(): Promise<void> {
+      this.review_sheet_phone = !this.review_sheet_phone
+    },
     // Get or load a course group with all reviews loaded.
     async getOrLoadCourseGroup(groupId: number): Promise<CourseGroup | null> {
       const loadReviews = async (courseGroup: CourseGroup) => {
