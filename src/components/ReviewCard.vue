@@ -33,7 +33,7 @@
       <v-card-text class="body-2 black--text pt-3">
         {{ review.review.content }}
       </v-card-text>
-      <v-card-text class="caption grey--text pb-2 d-flex justify-end pr-4">
+      <v-card-text class="caption grey--text pb-2 d-flex justify-end pr-4 pt-0">
         <div class="mr-2"><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-trash-can</v-icon><span>删除</span></div>
         <div><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-pencil</v-icon><span>编辑</span></div>
       </v-card-text>
