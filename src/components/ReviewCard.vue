@@ -2,22 +2,22 @@
   <v-container class="pa-0">
     <v-card>
       <v-row no-gutters class="d-flex justify-space-between">
-        <v-card class="pa-0 ma-0" flat>
+        <v-col class="pa-0 ma-0" cols="10">
           <v-card-title class="text-h6 font-weight-bold pt-3 pb-2"> {{ review.review.title }} </v-card-title>
-          <v-row align="center" justify="start" class="ml-3 pb-3">
-            <v-col class="shrink pr-0 pl-1">
+          <v-row align="center" justify="start" class="ml-3 pb-3 mt-0 mb-2">
+            <v-col class="shrink pr-0 pl-1 py-0">
               <v-chip small label outlined color="blue"><v-icon small> mdi-account-outline </v-icon>{{ review.course.teachers }}</v-chip>
             </v-col>
-            <v-col class="shrink pr-0 pl-2">
+            <v-col class="shrink pr-0 pl-2 py-0">
               <v-chip small label outlined color="red"><font-awesome-icon icon="fa-solid fa-calendar-days" />&nbsp; 2011-2012</v-chip>
             </v-col>
           </v-row>
-        </v-card>
-        <v-card style="background-color: rgba(0, 0, 0, 0.03)" flat class="d-flex">
+        </v-col>
+        <v-col style="background-color: rgba(0, 0, 0, 0.03)" class="d-flex align-center" cols="2">
           <v-divider vertical />
           <v-card class="pa-0 ma-0 mx-7 d-flex justify-space-between" flat>
             <div class="pl-1" style="background-color: rgba(0, 0, 0, 0.03)">
-              <v-row style="font-size: 30px" class="mt-2 grey--text align-self-start">
+              <v-row style="font-size: 30px" class="mt-1 grey--text align-self-start">
                 <font-awesome-icon icon="fa-solid fa-caret-up" class="blue--text" />
               </v-row>
               <v-row class="text-h7 mt-1 align-self-center"> {{ review.review.remark }} </v-row>
@@ -26,10 +26,10 @@
               </v-row>
             </div>
           </v-card>
-        </v-card>
+        </v-col>
       </v-row>
       <v-divider></v-divider>
-      <v-card-text class="caption red--text pb-0 pt-3">* 此评论被多人反对, 请谨慎参考</v-card-text>
+      <v-card-text class="caption red--text pb-0 pt-3 shrink">* 此评论被多人反对, 请谨慎参考</v-card-text>
       <v-card-text class="body-2 black--text pt-3">
         {{ review.review.content }}
       </v-card-text>

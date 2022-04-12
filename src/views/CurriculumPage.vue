@@ -240,7 +240,7 @@
         <v-form class="mx-6">
           <v-row>
             <v-col cols="11">
-              <v-text-field :counter="12" required label="标题" class="pt-1"> </v-text-field>
+              <v-text-field :counter="20" required label="标题" class="pt-1"> </v-text-field>
             </v-col>
           </v-row>
           <v-row class="pt-0 mt-0">
