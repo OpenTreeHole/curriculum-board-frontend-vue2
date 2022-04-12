@@ -100,7 +100,7 @@
             </v-chip-group>
           </v-card-actions>
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 标签</v-card-title>
-          <v-card-actions class="pt-1">
+          <v-card-actions class="pt-1 mb-2">
             <v-row align="center" justify="start" class="pl-4">
               <v-col class="shrink pb-0 pr-0">
                 <v-chip small>第三模块</v-chip>
