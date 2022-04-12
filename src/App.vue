@@ -30,3 +30,9 @@ export default Vue.extend({
   })
 })
 </script>
+<style>
+body {
+  overflow-x: hidden;
+  height: 100vh;
+}
+</style>
