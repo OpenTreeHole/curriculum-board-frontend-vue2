@@ -226,13 +226,14 @@
       <v-col>
         <review-filter class="my-2" />
         <div style="text-align: center" class="my-3">
-          <v-btn @click="review_sheet = !review_sheet"> 发布测评 </v-btn>
+          <v-btn @click="review_sheet_phone = !review_sheet_phone"> 发布测评 </v-btn>
         </div>
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
       </v-col>
     </div>
     <!-- TODO pad以及手机端表单 -->
-    <v-dialog v-model="review_sheet" max-width="35%">
+    <!-- 电脑表单  -->
+    <v-dialog v-model="review_sheet" max-width="35%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>
           <span class="text-h6">发表测评</span>
@@ -287,8 +288,68 @@
         </v-row>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text> 取消 </v-btn>
+          <v-btn color="blue darken-1" text @click="review_sheet = false"> 取消 </v-btn>
           <v-btn color="blue darken-1" text> 发布 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- 手机表单  -->
+    <v-dialog v-model="review_sheet_phone" fullscreen transition="dialog-bottom-transition">
+      <v-card>
+        <v-card-title>
+          <span class="text-h6 mt-5">发布测评</span>
+        </v-card-title>
+        <v-form class="mx-12">
+          <v-row class="mt-0">
+            <v-col cols="12">
+              <v-text-field :counter="20" required label="标题" class="pt-1"> </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="mt-0">
+            <v-col cols="6">
+              <v-select required label="任课教师"></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select required label="课程时间"></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <div :id="this.content" name="description"></div>
+          </v-row>
+        </v-form>
+        <v-card-title class="mb-2 mt-0"> 评分 </v-card-title>
+        <v-row class="mx-6">
+          <v-col cols="12" class="d-flex pb-2">
+            <span class="subtitle-1 mr-5">总体评分</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-6 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-5">课程内容</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-6 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-9">工作量</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-6 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-5">考核要求</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
+          </v-col>
+        </v-row>
+        <v-card-actions class="mr-4 mt-4">
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="review_sheet_phone = false" class="mr-0"> 取消 </v-btn>
+          <v-btn color="blue darken-1" class="mr-2 ml-0" text> 发布 </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -312,6 +373,7 @@ export default Vue.extend({
     editor: null as Vditor | null,
     content: '',
     review_sheet: false,
+    review_sheet_phone: false,
     courseGroup: null as CourseGroup | null,
     courses: [
       { text: '马克思主义学院', disabled: false },
