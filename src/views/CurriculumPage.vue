@@ -308,33 +308,31 @@
               <v-select required label="课程时间"></v-select>
             </v-col>
           </v-row>
-          <v-row>
-            <div :id="this.content" name="description"></div>
-          </v-row>
+          <ReviewEditor class="mt-4" />
         </v-form>
-        <v-card-title class="mb-2 mt-0"> 评分 </v-card-title>
-        <v-row class="mx-6">
+        <v-card-title class="mb-2 mt-3"> 评分 </v-card-title>
+        <v-row class="mx-9">
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
             <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
           </v-col>
         </v-row>
-        <v-row class="mx-6 pt-0">
+        <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">课程内容</span>
             <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
           </v-col>
         </v-row>
-        <v-row class="mx-6 pt-0">
+        <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-9">工作量</span>
             <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
           </v-col>
         </v-row>
-        <v-row class="mx-6 pt-0">
+        <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">考核要求</span>
             <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>

@@ -20,39 +20,12 @@ export default Vue.extend({
     this.editor = new Vditor(this.content, {
       height: window.innerHeight - 600,
       placeholder: '说些什么......',
-      toolbarConfig: {
-        pin: false,
-        hide: true
-      },
-      toolbar: [
-        'headings',
-        'bold',
-        'italic',
-        'strike',
-        'link',
-        '|',
-        'list',
-        'ordered-list',
-        'check',
-        'outdent',
-        'indent',
-        '|',
-        'quote',
-        'line',
-        'code',
-        'inline-code',
-        'table',
-        '|',
-        'undo',
-        'redo',
-        '|',
-        'export'
-      ],
+      toolbar: [],
       cache: {
         enable: true
       },
       counter: {
-        enable: true
+        enable: false
       },
       after: async () => {
         this.editor?.setValue('hello, Vdito + Vue!')
