@@ -118,7 +118,6 @@
       <v-col cols="8">
         <review-filter class="my-2" />
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView"></review-card>
-        <ReviewEditor />
       </v-col>
     </v-row>
     <!-- 手机页面  -->
@@ -232,29 +231,26 @@
       </v-col>
     </div>
     <!-- 电脑表单  -->
-    <v-dialog v-model="review_sheet" max-width="35%" class="d-none d-sm-flex">
+    <v-dialog v-model="review_sheet" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>
           <span class="text-h6">发表测评</span>
         </v-card-title>
         <v-form class="mx-6">
           <v-row>
-            <v-col cols="11">
+            <v-col cols="12">
               <v-text-field :counter="20" required label="标题" class="pt-1"> </v-text-field>
             </v-col>
           </v-row>
           <v-row class="pt-0 mt-0">
-            <v-col cols="5">
+            <v-col cols="6">
               <v-select required label="任课教师"></v-select>
             </v-col>
             <v-col cols="6">
               <v-select required label="课程时间"></v-select>
             </v-col>
           </v-row>
-          <v-row>
-            <ReviewEditor />
-          </v-row>
-          <v-divider class="mt-2" />
+          <ReviewEditor class="mt-2" />
         </v-form>
         <v-card-title class="mb-2 mt-2"> 评分 </v-card-title>
         <v-row class="mx-3">
