@@ -118,7 +118,7 @@
       <v-col cols="8">
         <review-filter class="my-2" />
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView"></review-card>
-        <div :id="this.content" name="description"></div>
+        <ReviewEditor />
       </v-col>
     </v-row>
     <!-- 手机页面  -->
@@ -252,7 +252,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <div :id="this.content" name="description"></div>
+            <ReviewEditor />
           </v-row>
           <v-divider class="mt-2" />
         </v-form>
@@ -358,19 +358,16 @@
 <script lang="ts">
 import Vue from 'vue'
 import { CourseGroup, Review, ReviewWithCourse } from '@/models'
-import Vditor from 'vditor'
-import 'vditor/dist/index.css'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewFilter from '@/components/ReviewFilter.vue'
+import ReviewEditor from '@/components/ReviewEditor.vue'
 
 export default Vue.extend({
   name: 'CurriculumPage',
-  components: { ReviewFilter, ReviewCard },
+  components: { ReviewEditor, ReviewFilter, ReviewCard },
   props: ['groupId'],
   data: () => ({
-    editor: null as Vditor | null,
-    content: '',
     review_sheet: false,
     review_sheet_phone: false,
     courseGroup: null as CourseGroup | null,
@@ -443,35 +440,6 @@ export default Vue.extend({
   },
   async mounted() {
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
-    this.editor = new Vditor(this.content, {
-      height: window.innerHeight,
-      placeholder: '说些什么......',
-      toolbarConfig: {
-        pin: false
-      },
-      icon: 'material',
-      cache: {
-        enable: true
-      },
-      counter: {
-        enable: true
-      },
-      upload: {
-        accept: 'image/*',
-        handler: (files: File[]) =>
-          new Promise<null>((resolve) => {
-            for (const file of files) {
-              const reader = new FileReader()
-              reader.onload = async () => {
-                resolve(null)
-              }
-              reader.readAsDataURL(file)
-            }
-          }),
-        multiple: false,
-        fieldName: 'image'
-      }
-    })
   }
 })
 </script>
