@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
-    <v-breadcrumbs style="background-color: #fbfbfd">
+    <v-breadcrumbs style="background-color: #fbfbfd" class="pl-4">
       <v-breadcrumbs-item class="text-h6 font-weight-black ml-0">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
       <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
       <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
@@ -9,7 +9,7 @@
     <v-banner class="d-block d-sm-none mt-0 pt-0">
       <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="accent">{{ v }} 学分 </v-chip>
     </v-banner>
-    <!-- TODO pad页面 -->
+    <!-- TODO pad页面以及表单 -->
     <!-- 电脑页面  -->
     <v-row class="d-none d-sm-flex">
       <v-col cols="3">
@@ -100,21 +100,24 @@
             </v-chip-group>
           </v-card-actions>
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 标签</v-card-title>
-          <v-card-actions class="pt-1">
-            <v-chip-group class="ml-4">
-              <v-chip small>专业课</v-chip>
-              <v-chip small>第三模块</v-chip>
-              <v-chip small>女</v-chip>
-            </v-chip-group>
+          <v-card-actions class="pt-1 mb-2">
+            <v-row align="center" justify="start" class="pl-4">
+              <v-col class="shrink pb-0 pr-0">
+                <v-chip small>第三模块</v-chip>
+              </v-col>
+              <v-col class="shrink pb-0 pr-0">
+                <v-chip small>女</v-chip>
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-card>
         <div style="text-align: center" class="mt-3">
-          <v-btn @click="review_sheet = !review_sheet"> 发布测评 </v-btn>
+          <v-btn @click="changeFormView"> 发布测评 </v-btn>
         </div>
       </v-col>
       <v-col cols="8">
         <review-filter class="my-2" />
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
+        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView"></review-card>
       </v-col>
     </v-row>
     <!-- 手机页面  -->
@@ -208,32 +211,141 @@
           </v-card-actions>
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 标签</v-card-title>
           <v-card-actions class="pt-1">
-            <v-chip-group class="ml-4">
-              <v-chip small>专业课</v-chip>
-              <v-chip small>第三模块</v-chip>
-              <v-chip small>女</v-chip>
-            </v-chip-group>
+            <v-row align="center" justify="start" class="pl-4">
+              <v-col class="shrink pb-0 pr-0">
+                <v-chip small>第三模块</v-chip>
+              </v-col>
+              <v-col class="shrink pb-0 pr-0">
+                <v-chip small>女</v-chip>
+              </v-col>
+            </v-row>
           </v-card-actions>
         </v-col>
       </v-row>
       <v-col>
         <review-filter class="my-2" />
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v"></review-card>
+        <div style="text-align: center" class="my-3">
+          <v-btn @click="changePhoneFormView"> 发布测评 </v-btn>
+        </div>
+        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openPhoneEditForm="changePhoneFormView"></review-card>
       </v-col>
     </div>
-    <v-bottom-sheet v-model="review_sheet" inset hide-overlay>
-      <template class="ma-7">
-        <v-subheader>发表测评</v-subheader>
-        <v-row class="ml-7">
-          <v-col cols="4">
-            <v-form>
-              <v-text-field :counter="20" filled required dense label="标题"> </v-text-field>
-            </v-form>
+    <!-- 电脑表单  -->
+    <v-dialog v-model="review_sheet" max-width="50%" class="d-none d-sm-flex">
+      <v-card class="pa-4 ma-0">
+        <v-card-title>
+          <span class="text-h6">发表测评</span>
+        </v-card-title>
+        <v-form class="mx-6">
+          <v-row>
+            <v-col cols="12">
+              <v-text-field :counter="20" required label="标题" class="pt-1"> </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="pt-0 mt-0">
+            <v-col cols="6">
+              <v-select required label="任课教师"></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select required label="课程时间"></v-select>
+            </v-col>
+          </v-row>
+          <ReviewEditor class="mt-2" />
+        </v-form>
+        <v-card-title class="mb-2 mt-2"> 评分 </v-card-title>
+        <v-row class="mx-3">
+          <v-col cols="12" class="d-flex pb-2">
+            <span class="subtitle-1 mr-5">总体评分</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
           </v-col>
-          <v-spacer />
         </v-row>
-      </template>
-    </v-bottom-sheet>
+        <v-row class="mx-3 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-5">课程内容</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-3 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-9">工作量</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-3 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-5">考核要求</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
+          </v-col>
+        </v-row>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="review_sheet = false"> 取消 </v-btn>
+          <v-btn color="blue darken-1" text> 发布 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- 手机表单  -->
+    <v-dialog v-model="review_sheet_phone" fullscreen transition="dialog-bottom-transition">
+      <v-card>
+        <v-card-title>
+          <span class="text-h6 mt-5">发布测评</span>
+        </v-card-title>
+        <v-form class="mx-12">
+          <v-row class="mt-0">
+            <v-col cols="12">
+              <v-text-field :counter="20" required label="标题" class="pt-1"> </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row class="mt-0">
+            <v-col cols="6">
+              <v-select required label="任课教师"></v-select>
+            </v-col>
+            <v-col cols="6">
+              <v-select required label="课程时间"></v-select>
+            </v-col>
+          </v-row>
+          <ReviewEditor class="mt-4" />
+        </v-form>
+        <v-card-title class="mb-2 mt-3"> 评分 </v-card-title>
+        <v-row class="mx-9">
+          <v-col cols="12" class="d-flex pb-2">
+            <span class="subtitle-1 mr-5">总体评分</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-9 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-5">课程内容</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-9 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-9">工作量</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
+          </v-col>
+        </v-row>
+        <v-row class="mx-9 pt-0">
+          <v-col cols="12" class="d-flex pt-0 pb-2">
+            <span class="subtitle-1 mr-5">考核要求</span>
+            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
+          </v-col>
+        </v-row>
+        <v-card-actions class="mr-4 mt-4">
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="review_sheet_phone = false" class="mr-0"> 取消 </v-btn>
+          <v-btn color="blue darken-1" class="mr-2 ml-0" text> 发布 </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -243,13 +355,15 @@ import { CourseGroup, Review, ReviewWithCourse } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewFilter from '@/components/ReviewFilter.vue'
+import ReviewEditor from '@/components/ReviewEditor.vue'
 
 export default Vue.extend({
   name: 'CurriculumPage',
-  components: { ReviewFilter, ReviewCard },
+  components: { ReviewEditor, ReviewFilter, ReviewCard },
   props: ['groupId'],
   data: () => ({
     review_sheet: false,
+    review_sheet_phone: false,
     courseGroup: null as CourseGroup | null,
     courses: [
       { text: '马克思主义学院', disabled: false },
@@ -286,6 +400,12 @@ export default Vue.extend({
     }
   },
   methods: {
+    async changeFormView(): Promise<void> {
+      this.review_sheet = !this.review_sheet
+    },
+    async changePhoneFormView(): Promise<void> {
+      this.review_sheet_phone = !this.review_sheet_phone
+    },
     // Get or load a course group with all reviews loaded.
     async getOrLoadCourseGroup(groupId: number): Promise<CourseGroup | null> {
       const loadReviews = async (courseGroup: CourseGroup) => {
