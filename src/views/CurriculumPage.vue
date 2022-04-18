@@ -7,7 +7,10 @@
       <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-3 d-none d-sm-flex" color="accent">{{ v }} 学分 </v-chip>
     </v-breadcrumbs>
     <v-banner class="d-block d-sm-none mt-0 pt-0">
-      <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="accent">{{ v }} 学分 </v-chip>
+      <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="accent"
+        >{{ v }}
+        学分
+      </v-chip>
     </v-banner>
     <!-- TODO pad页面以及表单 -->
     <!-- 电脑页面  -->
@@ -55,8 +58,8 @@
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
-            <v-expansion-panel class="py-0 mt-0">
-              <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text"> > 2021-2022-1 (共10条) </v-expansion-panel-header>
+            <v-expansion-panel class="py-0 mt-0" v-for="(reviews, year) in Object.fromEntries(reviewsCategorizedByYearSemester.entries())" :key="year">
+              <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text"> > {{ year }} (共 {{ reviews.length }} 条) </v-expansion-panel-header>
               <v-expansion-panel-content class="py-0">
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
@@ -112,7 +115,7 @@
           </v-card-actions>
         </v-card>
         <div style="text-align: center" class="mt-3">
-          <v-btn @click="changeFormView"> 发布测评 </v-btn>
+          <v-btn @click="changeFormView"> 发布测评</v-btn>
         </div>
       </v-col>
       <v-col cols="8">
@@ -225,7 +228,7 @@
       <v-col>
         <review-filter class="my-2" />
         <div style="text-align: center" class="my-3">
-          <v-btn @click="changePhoneFormView"> 发布测评 </v-btn>
+          <v-btn @click="changePhoneFormView"> 发布测评</v-btn>
         </div>
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openPhoneEditForm="changePhoneFormView"></review-card>
       </v-col>
@@ -239,7 +242,7 @@
         <v-form class="mx-6">
           <v-row>
             <v-col cols="12">
-              <v-text-field :counter="20" required label="标题" class="pt-1"> </v-text-field>
+              <v-text-field :counter="20" required label="标题" class="pt-1"></v-text-field>
             </v-col>
           </v-row>
           <v-row class="pt-0 mt-0">
@@ -252,7 +255,7 @@
           </v-row>
           <ReviewEditor class="mt-2" />
         </v-form>
-        <v-card-title class="mb-2 mt-2"> 评分 </v-card-title>
+        <v-card-title class="mb-2 mt-2"> 评分</v-card-title>
         <v-row class="mx-3">
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
@@ -283,8 +286,8 @@
         </v-row>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="review_sheet = false"> 取消 </v-btn>
-          <v-btn color="blue darken-1" text> 发布 </v-btn>
+          <v-btn color="blue darken-1" text @click="review_sheet = false"> 取消</v-btn>
+          <v-btn color="blue darken-1" text> 发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -297,7 +300,7 @@
         <v-form class="mx-12">
           <v-row class="mt-0">
             <v-col cols="12">
-              <v-text-field :counter="20" required label="标题" class="pt-1"> </v-text-field>
+              <v-text-field :counter="20" required label="标题" class="pt-1"></v-text-field>
             </v-col>
           </v-row>
           <v-row class="mt-0">
@@ -310,7 +313,7 @@
           </v-row>
           <ReviewEditor class="mt-4" />
         </v-form>
-        <v-card-title class="mb-2 mt-3"> 评分 </v-card-title>
+        <v-card-title class="mb-2 mt-3"> 评分</v-card-title>
         <v-row class="mx-9">
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
@@ -341,8 +344,8 @@
         </v-row>
         <v-card-actions class="mr-4 mt-4">
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="review_sheet_phone = false" class="mr-0"> 取消 </v-btn>
-          <v-btn color="blue darken-1" class="mr-2 ml-0" text> 发布 </v-btn>
+          <v-btn color="blue darken-1" text @click="review_sheet_phone = false" class="mr-0"> 取消</v-btn>
+          <v-btn color="blue darken-1" class="mr-2 ml-0" text> 发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -351,11 +354,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, Review, ReviewWithCourse } from '@/models'
+import { CourseGroup, ReviewWithCourse } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewFilter from '@/components/ReviewFilter.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
+import { parseYearSemester } from '@/utils/course'
 
 export default Vue.extend({
   name: 'CurriculumPage',
@@ -385,6 +389,20 @@ export default Vue.extend({
       let teachersSet = new Set<string>()
       this.courseGroup?.courseList.forEach((course) => teachersSet.add(course.teachers))
       return ['所有', ...teachersSet]
+    },
+    reviewsCategorizedByYearSemester(): Map<string, ReviewWithCourse[]> {
+      let resultMap = new Map<string, ReviewWithCourse[]>()
+      for (const course of this.courseGroup?.courseList || []) {
+        const yearSemester = parseYearSemester(course)
+        const reviews = course.reviewList?.map((review) => new ReviewWithCourse(review, course)) || []
+        if (resultMap.has(yearSemester)) {
+          resultMap.get(yearSemester)?.push(...reviews)
+        } else {
+          resultMap.set(yearSemester, reviews)
+        }
+      }
+      console.log(resultMap)
+      return resultMap
     },
     reviews(): ReviewWithCourse[] {
       return (

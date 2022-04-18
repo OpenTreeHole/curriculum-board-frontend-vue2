@@ -9,9 +9,7 @@
               <v-chip small label outlined color="blue"><v-icon small> mdi-account-outline </v-icon>{{ review.course.teachers }}</v-chip>
             </v-col>
             <v-col class="shrink pr-0 pl-2 py-0">
-              <v-chip small label outlined color="red"
-                ><font-awesome-icon icon="fa-solid fa-calendar-days" />&nbsp; {{ years }}-{{ years + 1 }}-{{ review.course.semester }}</v-chip
-              >
+              <v-chip small label outlined color="red"><font-awesome-icon icon="fa-solid fa-calendar-days" />&nbsp; {{ years }}</v-chip>
             </v-col>
           </v-row>
         </v-col>
@@ -69,6 +67,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { ReviewWithCourse } from '@/models'
+import { parseYearSemester } from '@/utils/course'
 
 export default Vue.extend({
   name: 'ReviewCard',
@@ -81,8 +80,8 @@ export default Vue.extend({
     unlike: false
   }),
   computed: {
-    years(): number {
-      return parseInt(this.review?.course.year)
+    years(): string {
+      return parseYearSemester(this.review?.course)
     }
   },
   methods: {
