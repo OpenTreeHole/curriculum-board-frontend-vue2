@@ -253,7 +253,7 @@
               <v-select required label="课程时间"></v-select>
             </v-col>
           </v-row>
-          <ReviewEditor class="mt-2" />
+          <ReviewEditor class="mt-2" ref="reviewEditor" />
         </v-form>
         <v-card-title class="mb-2 mt-2"> 评分</v-card-title>
         <v-row class="mx-3">
@@ -287,7 +287,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="review_sheet = false"> 取消</v-btn>
-          <v-btn color="blue darken-1" text> 发布</v-btn>
+          <v-btn color="blue darken-1" text @click="postReview"> 发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -418,6 +418,9 @@ export default Vue.extend({
     }
   },
   methods: {
+    async postReview() {
+      console.log((this.$refs.reviewEditor as any).getContent())
+    },
     async changeFormView(): Promise<void> {
       this.review_sheet = !this.review_sheet
     },
