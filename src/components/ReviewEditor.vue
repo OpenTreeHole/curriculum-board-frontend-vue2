@@ -13,7 +13,7 @@ export default Vue.extend({
   name: 'ReviewEditor',
   data: () => ({
     editor: null as Vditor | null,
-    contentId: '11'
+    contentId: new Date().getTime().toString()
   }),
   async mounted() {
     await this.$nextTick()
