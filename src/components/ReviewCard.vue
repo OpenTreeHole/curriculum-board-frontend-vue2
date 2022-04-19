@@ -53,11 +53,23 @@
           <v-card-text class="pa-1 pl-3 Caption grey--text">user113</v-card-text>
         </v-col>
         <v-col cols="9" style="text-align: right" class="pr-2">
-          <v-card-text class="pa-1 pl-0 caption">
-            总评分 <font-awesome-icon class="orange--text" icon="fa-solid fa-face-grin-beam" /> &nbsp;内容
-            <font-awesome-icon class="grey--text" icon="fa-solid fa-face-meh" />&nbsp;工作量 <font-awesome-icon icon="fa-solid fa-face-frown" />&nbsp;考核
-            <font-awesome-icon class="red--text" icon="fa-solid fa-face-sad-tear" />
-          </v-card-text>
+          <v-tooltip right class="ma-0 pa-0" color="white">
+            <template v-slot:activator="{ on, attrs }">
+              <v-card-text class="pa-1 pl-0 caption" v-bind="attrs" v-on="on">
+                总评分 <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;内容
+                <font-awesome-icon :class="rankColorContent" :icon="rankIconContent" />&nbsp;工作量
+                <font-awesome-icon :class="rankColorWorkload" :icon="rankIconWorkload" />&nbsp;考核
+                <font-awesome-icon :class="rankColorAssessment" :icon="rankIconAssessment" />
+              </v-card-text>
+            </template>
+            <span class="ma-0 pa-0"
+              ><font-awesome-icon icon="fa-solid fa-face-grin-stars" class="orange--text" /><br />
+              <font-awesome-icon icon="fa-solid fa-laugh" class="brown--text" /><br />
+              <font-awesome-icon icon="fa-solid fa-smile" class="grey--text" /><br />
+              <font-awesome-icon icon="fa-solid fa-meh" class="black--text" /><br />
+              <font-awesome-icon icon="fa-solid fa-frown" class="red--text" />
+            </span>
+          </v-tooltip>
         </v-col>
       </v-row>
     </v-card>
@@ -77,9 +89,119 @@ export default Vue.extend({
   data: () => ({
     remark: 0,
     like: false,
-    unlike: false
+    unlike: false,
+    rank: {
+      overall: 4,
+      content: 5,
+      workload: 2,
+      assessment: 3
+    }
   }),
   computed: {
+    rankColorOverall(): string {
+      if (this.rank.overall == 5) {
+        return 'orange--text'
+      } else if (this.rank.overall == 4) {
+        return 'brown--text'
+      } else if (this.rank.overall == 2) {
+        return 'black--text'
+      } else if (this.rank.overall == 1) {
+        return 'red--text'
+      } else {
+        return 'grey--text'
+      }
+    },
+    rankColorContent(): string {
+      if (this.rank.content == 5) {
+        return 'orange--text'
+      } else if (this.rank.content == 4) {
+        return 'brown--text'
+      } else if (this.rank.content == 2) {
+        return 'black--text'
+      } else if (this.rank.content == 1) {
+        return 'red--text'
+      } else {
+        return 'grey--text'
+      }
+    },
+    rankColorWorkload(): string {
+      if (this.rank.workload == 5) {
+        return 'orange--text'
+      } else if (this.rank.workload == 4) {
+        return 'brown--text'
+      } else if (this.rank.workload == 2) {
+        return 'black--text'
+      } else if (this.rank.workload == 1) {
+        return 'red--text'
+      } else {
+        return 'grey--text'
+      }
+    },
+    rankColorAssessment(): string {
+      if (this.rank.assessment == 5) {
+        return 'orange--text'
+      } else if (this.rank.assessment == 4) {
+        return 'brown--text'
+      } else if (this.rank.assessment == 2) {
+        return 'black--text'
+      } else if (this.rank.assessment == 1) {
+        return 'red--text'
+      } else {
+        return 'grey--text'
+      }
+    },
+    rankIconOverall(): string {
+      if (this.rank.overall === 1) {
+        return 'fa-solid fa-face-frown'
+      } else if (this.rank.overall === 2) {
+        return 'fa-solid fa-face-meh'
+      } else if (this.rank.overall === 4) {
+        return 'fa-solid fa-face-laugh'
+      } else if (this.rank.overall === 5) {
+        return 'fa-solid fa-face-grin-stars'
+      } else {
+        return 'fa-solid fa-face-smile'
+      }
+    },
+    rankIconContent(): string {
+      if (this.rank.content === 1) {
+        return 'fa-solid fa-frown'
+      } else if (this.rank.content === 2) {
+        return 'fa-solid fa-meh'
+      } else if (this.rank.content === 4) {
+        return 'fa-solid fa-laugh'
+      } else if (this.rank.content === 5) {
+        return 'fa-solid fa-grin-stars'
+      } else {
+        return 'fa-solid fa-smile'
+      }
+    },
+    rankIconWorkload(): string {
+      if (this.rank.workload === 1) {
+        return 'fa-solid fa-frown'
+      } else if (this.rank.workload === 2) {
+        return 'fa-solid fa-meh'
+      } else if (this.rank.workload === 4) {
+        return 'fa-solid fa-laugh'
+      } else if (this.rank.workload === 5) {
+        return 'fa-solid fa-grin-stars'
+      } else {
+        return 'fa-solid fa-smile'
+      }
+    },
+    rankIconAssessment(): string {
+      if (this.rank.assessment === 1) {
+        return 'fa-solid fa-frown'
+      } else if (this.rank.assessment === 2) {
+        return 'fa-solid fa-meh'
+      } else if (this.rank.assessment === 4) {
+        return 'fa-solid fa-laugh'
+      } else if (this.rank.assessment === 5) {
+        return 'fa-solid fa-grin-stars'
+      } else {
+        return 'fa-solid fa-smile'
+      }
+    },
     years(): string {
       return parseYearSemester(this.review?.course)
     }
