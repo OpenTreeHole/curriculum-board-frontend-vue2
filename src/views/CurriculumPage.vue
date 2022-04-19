@@ -29,32 +29,32 @@
                     <span class="subtitle-2 ml-1 mt-1 black--text">总体评分 </span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.overall" :color="allRankColorOverall"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.content }} (特别好评)</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.content" :color="allRankColorContent"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (硬核)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.content }} (硬核)</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.workload" :color="allRankColorWorkload"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (轻松)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.workload }} (轻松)</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
                     <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.assessment" :color="allRankColorAssessment"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.assessment }} (特别好评)</v-col>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -89,9 +89,9 @@
                     <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.assessment"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.assessment }} (特别好评)</v-col>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -139,32 +139,32 @@
                     <span class="subtitle-2 ml-1 mt-1 black--text">总体评分 </span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.overall" :color="allRankColorOverall"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.content }} (特别好评)</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.content" :color="allRankColorContent"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (硬核)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.content }} (硬核)</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.workload" :color="allRankColorWorkload"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (轻松)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.workload }} (轻松)</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
                     <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.assessment" :color="allRankColorAssessment"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.assessment }} (特别好评)</v-col>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -242,7 +242,7 @@
         <v-form class="mx-6">
           <v-row>
             <v-col cols="12">
-              <v-text-field :counter="20" required label="标题" class="pt-1"></v-text-field>
+              <v-text-field :counter="20" required label="标题" class="pt-1" v-model="reviewTitle"></v-text-field>
             </v-col>
           </v-row>
           <v-row class="pt-0 mt-0">
@@ -259,28 +259,28 @@
         <v-row class="mx-3">
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
-            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="rankColorOverall"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">课程内容</span>
-            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="rankColorContent"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-9">工作量</span>
-            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="rankColorWorkload"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">考核要求</span>
-            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="rankColorAssessment"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
           </v-col>
         </v-row>
@@ -300,7 +300,7 @@
         <v-form class="mx-12">
           <v-row class="mt-0">
             <v-col cols="12">
-              <v-text-field :counter="20" required label="标题" class="pt-1"></v-text-field>
+              <v-text-field :counter="20" required label="标题" class="pt-1" v-model="reviewTitle"></v-text-field>
             </v-col>
           </v-row>
           <v-row class="mt-0">
@@ -311,34 +311,34 @@
               <v-select required label="课程时间"></v-select>
             </v-col>
           </v-row>
-          <ReviewEditor class="mt-4" />
+          <ReviewEditor class="mt-2" ref="reviewEditor" />
         </v-form>
         <v-card-title class="mb-2 mt-3"> 评分</v-card-title>
         <v-row class="mx-9">
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
-            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="rankColorOverall"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
           </v-col>
         </v-row>
         <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">课程内容</span>
-            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="rankColorContent"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
           </v-col>
         </v-row>
         <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-9">工作量</span>
-            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="rankColorWorkload"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
           </v-col>
         </v-row>
         <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">考核要求</span>
-            <v-rating background-color="pink lighten-3" color="pink" dense size="19"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="rankColorAssessment"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
           </v-col>
         </v-row>
@@ -367,6 +367,19 @@ export default Vue.extend({
   props: ['groupId'],
   data: () => ({
     review_sheet: false,
+    reviewTitle: '',
+    rank: {
+      overall: 0,
+      content: 0,
+      workload: 0,
+      assessment: 0
+    },
+    allRank: {
+      overall: 0,
+      content: 0,
+      workload: 0,
+      assessment: 0
+    },
     review_sheet_phone: false,
     courseGroup: null as CourseGroup | null,
     courses: [
@@ -380,6 +393,78 @@ export default Vue.extend({
     }
   }),
   computed: {
+    allRankColorOverall(): string {
+      if (this.allRank.overall >= 75) {
+        return 'green'
+      } else if (this.allRank.overall >= 40) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    allRankColorContent(): string {
+      if (this.allRank.content >= 75) {
+        return 'green'
+      } else if (this.allRank.content >= 40) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    allRankColorWorkload(): string {
+      if (this.allRank.workload >= 75) {
+        return 'green'
+      } else if (this.allRank.workload >= 40) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    allRankColorAssessment(): string {
+      if (this.allRank.assessment >= 75) {
+        return 'green'
+      } else if (this.allRank.assessment >= 40) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    rankColorOverall(): string {
+      if (this.rank.overall >= 5) {
+        return 'green'
+      } else if (this.rank.overall >= 2) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    rankColorContent(): string {
+      if (this.rank.content >= 5) {
+        return 'green'
+      } else if (this.rank.content >= 2) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    rankColorWorkload(): string {
+      if (this.rank.workload >= 5) {
+        return 'green'
+      } else if (this.rank.workload >= 2) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    rankColorAssessment(): string {
+      if (this.rank.assessment >= 5) {
+        return 'green'
+      } else if (this.rank.assessment >= 2) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
     credits(): number[] {
       let creditsSet = new Set<number>()
       this.courseGroup?.courseList.forEach((course) => creditsSet.add(course.credit))

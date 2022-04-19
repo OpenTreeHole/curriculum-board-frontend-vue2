@@ -1,5 +1,5 @@
 <template>
-  <div :id="this.contentId" name="description" class="vditor">
+  <div :id="this.contentId" class="vditor">
     <div class="vditor-toolbar pl-0"></div>
   </div>
 </template>
