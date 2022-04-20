@@ -18,6 +18,58 @@ function addCourseGroupImpl(state: IDataModuleState, { newCourseGroup }: { newCo
 const dataModule: Module<IDataModuleState, RootState> = {
   state: () => state,
   mutations: {
+    cancelLikeReview(state, { reviewId }): void {
+      state.courseGroup.reduce((acc, courseGroup) => {
+        courseGroup.courseList.reduce((acc, course) => {
+          if (course.reviewList) {
+            const reviewIndex = course.reviewList.findIndex((review) => review.id == reviewId)
+            course.reviewList[reviewIndex].remark--
+            return true
+          }
+          return acc
+        }, false)
+        return acc
+      }, false)
+    },
+    cancelUnlikeReview(state, { reviewId }): void {
+      state.courseGroup.reduce((acc, courseGroup) => {
+        courseGroup.courseList.reduce((acc, course) => {
+          if (course.reviewList) {
+            const reviewIndex = course.reviewList.findIndex((review) => review.id == reviewId)
+            course.reviewList[reviewIndex].remark++
+            return true
+          }
+          return acc
+        }, false)
+        return acc
+      }, false)
+    },
+    likeReview(state, { reviewId }): void {
+      state.courseGroup.reduce((acc, courseGroup) => {
+        courseGroup.courseList.reduce((acc, course) => {
+          if (course.reviewList) {
+            const reviewIndex = course.reviewList.findIndex((review) => review.id == reviewId)
+            course.reviewList[reviewIndex].remark++
+            return true
+          }
+          return acc
+        }, false)
+        return acc
+      }, false)
+    },
+    unlikeReview(state, { reviewId }): void {
+      state.courseGroup.reduce((acc, courseGroup) => {
+        courseGroup.courseList.reduce((acc, course) => {
+          if (course.reviewList) {
+            const reviewIndex = course.reviewList.findIndex((review) => review.id == reviewId)
+            course.reviewList[reviewIndex].remark--
+            return true
+          }
+          return acc
+        }, false)
+        return acc
+      }, false)
+    },
     addCourseGroup: addCourseGroupImpl,
     addCourseGroups(state, { newCourseGroups }: { newCourseGroups: CourseGroup[] }) {
       newCourseGroups.forEach((element) => addCourseGroupImpl(state, { newCourseGroup: element }))

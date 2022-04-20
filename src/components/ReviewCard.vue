@@ -225,12 +225,24 @@ export default Vue.extend({
         this.unlike = false
         this.like = true
         this.remark = this.remark + 2
+        await this.$store.commit('cancelLikeReview', {
+          review: this.review
+        })
+        await this.$store.commit('likeReview', {
+          review: this.review
+        })
       } else if (this.like) {
         this.like = false
         this.remark = this.remark - 1
+        await this.$store.commit('cancelLikeReview', {
+          review: this.review
+        })
       } else {
         this.like = true
         this.remark = this.remark + 1
+        await this.$store.commit('likeReview', {
+          review: this.review
+        })
       }
     },
     async downVote(): Promise<void> {
@@ -238,12 +250,24 @@ export default Vue.extend({
         this.like = false
         this.unlike = true
         this.remark = this.remark - 2
+        await this.$store.commit('cancelLikeReview', {
+          review: this.review
+        })
+        await this.$store.commit('unlikeReview', {
+          review: this.review
+        })
       } else if (this.unlike) {
         this.unlike = false
         this.remark = this.remark + 1
+        await this.$store.commit('cancelUnlikeReview', {
+          review: this.review
+        })
       } else {
         this.unlike = true
         this.remark = this.remark - 1
+        await this.$store.commit('unlikeReview', {
+          review: this.review
+        })
       }
     }
   }
