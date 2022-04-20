@@ -9,7 +9,7 @@
               <v-chip small label outlined color="blue"><v-icon small> mdi-account-outline </v-icon>{{ review.course.teachers }}</v-chip>
             </v-col>
             <v-col class="shrink pr-0 pl-2 py-0">
-              <v-chip small label outlined color="red"><font-awesome-icon icon="fa-solid fa-calendar-days" />&nbsp; {{ years }}</v-chip>
+              <v-chip small label outlined color="red"><font-awesome-icon icon="fa-solid fa-calendar-days" />{{ years }}</v-chip>
             </v-col>
           </v-row>
         </v-col>

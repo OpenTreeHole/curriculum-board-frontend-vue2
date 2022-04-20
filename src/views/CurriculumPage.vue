@@ -104,20 +104,15 @@
           </v-expansion-panels>
           <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 授课教师</v-card-title>
           <v-card-actions class="pt-1">
-            <v-chip-group class="ml-4">
+            <v-chip-group class="ml-4" column>
               <v-chip small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
-          <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 标签</v-card-title>
+          <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 时间</v-card-title>
           <v-card-actions class="pt-1 mb-2">
-            <v-row align="center" justify="start" class="pl-4">
-              <v-col class="shrink pb-0 pr-0">
-                <v-chip small>第三模块</v-chip>
-              </v-col>
-              <v-col class="shrink pb-0 pr-0">
-                <v-chip small>女</v-chip>
-              </v-col>
-            </v-row>
+            <v-chip-group class="ml-4" column>
+              <v-chip small v-for="(v, i) in timeTags" :key="i">{{ v }}</v-chip>
+            </v-chip-group>
           </v-card-actions>
         </v-card>
         <div style="text-align: center" class="mt-3">
@@ -221,20 +216,15 @@
             </v-expansion-panels>
             <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 授课教师</v-card-title>
             <v-card-actions class="pt-1">
-              <v-chip-group class="ml-4">
+              <v-chip-group class="ml-4" column>
                 <v-chip small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
               </v-chip-group>
             </v-card-actions>
-            <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 标签</v-card-title>
+            <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 时间</v-card-title>
             <v-card-actions class="pt-1 mb-2">
-              <v-row align="center" justify="start" class="pl-4">
-                <v-col class="shrink pb-0 pr-0">
-                  <v-chip small>第三模块</v-chip>
-                </v-col>
-                <v-col class="shrink pb-0 pr-0">
-                  <v-chip small>女</v-chip>
-                </v-col>
-              </v-row>
+              <v-chip-group class="ml-4" column>
+                <v-chip small v-for="(v, i) in timeTags" :key="i">{{ v }}</v-chip>
+              </v-chip-group>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -368,7 +358,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, ReviewWithCourse, totalRank } from '@/models'
+import { CourseGroup, ReviewWithCourse } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewFilter from '@/components/ReviewFilter.vue'
@@ -598,6 +588,11 @@ export default Vue.extend({
       let teachersSet = new Set<string>()
       this.courseGroup?.courseList.forEach((course) => teachersSet.add(course.teachers))
       return ['所有', ...teachersSet]
+    },
+    timeTags(): string[] {
+      let timeSet = new Set<string>()
+      this.courseGroup?.courseList.forEach((course) => timeSet.add(parseYearSemester(course)))
+      return ['所有', ...timeSet]
     },
     reviewsCategorizedByYearSemester(): Map<string, ReviewWithCourse[]> {
       let resultMap = new Map<string, ReviewWithCourse[]>()
