@@ -260,28 +260,28 @@
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="rankColorOverall"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ rankWordOverall }}</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">课程内容</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="rankColorContent"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ rankWordContent }}</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-9">工作量</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="rankColorWorkload"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ rankWordWorkload }}</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">考核要求</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="rankColorAssessment"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ rankWordAssessment }}</span>
           </v-col>
         </v-row>
         <v-card-actions>
@@ -389,6 +389,62 @@ export default Vue.extend({
     }
   }),
   computed: {
+    rankWordOverall(): string {
+      switch (this.rank.overall) {
+        case 1:
+          return '特别差评'
+        case 2:
+          return '差评'
+        case 4:
+          return '好评'
+        case 5:
+          return '特别好评'
+        default:
+          return '一般'
+      }
+    },
+    rankWordContent(): string {
+      switch (this.rank.content) {
+        case 1:
+          return '非常容易'
+        case 2:
+          return '容易'
+        case 4:
+          return '较难'
+        case 5:
+          return '硬核'
+        default:
+          return '一般'
+      }
+    },
+    rankWordWorkload(): string {
+      switch (this.rank.workload) {
+        case 1:
+          return '非常大'
+        case 2:
+          return '大'
+        case 4:
+          return '小'
+        case 5:
+          return '非常小'
+        default:
+          return '适中'
+      }
+    },
+    rankWordAssessment(): string {
+      switch (this.rank.assessment) {
+        case 1:
+          return '非常严格'
+        case 2:
+          return '严格'
+        case 4:
+          return '宽松'
+        case 5:
+          return '非常宽松'
+        default:
+          return '适中'
+      }
+    },
     allRankColorOverall(): string {
       if (this.allRank.overall >= 75) {
         return 'green'
