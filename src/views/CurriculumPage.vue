@@ -21,7 +21,7 @@
           <v-expansion-panels flat multiple>
             <v-expansion-panel class="py-0">
               <v-expansion-panel-header class="subtitle-1 font-weight-bold secondary--text">
-                > 全部学期 (共{{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }}条)
+                > 全部学期 (共 {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
               </v-expansion-panel-header>
               <v-expansion-panel-content class="py-0">
                 <v-row align="center" no-gutters>
@@ -31,21 +31,21 @@
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.overall" :color="allRankColorOverall"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.overall }} (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.overall }} ({{ allRankWordOverall }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.content" :color="allRankColorContent"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.content }} (硬核)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.content }} ({{ allRankWordContent }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.workload" :color="allRankColorWorkload"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.workload }} (轻松)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.workload }} ({{ allRankWordWorkload }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
@@ -54,7 +54,7 @@
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.assessment" :color="allRankColorAssessment"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.assessment }} (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ allRankWordAssessment }})</v-col>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -68,21 +68,21 @@
                   <v-col cols="5">
                     <v-progress-linear :value="15" style="width: 90%"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
+                  <v-col cols="4" class="caption">8.5 ({{ allRankWordOverall }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
                   <v-col cols="5">
                     <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (硬核)</v-col>
+                  <v-col cols="4" class="caption">8.5 ({{ allRankWordContent }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
                   <v-col cols="5">
                     <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 (轻松)</v-col>
+                  <v-col cols="4" class="caption">8.5 ({{ allRankWordWorkload }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
@@ -91,7 +91,7 @@
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.assessment"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.assessment }} (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ allRankWordAssessment }})</v-col>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -141,21 +141,21 @@
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.overall" :color="allRankColorOverall"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.overall }} (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.overall }} ({ allRankWordOverall }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.content" :color="allRankColorContent"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.content }} (硬核)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.content }} ({{ allRankWordContent }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.workload" :color="allRankColorWorkload"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.workload }} (轻松)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.workload }} ({{ allRankWordWorkload }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
@@ -164,7 +164,7 @@
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.assessment" :color="allRankColorAssessment"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.assessment }} (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ allRankWordAssessment }})</v-col>
                 </v-row>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -389,6 +389,64 @@ export default Vue.extend({
     }
   }),
   computed: {
+    allRankWordOverall() {
+      if (this.allRank.overall < 10) {
+        if ((this.courseGroup?.courseList.flatMap((course) => course.reviewList || []).length || 0) > 20) {
+          return '差评如潮'
+        } else return '特别差评'
+      } else if (this.allRank.overall < 35) {
+        return '多半差评'
+      } else if (this.allRank.overall < 50) {
+        return '褒贬不一'
+      } else if (this.allRank.overall < 70) {
+        return '多半好评'
+      } else if (this.allRank.overall < 85) {
+        return '好评'
+      } else {
+        if ((this.courseGroup?.courseList.flatMap((course) => course.reviewList || []).length || 0) > 20) {
+          return '好评如潮'
+        } else return '特别好评'
+      }
+    },
+    allRankWordContent() {
+      if (this.allRank.content < 20) {
+        return '非常容易'
+      } else if (this.allRank.content < 40) {
+        return '容易'
+      } else if (this.allRank.content < 60) {
+        return '中等'
+      } else if (this.allRank.content < 80) {
+        return '较难'
+      } else {
+        return '硬核'
+      }
+    },
+    allRankWordWorkload() {
+      if (this.allRank.workload < 20) {
+        return '非常大'
+      } else if (this.allRank.workload < 40) {
+        return '大'
+      } else if (this.allRank.workload < 60) {
+        return '中等'
+      } else if (this.allRank.workload < 80) {
+        return '小'
+      } else {
+        return '非常小'
+      }
+    },
+    allRankWordAssessment() {
+      if (this.allRank.assessment < 20) {
+        return '非常严格'
+      } else if (this.allRank.assessment < 40) {
+        return '严格'
+      } else if (this.allRank.assessment < 60) {
+        return '中等'
+      } else if (this.allRank.assessment < 80) {
+        return '宽松'
+      } else {
+        return '非常宽松'
+      }
+    },
     rankWordOverall(): string {
       switch (this.rank.overall) {
         case 1:
