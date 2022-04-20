@@ -403,7 +403,7 @@ export default Vue.extend({
     }
   }),
   computed: {
-    allRankWordOverall() {
+    allRankWordOverall(): string {
       if (this.allRank.overall < 10) {
         if ((this.courseGroup?.courseList.flatMap((course) => course.reviewList || []).length || 0) > 20) {
           return '差评如潮'
@@ -422,7 +422,7 @@ export default Vue.extend({
         } else return '特别好评'
       }
     },
-    allRankWordContent() {
+    allRankWordContent(): string {
       if (this.allRank.content < 20) {
         return '非常容易'
       } else if (this.allRank.content < 40) {
@@ -435,7 +435,7 @@ export default Vue.extend({
         return '硬核'
       }
     },
-    allRankWordWorkload() {
+    allRankWordWorkload(): string {
       if (this.allRank.workload < 20) {
         return '非常大'
       } else if (this.allRank.workload < 40) {
@@ -448,7 +448,7 @@ export default Vue.extend({
         return '非常小'
       }
     },
-    allRankWordAssessment() {
+    allRankWordAssessment(): string {
       if (this.allRank.assessment < 20) {
         return '非常严格'
       } else if (this.allRank.assessment < 40) {
