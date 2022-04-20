@@ -33,7 +33,7 @@
         </v-col>
       </v-row>
       <v-divider></v-divider>
-      <v-card-text class="caption red--text pb-0 pt-3 shrink">* 此测评被多人反对, 请谨慎参考</v-card-text>
+      <v-card-text class="caption red--text pb-0 pt-3 shrink" v-if="review.review.remark <= -5">* 此测评被多人反对, 请谨慎参考</v-card-text>
       <v-card-text class="body-2 black--text pt-3">
         {{ review.review.content }}
       </v-card-text>

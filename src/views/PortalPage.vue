@@ -124,6 +124,19 @@ export default Vue.extend({
                   assessment: 2
                 },
                 remark: -110
+              },
+              {
+                id: 2,
+                timeCreated: '2022-04-09',
+                title: '绝世好课',
+                content: '每个脆脆鲨都应该来听的必修课程',
+                rank: {
+                  overall: 4,
+                  content: 4,
+                  workload: 2,
+                  assessment: 2
+                },
+                remark: -110
               }
             ]
           })

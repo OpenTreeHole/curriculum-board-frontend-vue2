@@ -66,7 +66,7 @@
                     <span class="subtitle-2 ml-1 mt-1 black--text">总体评分</span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear :value="15" style="width: 90%"></v-progress-linear>
                   </v-col>
                   <v-col cols="4" class="caption">8.5 (特别好评)</v-col>
                 </v-row>
@@ -354,7 +354,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, ReviewWithCourse } from '@/models'
+import { CourseGroup, ReviewWithCourse, totalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewFilter from '@/components/ReviewFilter.vue'
@@ -592,6 +592,7 @@ export default Vue.extend({
   },
   async mounted() {
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
+    this.allRank = this.$store.getters.calculateCourseOverallRank(this.groupId)
   }
 })
 </script>

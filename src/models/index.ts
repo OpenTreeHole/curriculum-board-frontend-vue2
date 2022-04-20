@@ -25,6 +25,19 @@ export interface IRank {
   workload: number
   assessment: number
 }
+export class totalRank implements IRank {
+  overall: number
+  content: number
+  workload: number
+  assessment: number
+
+  constructor(totalRank: IRank) {
+    this.overall = totalRank.overall
+    this.content = totalRank.content
+    this.workload = totalRank.workload
+    this.assessment = totalRank.assessment
+  }
+}
 export interface ICourse extends ICourseData {
   id: number
   reviewList: IReview[] | undefined
