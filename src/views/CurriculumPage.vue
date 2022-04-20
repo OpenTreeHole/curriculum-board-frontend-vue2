@@ -31,7 +31,7 @@
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.overall" :color="allRankColorOverall"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.content }} (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.overall }} (特别好评)</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
@@ -63,7 +63,7 @@
               <v-expansion-panel-content class="py-0">
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
-                    <span class="subtitle-2 ml-1 mt-1 black--text">总体评分 </span>
+                    <span class="subtitle-2 ml-1 mt-1 black--text">总体评分</span>
                   </v-col>
                   <v-col cols="5">
                     <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
@@ -120,7 +120,7 @@
       </v-col>
       <v-col cols="8">
         <review-filter class="my-2" />
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView"></review-card>
+        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3"></review-card>
       </v-col>
     </v-row>
     <!-- 手机页面  -->
@@ -141,7 +141,7 @@
                   <v-col cols="5">
                     <v-progress-linear style="width: 90%" :value="allRank.overall" :color="allRankColorOverall"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.content }} (特别好评)</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.overall }} (特别好评)</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
@@ -230,7 +230,7 @@
         <div style="text-align: center" class="my-3">
           <v-btn @click="changePhoneFormView"> 发布测评</v-btn>
         </div>
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openPhoneEditForm="changePhoneFormView"></review-card>
+        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-3"></review-card>
       </v-col>
     </div>
     <!-- 电脑表单  -->
@@ -382,10 +382,6 @@ export default Vue.extend({
     },
     review_sheet_phone: false,
     courseGroup: null as CourseGroup | null,
-    courses: [
-      { text: '马克思主义学院', disabled: false },
-      { text: '习近平新时代中国特色社会主义重要思想概论', disabled: true }
-    ],
     filters: {
       teacher: null as string | null,
       year: null as string | null,

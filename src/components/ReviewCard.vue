@@ -16,16 +16,16 @@
         <v-divider vertical />
         <v-col style="background-color: rgba(0, 0, 0, 0.03)" class="d-flex align-center justify-center" cols="2" lg="1" md="1" sm="2">
           <v-card class="pa-0 ma-0 mx-7 d-flex justify-space-between" flat>
-            <div class="pl-1" style="background-color: rgba(0, 0, 0, 0.03)">
-              <v-row style="font-size: 30px" class="mt-0 grey--text align-self-start">
+            <div class="pl-0" style="background-color: rgba(0, 0, 0, 0.03)">
+              <v-row style="font-size: 32px" class="mt-0 grey--text flex-column">
                 <font-awesome-icon icon="fa-solid fa-caret-up" :class="this.like ? 'blue--text' : 'grey--text'" @click="upVote" />
               </v-row>
-              <v-row class="text-h5 mt-1">
-                <v-col class="ma-0 py-0" :style="this.remark < 0 ? 'padding-left: 1px; padding-right: 2px' : 'padding-left: 3px; padding-right: 5px'">
+              <v-row class="mt-1 flex-column">
+                <v-col :class="reviewRemarkClass" style="font-size: 18px">
                   {{ this.remark }}
                 </v-col>
               </v-row>
-              <v-row style="font-size: 30px" class="mt-0 pt-1 mb-1 grey--text align-self-end">
+              <v-row style="font-size: 32px" class="mt-0 pt-1 mb-1 grey--text flex-column">
                 <font-awesome-icon :class="this.unlike ? 'red--text' : 'grey--text'" icon="fa-solid fa-caret-down" @click="downVote" />
               </v-row>
             </div>
@@ -98,113 +98,120 @@ export default Vue.extend({
     }
   }),
   computed: {
+    reviewRemarkClass(): string {
+      if (this.remark < 0) return 'ma-0 py-0 font-weight-regular red--text'
+      else return 'ma-0 py-0 font-weight-regular'
+    },
     rankColorOverall(): string {
-      if (this.rank.overall == 5) {
+      if (this.review?.review.rank.overall == 5) {
         return 'orange--text'
-      } else if (this.rank.overall == 4) {
+      } else if (this.review?.review.rank.overall == 4) {
         return 'brown--text'
-      } else if (this.rank.overall == 2) {
+      } else if (this.review?.review.rank.overall == 2) {
         return 'black--text'
-      } else if (this.rank.overall == 1) {
+      } else if (this.review?.review.rank.overall == 1) {
         return 'red--text'
       } else {
         return 'grey--text'
       }
     },
     rankColorContent(): string {
-      if (this.rank.content == 5) {
+      if (this.review?.review.rank.content == 5) {
         return 'orange--text'
-      } else if (this.rank.content == 4) {
+      } else if (this.review?.review.rank.content == 4) {
         return 'brown--text'
-      } else if (this.rank.content == 2) {
+      } else if (this.review?.review.rank.content == 2) {
         return 'black--text'
-      } else if (this.rank.content == 1) {
+      } else if (this.review?.review.rank.content == 1) {
         return 'red--text'
       } else {
         return 'grey--text'
       }
     },
     rankColorWorkload(): string {
-      if (this.rank.workload == 5) {
+      if (this.review?.review.rank.workload == 5) {
         return 'orange--text'
-      } else if (this.rank.workload == 4) {
+      } else if (this.review?.review.rank.workload == 4) {
         return 'brown--text'
-      } else if (this.rank.workload == 2) {
+      } else if (this.review?.review.rank.workload == 2) {
         return 'black--text'
-      } else if (this.rank.workload == 1) {
+      } else if (this.review?.review.rank.workload == 1) {
         return 'red--text'
       } else {
         return 'grey--text'
       }
     },
     rankColorAssessment(): string {
-      if (this.rank.assessment == 5) {
+      if (this.review?.review.rank.assessment == 5) {
         return 'orange--text'
-      } else if (this.rank.assessment == 4) {
+      } else if (this.review?.review.rank.assessment == 4) {
         return 'brown--text'
-      } else if (this.rank.assessment == 2) {
+      } else if (this.review?.review.rank.assessment == 2) {
         return 'black--text'
-      } else if (this.rank.assessment == 1) {
+      } else if (this.review?.review.rank.assessment == 1) {
         return 'red--text'
       } else {
         return 'grey--text'
       }
     },
     rankIconOverall(): string {
-      if (this.rank.overall === 1) {
+      if (this.review?.review.rank.overall === 1) {
         return 'fa-solid fa-face-frown'
-      } else if (this.rank.overall === 2) {
+      } else if (this.review?.review.rank.overall === 2) {
         return 'fa-solid fa-face-meh'
-      } else if (this.rank.overall === 4) {
+      } else if (this.review?.review.rank.overall === 4) {
         return 'fa-solid fa-face-laugh'
-      } else if (this.rank.overall === 5) {
+      } else if (this.review?.review.rank.overall === 5) {
         return 'fa-solid fa-face-grin-stars'
       } else {
         return 'fa-solid fa-face-smile'
       }
     },
     rankIconContent(): string {
-      if (this.rank.content === 1) {
-        return 'fa-solid fa-frown'
-      } else if (this.rank.content === 2) {
-        return 'fa-solid fa-meh'
-      } else if (this.rank.content === 4) {
-        return 'fa-solid fa-laugh'
-      } else if (this.rank.content === 5) {
-        return 'fa-solid fa-grin-stars'
+      if (this.review?.review.rank.content === 1) {
+        return 'fa-solid fa-face-frown'
+      } else if (this.review?.review.rank.content === 2) {
+        return 'fa-solid fa-face-meh'
+      } else if (this.review?.review.rank.content === 4) {
+        return 'fa-solid fa-face-laugh'
+      } else if (this.review?.review.rank.content === 5) {
+        return 'fa-solid fa-face-grin-stars'
       } else {
-        return 'fa-solid fa-smile'
+        return 'fa-solid fa-face-smile'
       }
     },
     rankIconWorkload(): string {
-      if (this.rank.workload === 1) {
-        return 'fa-solid fa-frown'
-      } else if (this.rank.workload === 2) {
-        return 'fa-solid fa-meh'
-      } else if (this.rank.workload === 4) {
-        return 'fa-solid fa-laugh'
-      } else if (this.rank.workload === 5) {
-        return 'fa-solid fa-grin-stars'
+      if (this.review?.review.rank.workload === 1) {
+        return 'fa-solid fa-face-frown'
+      } else if (this.review?.review.rank.workload === 2) {
+        return 'fa-solid fa-face-meh'
+      } else if (this.review?.review.rank.workload === 4) {
+        return 'fa-solid fa-face-laugh'
+      } else if (this.review?.review.rank.workload === 5) {
+        return 'fa-solid fa-face-grin-stars'
       } else {
-        return 'fa-solid fa-smile'
+        return 'fa-solid fa-face-smile'
       }
     },
     rankIconAssessment(): string {
-      if (this.rank.assessment === 1) {
-        return 'fa-solid fa-frown'
-      } else if (this.rank.assessment === 2) {
-        return 'fa-solid fa-meh'
-      } else if (this.rank.assessment === 4) {
-        return 'fa-solid fa-laugh'
-      } else if (this.rank.assessment === 5) {
-        return 'fa-solid fa-grin-stars'
+      if (this.review?.review.rank.assessment === 1) {
+        return 'fa-solid fa-face-frown'
+      } else if (this.review?.review.rank.assessment === 2) {
+        return 'fa-solid fa-face-meh'
+      } else if (this.review?.review.rank.assessment === 4) {
+        return 'fa-solid fa-face-laugh'
+      } else if (this.review?.review.rank.assessment === 5) {
+        return 'fa-solid fa-face-grin-stars'
       } else {
-        return 'fa-solid fa-smile'
+        return 'fa-solid fa-face-smile'
       }
     },
     years(): string {
       return parseYearSemester(this.review?.course)
     }
+  },
+  beforeMount() {
+    this.remark = this.review?.review.remark
   },
   methods: {
     async editForm(): Promise<void> {

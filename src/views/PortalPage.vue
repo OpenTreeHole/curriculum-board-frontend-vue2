@@ -104,8 +104,26 @@ export default Vue.extend({
                 timeCreated: '2022-04-09',
                 title: '绝世好课',
                 content: '每个脆脆鲨都应该来听的必修课程',
-                rank: '10',
+                rank: {
+                  overall: 5,
+                  content: 4,
+                  workload: 3,
+                  assessment: 2
+                },
                 remark: 10
+              },
+              {
+                id: 2,
+                timeCreated: '2022-04-09',
+                title: '绝世好课',
+                content: '每个脆脆鲨都应该来听的必修课程',
+                rank: {
+                  overall: 4,
+                  content: 4,
+                  workload: 2,
+                  assessment: 2
+                },
+                remark: -110
               }
             ]
           })

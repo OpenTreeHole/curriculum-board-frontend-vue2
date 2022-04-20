@@ -16,10 +16,15 @@ export interface IReview extends IReviewData {
 export interface IReviewData {
   title: string
   content: string
-  rank: string
+  rank: IRank
   remark: number
 }
-
+export interface IRank {
+  overall: number
+  content: number
+  workload: number
+  assessment: number
+}
 export interface ICourse extends ICourseData {
   id: number
   reviewList: IReview[] | undefined
@@ -49,7 +54,7 @@ export interface ICourseGroup {
 export class Review implements IReview {
   content: string
   id: number
-  rank: string
+  rank: IRank
   remark: number
   timeCreated: string
   title: string
