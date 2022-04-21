@@ -37,6 +37,7 @@
       <v-card-text class="body-2 black--text pt-3">
         {{ review.review.content }}
       </v-card-text>
+      <!-- TODO 添加is_me -->
       <v-card-text class="caption grey--text pb-2 d-flex justify-end pr-3 pt-0">
         <v-chip x-small label style="margin-top: 1px; margin-right: 10px">已编辑</v-chip>
         <v-btn text x-small color="grey"><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-trash-can</v-icon><span>删除</span></v-btn>
