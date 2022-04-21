@@ -63,7 +63,7 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
             <!-- 学期评分 -->
-            <v-expansion-panel class="py-0 mt-0" v-for="(reviews, year) in semesterReview()" :key="year + reviews.toString()">
+            <v-expansion-panel class="py-0 mt-0" v-for="(reviews, year) in Object.fromEntries(semesterReview().entries())" :key="year + reviews.toString()">
               <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text"> > {{ year }} (共 {{ reviews.length }} 条) </v-expansion-panel-header>
               <v-expansion-panel-content class="py-0" v-if="reviews.length >= 3">
                 <v-row align="center" no-gutters>
@@ -131,7 +131,7 @@
         <div style="text-align: center" class="my-3 d-block d-sm-none">
           <v-btn @click="changePhoneFormView"> 发布测评</v-btn>
         </div>
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-3 d-block d-sm-none"></review-card>
+        <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-3 d-block d-sm-none"></review-card>
       </v-col>
     </v-row>
     <!-- 电脑表单  -->
@@ -272,6 +272,7 @@ export default Vue.extend({
     reviewTitle: '',
     teacherTag: 0,
     timeTag: 0,
+    timeTags: [] as string[],
     rank: {
       overall: 0,
       content: 0,
@@ -413,15 +414,6 @@ export default Vue.extend({
       })
       return [...teachersSet]
     },
-    timeTags(): string[] {
-      let timeSet = new Set<string>()
-      for (const course of this.courseGroup?.courseList ?? []) {
-        if (course.reviewList !== undefined && course.reviewList.length > 0) {
-          timeSet.add(parseYearSemester(course))
-        }
-      }
-      return ['所有', ...timeSet]
-    },
     reviews(): ReviewWithCourse[] {
       return (
         this.courseGroup?.courseList
@@ -436,14 +428,14 @@ export default Vue.extend({
     }
   },
   methods: {
-    semesterReview(): object {
-      let course = Object.fromEntries(this.reviewsCategorizedByYearSemester().entries())
-      for (const yearSemester in course) {
-        if (course[yearSemester].length === 0) {
-          delete course[yearSemester]
+    semesterReview(): Map<string, ReviewWithCourse[]> {
+      let courses = this.reviewsCategorizedByYearSemester()
+      for (let [key, value] of courses) {
+        if (value.length == 0) {
+          courses.delete(key)
         }
       }
-      return course
+      return courses
     },
     reviewsCategorizedByYearSemester(): Map<string, ReviewWithCourse[]> {
       let resultMap = new Map<string, ReviewWithCourse[]>()
@@ -621,6 +613,13 @@ export default Vue.extend({
     }
   },
   async mounted() {
+    let timeSet = new Set<string>()
+    for (const course of this.courseGroup?.courseList ?? []) {
+      if (course.reviewList !== undefined && course.reviewList.length > 0) {
+        timeSet.add(parseYearSemester(course))
+      }
+    }
+    this.timeTags = ['所有', ...timeSet]
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
     this.allRank = this.$store.getters.calculateCourseOverallRank(this.groupId)
   }
