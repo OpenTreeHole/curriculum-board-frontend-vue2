@@ -148,10 +148,10 @@
           </v-row>
           <v-row class="pt-0 mt-0">
             <v-col cols="6">
-              <v-select required label="任课教师"></v-select>
+              <v-select :items="teacherSelect" required label="任课教师"></v-select>
             </v-col>
             <v-col cols="6">
-              <v-select required label="课程时间"></v-select>
+              <v-select :items="timeSelect" required label="课程时间"></v-select>
             </v-col>
           </v-row>
           <ReviewEditor class="mt-2" ref="reviewEditor" />
@@ -398,6 +398,20 @@ export default Vue.extend({
         }
       }
       return ['所有', ...teachersSet]
+    },
+    timeSelect(): string[] {
+      let timeSet = new Set<string>()
+      this.courseGroup?.courseList.forEach((course) => {
+        timeSet.add(parseYearSemester(course))
+      })
+      return [...timeSet]
+    },
+    teacherSelect(): string[] {
+      let teachersSet = new Set<string>()
+      this.courseGroup?.courseList.forEach((course) => {
+        teachersSet.add(course.teachers)
+      })
+      return [...teachersSet]
     },
     timeTags(): string[] {
       let timeSet = new Set<string>()
