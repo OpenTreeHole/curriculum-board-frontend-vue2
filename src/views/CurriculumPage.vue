@@ -117,7 +117,7 @@
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 时间</v-card-title>
           <v-card-actions class="pt-1 mb-2">
             <v-chip-group class="ml-4" column mandatory v-model="timeTag" @change="changeTimeFilter" active-class="blue--text">
-              <v-chip small v-for="(v, i) in timeTags" :key="i">{{ v }}</v-chip>
+              <v-chip small v-for="(v, i) in timeTags()" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
         </v-card>
@@ -272,7 +272,6 @@ export default Vue.extend({
     reviewTitle: '',
     teacherTag: 0,
     timeTag: 0,
-    timeTags: [] as string[],
     rank: {
       overall: 0,
       content: 0,
@@ -428,6 +427,15 @@ export default Vue.extend({
     }
   },
   methods: {
+    timeTags(): string[] {
+      let timeSet = new Set<string>()
+      for (const course of this.courseGroup?.courseList ?? []) {
+        if (course.reviewList !== undefined && course.reviewList.length > 0) {
+          timeSet.add(parseYearSemester(course))
+        }
+      }
+      return [...timeSet]
+    },
     semesterReview(): Map<string, ReviewWithCourse[]> {
       let courses = this.reviewsCategorizedByYearSemester()
       for (let [key, value] of courses) {
@@ -455,8 +463,8 @@ export default Vue.extend({
         this.filters.year = null
         this.filters.semester = null
       } else {
-        this.filters.year = this.timeTags[this.timeTag].split('-')[0]
-        this.filters.semester = toNumber(this.timeTags[this.timeTag].split('-')[2])
+        this.filters.year = this.timeTags()[this.timeTag].split('-')[0]
+        this.filters.semester = toNumber(this.timeTags()[this.timeTag].split('-')[2])
       }
     },
     changeTeacherFilter() {
@@ -613,13 +621,6 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    let timeSet = new Set<string>()
-    for (const course of this.courseGroup?.courseList ?? []) {
-      if (course.reviewList !== undefined && course.reviewList.length > 0) {
-        timeSet.add(parseYearSemester(course))
-      }
-    }
-    this.timeTags = ['所有', ...timeSet]
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
     this.allRank = this.$store.getters.calculateCourseOverallRank(this.groupId)
   }

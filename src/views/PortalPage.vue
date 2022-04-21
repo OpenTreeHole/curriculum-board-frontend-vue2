@@ -20,7 +20,7 @@
                   <v-card-subtitle class="monospace grey--text py-0 pt-3 d-flex">
                     <span class="mr-3 d-flex align-center">{{ v.code }}</span>
                     <v-chip-group column>
-                      <v-chip label small :key="credit" v-for="credit in v.courseList" disabled class="black--text font-weight-bold" outlined color="red">
+                      <v-chip label small :key="credit.credit" v-for="credit in v.courseList" disabled class="black--text font-weight-bold" outlined color="red">
                         {{ credit.credit }}学分</v-chip
                       >
                     </v-chip-group>
