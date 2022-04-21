@@ -14,7 +14,9 @@
       </v-container>
     </v-app-bar>
     <v-main>
-      <router-view :key="$route.fullPath" />
+      <keep-alive>
+        <router-view :key="$route.fullPath" />
+      </keep-alive>
     </v-main>
   </v-app>
 </template>
