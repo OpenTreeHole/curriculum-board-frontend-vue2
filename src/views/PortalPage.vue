@@ -152,6 +152,20 @@ export default Vue.extend({
                 remark: 110
               }
             ]
+          }),
+          new Course({
+            id: 2,
+            codeId: 'JXT114514.02',
+            code: 'JXT114514',
+            department: '嘉心糖',
+            teachers: '丁烷人',
+            credit: 5,
+            maxStudent: 114514,
+            semester: 2,
+            weekHour: 7,
+            year: '2022',
+            name: '嘉然今天吃七海nana7mi',
+            reviewList: []
           })
         ],
         department: '嘉心糖',
@@ -163,13 +177,4 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
-</style>
+<style scoped></style>

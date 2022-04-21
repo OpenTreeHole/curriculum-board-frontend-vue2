@@ -13,9 +13,9 @@
       </v-chip>
     </v-banner>
     <!-- TODO pad页面以及表单 -->
-    <!-- 电脑页面  -->
-    <v-row class="d-none d-sm-flex">
-      <v-col cols="3">
+    <!-- 电脑以及手机页面  -->
+    <v-row>
+      <v-col lg="3" cols="12">
         <v-card class="pb-4">
           <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 评分</v-card-title>
           <v-expansion-panels flat multiple class="py-0">
@@ -108,143 +108,30 @@
           </v-expansion-panels>
           <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 授课教师</v-card-title>
           <v-card-actions class="pt-1">
-            <v-chip-group class="ml-4" column>
+            <v-chip-group class="ml-4" column mandatory v-model="teacherTag" @change="changeTeacherFilter" active-class="blue--text">
               <v-chip small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 时间</v-card-title>
           <v-card-actions class="pt-1 mb-2">
-            <v-chip-group class="ml-4" column>
+            <v-chip-group class="ml-4" column mandatory v-model="timeTag" @change="changeTimeFilter" active-class="blue--text">
               <v-chip small v-for="(v, i) in timeTags" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
         </v-card>
-        <div style="text-align: center" class="mt-3">
+        <div style="text-align: center" class="mt-3 d-none d-sm-block">
           <v-btn @click="changeFormView"> 发布测评</v-btn>
         </div>
       </v-col>
-      <v-col cols="8">
+      <v-col lg="8" class="mx-lg-0 mx-3">
         <review-filter class="my-2" />
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3"></review-card>
-      </v-col>
-    </v-row>
-    <!-- 手机页面  -->
-    <div class="d-block d-sm-none">
-      <v-row class="mt-0">
-        <v-col class="pt-0 pb-0">
-          <v-card class="pb-4">
-            <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 评分</v-card-title>
-            <v-expansion-panels flat multiple class="py-0">
-              <v-expansion-panel class="py-0">
-                <v-expansion-panel-header class="subtitle-1 font-weight-bold secondary--text py-0">
-                  > 全部学期 (共 {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
-                </v-expansion-panel-header>
-                <v-expansion-panel-content class="py-0" v-if="courseGroup.courseList.flatMap((course) => course.reviewList || []).length >= 3">
-                  <v-row align="center" no-gutters>
-                    <v-col cols="3" align-self="end">
-                      <span class="subtitle-2 ml-1 mt-1 black--text">总体评分 </span>
-                    </v-col>
-                    <v-col cols="5">
-                      <v-progress-linear style="width: 90%" :value="allRank.overall" :color="rankColorOverall(allRank.overall)"></v-progress-linear>
-                    </v-col>
-                    <v-col cols="4" class="caption">{{ allRank.overall }} ({{ rankWordOverall(allRank.overall) }})</v-col>
-                  </v-row>
-                  <v-row align="center" no-gutters>
-                    <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
-                    <v-col cols="5">
-                      <v-progress-linear style="width: 90%" :value="allRank.content" :color="rankColorContent(allRank.content)"></v-progress-linear>
-                    </v-col>
-                    <v-col cols="4" class="caption">{{ allRank.content }} ({{ rankWordContent(allRank.content) }})</v-col>
-                  </v-row>
-                  <v-row align="center" no-gutters>
-                    <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
-                    <v-col cols="5">
-                      <v-progress-linear style="width: 90%" :value="allRank.workload" :color="rankColorWorkload(allRank.workload)"></v-progress-linear>
-                    </v-col>
-                    <v-col cols="4" class="caption">{{ allRank.workload }} ({{ rankWordWorkload(allRank.workload) }})</v-col>
-                  </v-row>
-                  <v-row align="center" no-gutters>
-                    <v-col cols="3" align-self="end">
-                      <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
-                    </v-col>
-                    <v-col cols="5">
-                      <v-progress-linear style="width: 90%" :value="allRank.assessment" :color="rankColorAssessment(allRank.assessment)"></v-progress-linear>
-                    </v-col>
-                    <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ rankWordAssessment(allRank.assessment) }})</v-col>
-                  </v-row>
-                </v-expansion-panel-content>
-                <v-expansion-panel-content class="py-0 ma-0" v-else>
-                  <v-subheader class="my-n4 mb-n7"> 评分太少, 不具有参考性 </v-subheader>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel class="py-0 mt-0" v-for="(reviews, year) in Object.fromEntries(reviewsCategorizedByYearSemester.entries())" :key="year">
-                <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text"> > {{ year }} (共 {{ reviews.length }} 条) </v-expansion-panel-header>
-                <v-expansion-panel-content class="py-0" v-if="reviews.length >= 3">
-                  <v-row align="center" no-gutters>
-                    <v-col cols="3" align-self="end">
-                      <span class="subtitle-2 ml-1 mt-1 black--text">总体评分</span>
-                    </v-col>
-                    <v-col cols="5">
-                      <v-progress-linear :value="semesterRank(reviews).overall" style="width: 90%" :color="rankColorOverall(semesterRank(reviews).overall)"></v-progress-linear>
-                    </v-col>
-                    <v-col cols="4" class="caption">{{ semesterRank(reviews).overall }} ({{ rankWordOverall(semesterRank(reviews).overall) }})</v-col>
-                  </v-row>
-                  <v-row align="center" no-gutters>
-                    <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
-                    <v-col cols="5">
-                      <v-progress-linear :value="semesterRank(reviews).content" style="width: 90%" :color="rankColorContent(semesterRank(reviews).content)"></v-progress-linear>
-                    </v-col>
-                    <v-col cols="4" class="caption">{{ semesterRank(reviews).content }} ({{ rankWordContent(semesterRank(reviews).content) }})</v-col>
-                  </v-row>
-                  <v-row align="center" no-gutters>
-                    <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
-                    <v-col cols="5">
-                      <v-progress-linear :value="semesterRank(reviews).workload" style="width: 90%" :color="rankColorWorkload(semesterRank(reviews).workload)"></v-progress-linear>
-                    </v-col>
-                    <v-col cols="4" class="caption">{{ semesterRank(reviews).workload }} ({{ rankWordWorkload(semesterRank(reviews).workload) }})</v-col>
-                  </v-row>
-                  <v-row align="center" no-gutters>
-                    <v-col cols="3" align-self="end">
-                      <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
-                    </v-col>
-                    <v-col cols="5">
-                      <v-progress-linear
-                        style="width: 90%"
-                        :value="semesterRank(reviews).assessment"
-                        :color="rankColorAssessment(semesterRank(reviews).assessment)"
-                      ></v-progress-linear>
-                    </v-col>
-                    <v-col cols="4" class="caption">{{ semesterRank(reviews).assessment }} ({{ rankWordAssessment(semesterRank(reviews).assessment) }})</v-col>
-                  </v-row>
-                </v-expansion-panel-content>
-                <v-expansion-panel-content class="py-0 ma-0" v-else>
-                  <v-subheader class="my-n4 mb-n7"> 评分太少, 不具有参考性 </v-subheader>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-            <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 授课教师</v-card-title>
-            <v-card-actions class="pt-1">
-              <v-chip-group class="ml-4" column>
-                <v-chip small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
-              </v-chip-group>
-            </v-card-actions>
-            <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 时间</v-card-title>
-            <v-card-actions class="pt-1 mb-2">
-              <v-chip-group class="ml-4" column>
-                <v-chip small v-for="(v, i) in timeTags" :key="i">{{ v }}</v-chip>
-              </v-chip-group>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-col>
-        <review-filter class="my-2" />
-        <div style="text-align: center" class="my-3">
+        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3 d-none d-sm-block"></review-card>
+        <div style="text-align: center" class="my-3 d-block d-sm-none">
           <v-btn @click="changePhoneFormView"> 发布测评</v-btn>
         </div>
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-3"></review-card>
+        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-3 d-block d-sm-none"></review-card>
       </v-col>
-    </div>
+    </v-row>
     <!-- 电脑表单  -->
     <v-dialog v-model="reviewSheet" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
@@ -380,6 +267,8 @@ export default Vue.extend({
   data: () => ({
     reviewSheet: false,
     reviewTitle: '',
+    teacherTag: 0,
+    timeTag: 0,
     rank: {
       overall: 0,
       content: 0,
@@ -535,6 +424,19 @@ export default Vue.extend({
     }
   },
   methods: {
+    changeTimeFilter() {
+      if (this.timeTag === 0) {
+        this.filters.year = null
+        this.filters.semester = null
+      } else {
+        console.log(1111)
+      }
+    },
+    changeTeacherFilter() {
+      if (this.teacherTag === 0) {
+        this.filters.teacher = null
+      } else this.filters.teacher = this.teacherTags[this.teacherTag]
+    },
     rankColorWorkload(workload: number): string {
       if (workload >= 75) {
         return 'green'
