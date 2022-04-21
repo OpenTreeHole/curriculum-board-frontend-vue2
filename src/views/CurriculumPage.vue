@@ -109,7 +109,7 @@
             </v-expansion-panel>
           </v-expansion-panels>
           <v-card-title class="text-h6 font-weight-black primary--text py-0 pt-1"> > 授课教师</v-card-title>
-          <v-card-actions class="pt-1">
+          <v-card-actions class="pt-1 pb-1">
             <v-chip-group class="ml-4" column mandatory v-model="teacherTag" @change="changeTeacherFilter" active-class="blue--text">
               <v-chip small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
             </v-chip-group>
