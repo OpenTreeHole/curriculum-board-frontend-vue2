@@ -434,7 +434,7 @@ export default Vue.extend({
           timeSet.add(parseYearSemester(course))
         }
       }
-      return [...timeSet]
+      return ['所有', ...timeSet]
     },
     semesterReview(): Map<string, ReviewWithCourse[]> {
       let courses = this.reviewsCategorizedByYearSemester()
