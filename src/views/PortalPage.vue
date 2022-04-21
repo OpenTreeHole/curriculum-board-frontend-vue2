@@ -19,7 +19,7 @@
                   <v-card-subtitle class="monospace grey--text pb-0">
                     <span class="mr-3">{{ v.code }}</span>
                   </v-card-subtitle>
-                  <v-card-subtitle class="pt-0 text-h6">{{ v.name }}</v-card-subtitle>
+                  <v-card-subtitle class="pt-0 text-h6">{{ v.department }} / {{ v.name }}</v-card-subtitle>
                 </div>
               </v-card>
             </v-list>
