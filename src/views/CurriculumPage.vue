@@ -138,23 +138,23 @@
     <v-dialog v-model="reviewSheet" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>
-          <span class="text-h6">发表测评</span>
+          <span class="text-h6 mb-3">发表测评</span>
         </v-card-title>
-        <v-form class="mx-6">
+        <v-form class="mx-7">
           <v-row>
-            <v-col cols="12">
-              <v-text-field :counter="20" required label="标题" class="pt-1" v-model="reviewTitle"></v-text-field>
+            <v-col cols="8">
+              <v-text-field :counter="20" required label="标题" class="pt-1 text-h6" v-model="reviewTitle"></v-text-field>
             </v-col>
           </v-row>
           <v-row class="pt-0 mt-0">
-            <v-col cols="6">
+            <v-col cols="4">
               <v-select :items="teacherSelect" required label="任课教师"></v-select>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="4">
               <v-select :items="timeSelect" required label="课程时间"></v-select>
             </v-col>
           </v-row>
-          <ReviewEditor class="mt-2" ref="reviewEditor" />
+          <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" />
         </v-form>
         <v-card-title class="mb-2 mt-2"> 评分</v-card-title>
         <v-row class="mx-3">
@@ -198,21 +198,21 @@
         <v-card-title>
           <span class="text-h6 mt-5">发布测评</span>
         </v-card-title>
-        <v-form class="mx-12">
+        <v-form class="mx-10">
           <v-row class="mt-0">
             <v-col cols="12">
-              <v-text-field :counter="20" required label="标题" class="pt-1" v-model="reviewTitle"></v-text-field>
+              <v-text-field :counter="20" required label="标题" class="pt-1 font-weight-bold" style="font-size: small" v-model="reviewTitle"></v-text-field>
             </v-col>
           </v-row>
           <v-row class="mt-0">
             <v-col cols="6">
-              <v-select required label="任课教师"></v-select>
+              <v-select :items="teacherSelect" style="font-size: small" required label="任课教师"></v-select>
             </v-col>
             <v-col cols="6">
-              <v-select required label="课程时间"></v-select>
+              <v-select :items="timeSelect" style="font-size: small" required label="课程时间"></v-select>
             </v-col>
           </v-row>
-          <ReviewEditor class="mt-2" ref="reviewEditor" />
+          <ReviewEditor class="mt-2" style="font-size: small" ref="reviewEditor" />
         </v-form>
         <v-card-title class="mb-2 mt-3"> 评分</v-card-title>
         <v-row class="mx-9">

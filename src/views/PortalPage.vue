@@ -14,13 +14,12 @@
           <v-spacer />
           <v-col cols="12" lg="6" class="ma-0 pa-0">
             <v-list v-if="inSearch">
-              <v-card v-for="(v, i) in searchResult" :key="i" class="pa-3 v-card--hover">
+              <v-card v-for="(v, i) in searchResult" :key="i" class="pa-0 pl-3 v-card--hover">
                 <div @click="$router.push(`/group/${v.id}`)">
-                  <v-card-subtitle class="monospace grey--text pb-3">
+                  <v-card-subtitle class="monospace grey--text pb-0">
                     <span class="mr-3">{{ v.code }}</span>
-                    <v-chip label small>3学分</v-chip>
                   </v-card-subtitle>
-                  <v-card-title class="pt-0">{{ v.name }}</v-card-title>
+                  <v-card-subtitle class="pt-0 text-h6">{{ v.name }}</v-card-subtitle>
                 </div>
               </v-card>
             </v-list>
