@@ -16,7 +16,6 @@ export default Vue.extend({
     contentId: new Date().getTime().toString()
   }),
   async mounted() {
-    await this.$nextTick()
     this.editor = new Vditor(this.contentId, {
       height: window.innerHeight - 600,
       placeholder: '说些什么......',
