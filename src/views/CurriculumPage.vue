@@ -29,32 +29,32 @@
                     <span class="subtitle-2 ml-1 mt-1 black--text">总体评分 </span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear style="width: 90%" :value="allRank.overall" :color="allRankColorOverall"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.overall" :color="rankColorOverall(allRank.overall)"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.overall }} ({{ allRankWordOverall }})</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.overall }} ({{ rankWordOverall(allRank.overall) }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
                   <v-col cols="5">
-                    <v-progress-linear style="width: 90%" :value="allRank.content" :color="allRankColorContent"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.content" :color="rankColorContent(allRank.content)"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.content }} ({{ allRankWordContent }})</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.content }} ({{ rankWordContent(allRank.content) }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
                   <v-col cols="5">
-                    <v-progress-linear style="width: 90%" :value="allRank.workload" :color="allRankColorWorkload"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.workload" :color="rankColorWorkload(allRank.workload)"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.workload }} ({{ allRankWordWorkload }})</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.workload }} ({{ rankWordWorkload(allRank.workload) }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
                     <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear style="width: 90%" :value="allRank.assessment" :color="allRankColorAssessment"></v-progress-linear>
+                    <v-progress-linear style="width: 90%" :value="allRank.assessment" :color="rankColorAssessment(allRank.assessment)"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ allRankWordAssessment }})</v-col>
+                  <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ rankWordAssessment(allRank.assessment) }})</v-col>
                 </v-row>
               </v-expansion-panel-content>
               <v-expansion-panel-content class="py-0 ma-0" v-else>
@@ -69,32 +69,36 @@
                     <span class="subtitle-2 ml-1 mt-1 black--text">总体评分</span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear :value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear :value="semesterRank(reviews).overall" style="width: 90%" :color="rankColorOverall(semesterRank(reviews).overall)"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 ({{ SemesterRankOverall }})</v-col>
+                  <v-col cols="4" class="caption">{{ semesterRank(reviews).overall }} ({{ rankWordOverall(semesterRank(reviews).overall) }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear :value="semesterRank(reviews).content" style="width: 90%" :color="rankColorContent(semesterRank(reviews).content)"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 ({{ SemesterRankContent }})</v-col>
+                  <v-col cols="4" class="caption">{{ semesterRank(reviews).content }} ({{ rankWordContent(semesterRank(reviews).content) }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
                   <v-col cols="5">
-                    <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                    <v-progress-linear :value="semesterRank(reviews).workload" style="width: 90%" :color="rankColorWorkload(semesterRank(reviews).workload)"></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">8.5 ({{ SemesterRankWorkload }})</v-col>
+                  <v-col cols="4" class="caption">{{ semesterRank(reviews).workload }} ({{ rankWordWorkload(semesterRank(reviews).workload) }})</v-col>
                 </v-row>
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
                     <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
                   </v-col>
                   <v-col cols="5">
-                    <v-progress-linear style="width: 90%" :value="allRank.assessment"></v-progress-linear>
+                    <v-progress-linear
+                      style="width: 90%"
+                      :value="semesterRank(reviews).assessment"
+                      :color="rankColorAssessment(semesterRank(reviews).assessment)"
+                    ></v-progress-linear>
                   </v-col>
-                  <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ SemesterRankAssessment }})</v-col>
+                  <v-col cols="4" class="caption">{{ semesterRank(reviews).assessment }} ({{ rankWordAssessment(semesterRank(reviews).assessment) }})</v-col>
                 </v-row>
               </v-expansion-panel-content>
               <v-expansion-panel-content class="py-0 ma-0" v-else>
@@ -141,32 +145,32 @@
                       <span class="subtitle-2 ml-1 mt-1 black--text">总体评分 </span>
                     </v-col>
                     <v-col cols="5">
-                      <v-progress-linear style="width: 90%" :value="allRank.overall" :color="allRankColorOverall"></v-progress-linear>
+                      <v-progress-linear style="width: 90%" :value="allRank.overall" :color="rankColorOverall(allRank.overall)"></v-progress-linear>
                     </v-col>
-                    <v-col cols="4" class="caption">{{ allRank.overall }} ({{ allRankWordOverall }})</v-col>
+                    <v-col cols="4" class="caption">{{ allRank.overall }} ({{ rankWordOverall(allRank.overall) }})</v-col>
                   </v-row>
                   <v-row align="center" no-gutters>
                     <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
                     <v-col cols="5">
-                      <v-progress-linear style="width: 90%" :value="allRank.content" :color="allRankColorContent"></v-progress-linear>
+                      <v-progress-linear style="width: 90%" :value="allRank.content" :color="rankColorContent(allRank.content)"></v-progress-linear>
                     </v-col>
-                    <v-col cols="4" class="caption">{{ allRank.content }} ({{ allRankWordContent }})</v-col>
+                    <v-col cols="4" class="caption">{{ allRank.content }} ({{ rankWordContent(allRank.content) }})</v-col>
                   </v-row>
                   <v-row align="center" no-gutters>
                     <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
                     <v-col cols="5">
-                      <v-progress-linear style="width: 90%" :value="allRank.workload" :color="allRankColorWorkload"></v-progress-linear>
+                      <v-progress-linear style="width: 90%" :value="allRank.workload" :color="rankColorWorkload(allRank.workload)"></v-progress-linear>
                     </v-col>
-                    <v-col cols="4" class="caption">{{ allRank.workload }} ({{ allRankWordWorkload }})</v-col>
+                    <v-col cols="4" class="caption">{{ allRank.workload }} ({{ rankWordWorkload(allRank.workload) }})</v-col>
                   </v-row>
                   <v-row align="center" no-gutters>
                     <v-col cols="3" align-self="end">
                       <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
                     </v-col>
                     <v-col cols="5">
-                      <v-progress-linear style="width: 90%" :value="allRank.assessment" :color="allRankColorAssessment"></v-progress-linear>
+                      <v-progress-linear style="width: 90%" :value="allRank.assessment" :color="rankColorAssessment(allRank.assessment)"></v-progress-linear>
                     </v-col>
-                    <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ allRankWordAssessment }})</v-col>
+                    <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ rankWordAssessment(allRank.assessment) }})</v-col>
                   </v-row>
                 </v-expansion-panel-content>
                 <v-expansion-panel-content class="py-0 ma-0" v-else>
@@ -181,32 +185,36 @@
                       <span class="subtitle-2 ml-1 mt-1 black--text">总体评分</span>
                     </v-col>
                     <v-col cols="5">
-                      <v-progress-linear :value="15" style="width: 90%"></v-progress-linear>
+                      <v-progress-linear :value="semesterRank(reviews).overall" style="width: 90%" :color="rankColorOverall(semesterRank(reviews).overall)"></v-progress-linear>
                     </v-col>
-                    <v-col cols="4" class="caption">({{ allRankWordOverall }})</v-col>
+                    <v-col cols="4" class="caption">{{ semesterRank(reviews).overall }} ({{ rankWordOverall(semesterRank(reviews).overall) }})</v-col>
                   </v-row>
                   <v-row align="center" no-gutters>
                     <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">课程内容</span></v-col>
                     <v-col cols="5">
-                      <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                      <v-progress-linear :value="semesterRank(reviews).content" style="width: 90%" :color="rankColorContent(semesterRank(reviews).content)"></v-progress-linear>
                     </v-col>
-                    <v-col cols="4" class="caption">8.5 ({{ allRankWordContent }})</v-col>
+                    <v-col cols="4" class="caption">{{ semesterRank(reviews).content }} ({{ rankWordContent(semesterRank(reviews).content) }})</v-col>
                   </v-row>
                   <v-row align="center" no-gutters>
                     <v-col cols="3" align-self="end"><span class="subtitle-2 ml-1 mt-1 black--text">工作量</span></v-col>
                     <v-col cols="5">
-                      <v-progress-linear value="15" style="width: 90%"></v-progress-linear>
+                      <v-progress-linear :value="semesterRank(reviews).workload" style="width: 90%" :color="rankColorWorkload(semesterRank(reviews).workload)"></v-progress-linear>
                     </v-col>
-                    <v-col cols="4" class="caption">8.5 ({{ allRankWordWorkload }})</v-col>
+                    <v-col cols="4" class="caption">{{ semesterRank(reviews).workload }} ({{ rankWordWorkload(semesterRank(reviews).workload) }})</v-col>
                   </v-row>
                   <v-row align="center" no-gutters>
                     <v-col cols="3" align-self="end">
                       <span class="subtitle-2 ml-1 mt-1 black--text">考核要求</span>
                     </v-col>
                     <v-col cols="5">
-                      <v-progress-linear style="width: 90%" :value="allRank.assessment"></v-progress-linear>
+                      <v-progress-linear
+                        style="width: 90%"
+                        :value="semesterRank(reviews).assessment"
+                        :color="rankColorAssessment(semesterRank(reviews).assessment)"
+                      ></v-progress-linear>
                     </v-col>
-                    <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ allRankWordAssessment }})</v-col>
+                    <v-col cols="4" class="caption">{{ semesterRank(reviews).assessment }} ({{ rankWordAssessment(semesterRank(reviews).assessment) }})</v-col>
                   </v-row>
                 </v-expansion-panel-content>
                 <v-expansion-panel-content class="py-0 ma-0" v-else>
@@ -238,7 +246,7 @@
       </v-col>
     </div>
     <!-- 电脑表单  -->
-    <v-dialog v-model="review_sheet" max-width="50%" class="d-none d-sm-flex">
+    <v-dialog v-model="reviewSheet" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>
           <span class="text-h6">发表测评</span>
@@ -263,40 +271,40 @@
         <v-row class="mx-3">
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="rankColorOverall"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ rankWordOverall }}</span>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="postRankColorOverall"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ postRankWordOverall }}</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">课程内容</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="rankColorContent"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ rankWordContent }}</span>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="postRankColorContent"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ postRankWordContent }}</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-9">工作量</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="rankColorWorkload"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ rankWordWorkload }}</span>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="postRankColorWorkload"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ postRankWordWorkload }}</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">考核要求</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="rankColorAssessment"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ rankWordAssessment }}</span>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="postRankColorAssessment"></v-rating>
+            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ postRankWordAssessment }}</span>
           </v-col>
         </v-row>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="review_sheet = false"> 取消</v-btn>
+          <v-btn color="blue darken-1" text @click="reviewSheet = false"> 取消</v-btn>
           <v-btn color="blue darken-1" text @click="postReview"> 发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <!-- 手机表单  -->
-    <v-dialog v-model="review_sheet_phone" fullscreen transition="dialog-bottom-transition">
+    <v-dialog v-model="reviewSheetPhone" fullscreen transition="dialog-bottom-transition">
       <v-card>
         <v-card-title>
           <span class="text-h6 mt-5">发布测评</span>
@@ -321,34 +329,34 @@
         <v-row class="mx-9">
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="rankColorOverall"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="postRankColorOverall"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
           </v-col>
         </v-row>
         <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">课程内容</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="rankColorContent"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="postRankColorContent"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
           </v-col>
         </v-row>
         <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-9">工作量</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="rankColorWorkload"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="postRankColorWorkload"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
           </v-col>
         </v-row>
         <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">考核要求</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="rankColorAssessment"></v-rating>
+            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="postRankColorAssessment"></v-rating>
             <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
           </v-col>
         </v-row>
         <v-card-actions class="mr-4 mt-4">
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="review_sheet_phone = false" class="mr-0"> 取消</v-btn>
+          <v-btn color="blue darken-1" text @click="reviewSheetPhone = false" class="mr-0"> 取消</v-btn>
           <v-btn color="blue darken-1" class="mr-2 ml-0" text> 发布</v-btn>
         </v-card-actions>
       </v-card>
@@ -358,7 +366,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, ReviewWithCourse } from '@/models'
+import { CourseGroup, ReviewWithCourse, totalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewFilter from '@/components/ReviewFilter.vue'
@@ -370,7 +378,7 @@ export default Vue.extend({
   components: { ReviewEditor, ReviewFilter, ReviewCard },
   props: ['groupId'],
   data: () => ({
-    review_sheet: false,
+    reviewSheet: false,
     reviewTitle: '',
     rank: {
       overall: 0,
@@ -384,7 +392,7 @@ export default Vue.extend({
       workload: 0,
       assessment: 0
     },
-    review_sheet_phone: false,
+    reviewSheetPhone: false,
     courseGroup: null as CourseGroup | null,
     filters: {
       teacher: null as string | null,
@@ -393,65 +401,7 @@ export default Vue.extend({
     }
   }),
   computed: {
-    allRankWordOverall(): string {
-      if (this.allRank.overall < 10) {
-        if ((this.courseGroup?.courseList.flatMap((course) => course.reviewList || []).length || 0) > 20) {
-          return '差评如潮'
-        } else return '特别差评'
-      } else if (this.allRank.overall < 35) {
-        return '多半差评'
-      } else if (this.allRank.overall < 50) {
-        return '褒贬不一'
-      } else if (this.allRank.overall < 70) {
-        return '多半好评'
-      } else if (this.allRank.overall < 85) {
-        return '好评'
-      } else {
-        if ((this.courseGroup?.courseList.flatMap((course) => course.reviewList || []).length || 0) > 20) {
-          return '好评如潮'
-        } else return '特别好评'
-      }
-    },
-    allRankWordContent(): string {
-      if (this.allRank.content < 20) {
-        return '非常容易'
-      } else if (this.allRank.content < 40) {
-        return '容易'
-      } else if (this.allRank.content < 60) {
-        return '中等'
-      } else if (this.allRank.content < 80) {
-        return '较难'
-      } else {
-        return '硬核'
-      }
-    },
-    allRankWordWorkload(): string {
-      if (this.allRank.workload < 20) {
-        return '非常大'
-      } else if (this.allRank.workload < 40) {
-        return '大'
-      } else if (this.allRank.workload < 60) {
-        return '中等'
-      } else if (this.allRank.workload < 80) {
-        return '小'
-      } else {
-        return '非常小'
-      }
-    },
-    allRankWordAssessment(): string {
-      if (this.allRank.assessment < 20) {
-        return '非常严格'
-      } else if (this.allRank.assessment < 40) {
-        return '严格'
-      } else if (this.allRank.assessment < 60) {
-        return '中等'
-      } else if (this.allRank.assessment < 80) {
-        return '宽松'
-      } else {
-        return '非常宽松'
-      }
-    },
-    rankWordOverall(): string {
+    postRankWordOverall(): string {
       switch (this.rank.overall) {
         case 1:
           return '特别差评'
@@ -465,7 +415,7 @@ export default Vue.extend({
           return '一般'
       }
     },
-    rankWordContent(): string {
+    postRankWordContent(): string {
       switch (this.rank.content) {
         case 1:
           return '非常容易'
@@ -479,7 +429,7 @@ export default Vue.extend({
           return '一般'
       }
     },
-    rankWordWorkload(): string {
+    postRankWordWorkload(): string {
       switch (this.rank.workload) {
         case 1:
           return '非常大'
@@ -493,7 +443,7 @@ export default Vue.extend({
           return '适中'
       }
     },
-    rankWordAssessment(): string {
+    postRankWordAssessment(): string {
       switch (this.rank.assessment) {
         case 1:
           return '非常严格'
@@ -507,43 +457,7 @@ export default Vue.extend({
           return '适中'
       }
     },
-    allRankColorOverall(): string {
-      if (this.allRank.overall >= 75) {
-        return 'green'
-      } else if (this.allRank.overall >= 40) {
-        return 'orange'
-      } else {
-        return 'red'
-      }
-    },
-    allRankColorContent(): string {
-      if (this.allRank.content >= 75) {
-        return 'green'
-      } else if (this.allRank.content >= 40) {
-        return 'orange'
-      } else {
-        return 'red'
-      }
-    },
-    allRankColorWorkload(): string {
-      if (this.allRank.workload >= 75) {
-        return 'green'
-      } else if (this.allRank.workload >= 40) {
-        return 'orange'
-      } else {
-        return 'red'
-      }
-    },
-    allRankColorAssessment(): string {
-      if (this.allRank.assessment >= 75) {
-        return 'green'
-      } else if (this.allRank.assessment >= 40) {
-        return 'orange'
-      } else {
-        return 'red'
-      }
-    },
-    rankColorOverall(): string {
+    postRankColorOverall(): string {
       if (this.rank.overall >= 5) {
         return 'green'
       } else if (this.rank.overall >= 2) {
@@ -552,7 +466,7 @@ export default Vue.extend({
         return 'red'
       }
     },
-    rankColorContent(): string {
+    postRankColorContent(): string {
       if (this.rank.content >= 5) {
         return 'green'
       } else if (this.rank.content >= 2) {
@@ -561,7 +475,7 @@ export default Vue.extend({
         return 'red'
       }
     },
-    rankColorWorkload(): string {
+    postRankColorWorkload(): string {
       if (this.rank.workload >= 5) {
         return 'green'
       } else if (this.rank.workload >= 2) {
@@ -570,7 +484,7 @@ export default Vue.extend({
         return 'red'
       }
     },
-    rankColorAssessment(): string {
+    postRankColorAssessment(): string {
       if (this.rank.assessment >= 5) {
         return 'green'
       } else if (this.rank.assessment >= 2) {
@@ -621,14 +535,127 @@ export default Vue.extend({
     }
   },
   methods: {
+    rankColorWorkload(workload: number): string {
+      if (workload >= 75) {
+        return 'green'
+      } else if (workload >= 40) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    rankColorAssessment(assessment: number): string {
+      if (assessment >= 75) {
+        return 'green'
+      } else if (assessment >= 40) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    rankColorOverall(overall: number): string {
+      if (overall >= 75) {
+        return 'green'
+      } else if (overall >= 40) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    rankColorContent(content: number): string {
+      if (content) {
+        return 'green'
+      } else if (content >= 40) {
+        return 'orange'
+      } else {
+        return 'red'
+      }
+    },
+    rankWordAssessment(assessment: number): string {
+      if (assessment < 20) {
+        return '非常严格'
+      } else if (assessment < 40) {
+        return '严格'
+      } else if (assessment < 60) {
+        return '中等'
+      } else if (assessment < 80) {
+        return '宽松'
+      } else {
+        return '非常宽松'
+      }
+    },
+    rankWordWorkload(workload: number): string {
+      if (workload < 20) {
+        return '非常大'
+      } else if (workload < 40) {
+        return '大'
+      } else if (workload < 60) {
+        return '中等'
+      } else if (workload < 80) {
+        return '小'
+      } else {
+        return '非常小'
+      }
+    },
+    rankWordOverall(overall: number): string {
+      if (overall < 10) {
+        if ((this.courseGroup?.courseList.flatMap((course) => course.reviewList || []).length || 0) > 20) {
+          return '差评如潮'
+        } else return '特别差评'
+      } else if (overall < 35) {
+        return '多半差评'
+      } else if (overall < 50) {
+        return '褒贬不一'
+      } else if (overall < 70) {
+        return '多半好评'
+      } else if (overall < 85) {
+        return '好评'
+      } else {
+        if ((this.courseGroup?.courseList.flatMap((course) => course.reviewList || []).length || 0) > 20) {
+          return '好评如潮'
+        } else return '特别好评'
+      }
+    },
+    rankWordContent(content: number): string {
+      if (content < 20) {
+        return '非常容易'
+      } else if (content < 40) {
+        return '容易'
+      } else if (content < 60) {
+        return '中等'
+      } else if (content < 80) {
+        return '较难'
+      } else {
+        return '硬核'
+      }
+    },
+    semesterRank(reviews: ReviewWithCourse[]): totalRank {
+      const semesterTotalScore = new totalRank({
+        overall: 0,
+        content: 0,
+        workload: 0,
+        assessment: 0
+      })
+      reviews.forEach((review) => {
+        semesterTotalScore.overall += review.review.rank.overall
+        semesterTotalScore.content += review.review.rank.content
+        semesterTotalScore.workload += review.review.rank.workload
+        semesterTotalScore.assessment += review.review.rank.assessment
+      })
+      semesterTotalScore.overall = Math.round((semesterTotalScore.overall / reviews.length) * 20.0)
+      semesterTotalScore.content = Math.round((semesterTotalScore.content / reviews.length) * 20.0)
+      semesterTotalScore.workload = Math.round((semesterTotalScore.workload / reviews.length) * 20.0)
+      semesterTotalScore.assessment = Math.round((semesterTotalScore.assessment / reviews.length) * 20.0)
+      return semesterTotalScore
+    },
     async postReview() {
       console.log((this.$refs.reviewEditor as any).getContent())
     },
     async changeFormView(): Promise<void> {
-      this.review_sheet = !this.review_sheet
+      this.reviewSheet = !this.reviewSheet
     },
     async changePhoneFormView(): Promise<void> {
-      this.review_sheet_phone = !this.review_sheet_phone
+      this.reviewSheetPhone = !this.reviewSheetPhone
     },
     // Get or load a course group with all reviews loaded.
     async getOrLoadCourseGroup(groupId: number): Promise<CourseGroup | null> {

@@ -102,7 +102,7 @@ export default Vue.extend({
               {
                 id: 1,
                 timeCreated: '2022-04-09',
-                title: '绝世好课',
+                title: '绝世好课111',
                 content: '每个脆脆鲨都应该来听的必修课程',
                 rank: {
                   overall: 5,
@@ -115,7 +115,7 @@ export default Vue.extend({
               {
                 id: 2,
                 timeCreated: '2022-04-09',
-                title: '绝世好课',
+                title: '绝世好课222',
                 content: '每个脆脆鲨都应该来听的必修课程',
                 rank: {
                   overall: 4,
@@ -126,9 +126,9 @@ export default Vue.extend({
                 remark: -110
               },
               {
-                id: 2,
+                id: 3,
                 timeCreated: '2022-04-09',
-                title: '绝世好课',
+                title: '绝世好课333',
                 content: '每个脆脆鲨都应该来听的必修课程',
                 rank: {
                   overall: 4,
@@ -137,6 +137,19 @@ export default Vue.extend({
                   assessment: 2
                 },
                 remark: -110
+              },
+              {
+                id: 3,
+                timeCreated: '2022-04-09',
+                title: 'A/414',
+                content: '每个脆脆鲨都应该来听的必修课程',
+                rank: {
+                  overall: 1,
+                  content: 2,
+                  workload: 1,
+                  assessment: 1
+                },
+                remark: 110
               }
             ]
           })
