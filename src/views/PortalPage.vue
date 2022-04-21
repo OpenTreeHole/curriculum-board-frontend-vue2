@@ -9,6 +9,7 @@
           <v-text-field prepend-inner-icon="mdi-magnify" v-model="searchText" outlined dense class="d-block d-sm-none rounded-pill" filled></v-text-field>
         </v-col>
       </v-row>
+      <!-- TODO 添加各种说明 JWT鉴权-->
       <transition name="fade">
         <v-row class="ma-0 pa-0">
           <v-spacer />
@@ -16,10 +17,15 @@
             <v-list v-if="inSearch">
               <v-card v-for="(v, i) in searchResult" :key="i" class="pa-0 pl-3 v-card--hover">
                 <div @click="$router.push(`/group/${v.id}`)">
-                  <v-card-subtitle class="monospace grey--text pb-0">
-                    <span class="mr-3">{{ v.code }}</span>
+                  <v-card-subtitle class="monospace grey--text py-0 pt-3 d-flex">
+                    <span class="mr-3 d-flex align-center">{{ v.code }}</span>
+                    <v-chip-group column>
+                      <v-chip label small :key="credit" v-for="credit in v.courseList" disabled class="black--text font-weight-bold" outlined color="red">
+                        {{ credit.credit }}学分</v-chip
+                      >
+                    </v-chip-group>
                   </v-card-subtitle>
-                  <v-card-subtitle class="pt-0 text-h6">{{ v.department }} / {{ v.name }}</v-card-subtitle>
+                  <v-card-subtitle class="pt-1 text-h6">{{ v.department }} / {{ v.name }}</v-card-subtitle>
                 </div>
               </v-card>
             </v-list>

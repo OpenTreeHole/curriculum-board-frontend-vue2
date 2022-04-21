@@ -245,8 +245,8 @@
         </v-row>
         <v-card-actions class="mr-4 mt-4">
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="reviewSheetPhone = false" class="mr-0"> 取消</v-btn>
-          <v-btn color="blue darken-1" class="mr-2 ml-0" text> 发布</v-btn>
+          <v-btn color="blue darken-1" text @click="reviewSheetPhone = false" class="mr-0">取消</v-btn>
+          <v-btn color="blue darken-1" class="mr-2 ml-0" text>发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
