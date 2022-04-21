@@ -20,6 +20,7 @@
           <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 评分</v-card-title>
           <v-expansion-panels flat multiple class="py-0">
             <v-expansion-panel class="py-0">
+              <!-- 总体评分 -->
               <v-expansion-panel-header class="subtitle-1 font-weight-bold secondary--text py-0">
                 > 全部学期 (共 {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
               </v-expansion-panel-header>
@@ -61,7 +62,8 @@
                 <v-subheader class="my-n4 mb-n7"> 评分太少, 不具有参考性 </v-subheader>
               </v-expansion-panel-content>
             </v-expansion-panel>
-            <v-expansion-panel class="py-0 mt-0" v-for="(reviews, year) in Object.fromEntries(reviewsCategorizedByYearSemester.entries())" :key="year">
+            <!-- 学期评分 -->
+            <v-expansion-panel class="py-0 mt-0" v-for="(reviews, year) in semesterReview()" :key="year + reviews.toString()">
               <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text"> > {{ year }} (共 {{ reviews.length }} 条) </v-expansion-panel-header>
               <v-expansion-panel-content class="py-0" v-if="reviews.length >= 3">
                 <v-row align="center" no-gutters>
@@ -389,26 +391,21 @@ export default Vue.extend({
     },
     teacherTags(): string[] {
       let teachersSet = new Set<string>()
-      this.courseGroup?.courseList.forEach((course) => teachersSet.add(course.teachers))
+      for (const course of this.courseGroup?.courseList ?? []) {
+        if (course.reviewList !== undefined && course.reviewList.length > 0) {
+          teachersSet.add(course.teachers)
+        }
+      }
       return ['所有', ...teachersSet]
     },
     timeTags(): string[] {
       let timeSet = new Set<string>()
-      this.courseGroup?.courseList.forEach((course) => timeSet.add(parseYearSemester(course)))
-      return ['所有', ...timeSet]
-    },
-    reviewsCategorizedByYearSemester(): Map<string, ReviewWithCourse[]> {
-      let resultMap = new Map<string, ReviewWithCourse[]>()
-      for (const course of this.courseGroup?.courseList || []) {
-        const yearSemester = parseYearSemester(course)
-        const reviews = course.reviewList?.map((review) => new ReviewWithCourse(review, course)) || []
-        if (resultMap.has(yearSemester)) {
-          resultMap.get(yearSemester)?.push(...reviews)
-        } else {
-          resultMap.set(yearSemester, reviews)
+      for (const course of this.courseGroup?.courseList ?? []) {
+        if (course.reviewList !== undefined && course.reviewList.length > 0) {
+          timeSet.add(parseYearSemester(course))
         }
       }
-      return resultMap
+      return ['所有', ...timeSet]
     },
     reviews(): ReviewWithCourse[] {
       return (
@@ -424,6 +421,28 @@ export default Vue.extend({
     }
   },
   methods: {
+    semesterReview(): object {
+      let course = Object.fromEntries(this.reviewsCategorizedByYearSemester().entries())
+      for (const yearSemester in course) {
+        if (course[yearSemester].length === 0) {
+          delete course[yearSemester]
+        }
+      }
+      return course
+    },
+    reviewsCategorizedByYearSemester(): Map<string, ReviewWithCourse[]> {
+      let resultMap = new Map<string, ReviewWithCourse[]>()
+      for (const course of this.courseGroup?.courseList || []) {
+        const yearSemester = parseYearSemester(course)
+        const reviews = course.reviewList?.map((review) => new ReviewWithCourse(review, course)) || []
+        if (resultMap.has(yearSemester)) {
+          resultMap.get(yearSemester)?.push(...reviews)
+        } else {
+          resultMap.set(yearSemester, reviews)
+        }
+      }
+      return resultMap
+    },
     changeTimeFilter() {
       if (this.timeTag === 0) {
         this.filters.year = null
