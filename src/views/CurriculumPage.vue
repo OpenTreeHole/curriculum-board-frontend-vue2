@@ -261,6 +261,7 @@ import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewFilter from '@/components/ReviewFilter.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
 import { parseYearSemester } from '@/utils/course'
+import { toNumber } from 'lodash-es'
 
 export default Vue.extend({
   name: 'CurriculumPage',
@@ -448,7 +449,8 @@ export default Vue.extend({
         this.filters.year = null
         this.filters.semester = null
       } else {
-        console.log(1111)
+        this.filters.year = this.timeTags[this.timeTag].split('-')[0]
+        this.filters.semester = toNumber(this.timeTags[this.timeTag].split('-')[2])
       }
     },
     changeTeacherFilter() {
