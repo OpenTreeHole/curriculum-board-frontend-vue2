@@ -115,7 +115,8 @@ export default Vue.extend({
                   workload: 3,
                   assessment: 2
                 },
-                remark: 10
+                remark: 10,
+                is_me: false
               },
               {
                 id: 2,
@@ -128,7 +129,8 @@ export default Vue.extend({
                   workload: 2,
                   assessment: 2
                 },
-                remark: -110
+                remark: -110,
+                is_me: false
               },
               {
                 id: 3,
@@ -141,7 +143,8 @@ export default Vue.extend({
                   workload: 2,
                   assessment: 2
                 },
-                remark: -110
+                remark: -110,
+                is_me: true
               },
               {
                 id: 3,
@@ -154,7 +157,8 @@ export default Vue.extend({
                   workload: 1,
                   assessment: 1
                 },
-                remark: 110
+                remark: 110,
+                is_me: false
               }
             ]
           }),

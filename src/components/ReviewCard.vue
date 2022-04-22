@@ -38,13 +38,13 @@
         {{ review.review.content }}
       </v-card-text>
       <!-- TODO 添加is_me -->
-      <v-card-text class="caption grey--text pb-2 d-flex justify-end pr-3 pt-0">
-        <v-chip x-small label style="margin-top: 1px; margin-right: 10px">已编辑</v-chip>
-        <v-btn text x-small color="grey"><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-trash-can</v-icon><span>删除</span></v-btn>
-        <v-btn class="d-none d-sm-flex" text x-small color="grey" @click="editForm">
+      <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 pt-0">
+        <v-chip x-small label style="margin-top: 1px; margin-right: 10px" v-if="false" class="pb-2">已编辑</v-chip>
+        <v-btn v-if="review.review.is_me" text x-small color="grey" class="pb-2"><v-icon small style="padding-bottom: 0; padding-right: 2px" >mdi-trash-can</v-icon><span>删除</span></v-btn>
+        <v-btn v-if="review.review.is_me" class="d-none d-sm-flex pb-2" text x-small color="grey" @click="editForm">
           <v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-pencil</v-icon><span>编辑</span>
         </v-btn>
-        <v-btn class="d-flex d-sm-none" @click="editPhoneForm" text x-small color="grey"
+        <v-btn v-if="review.review.is_me" class="d-flex d-sm-none pb-2" @click="editPhoneForm" text x-small color="grey"
           ><v-icon small style="padding-bottom: 2px; padding-right: 2px">mdi-pencil</v-icon><span>编辑</span></v-btn
         >
       </v-card-text>
