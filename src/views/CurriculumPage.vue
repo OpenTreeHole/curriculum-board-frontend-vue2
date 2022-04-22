@@ -126,6 +126,7 @@
         </div>
       </v-col>
       <v-col lg="8" class="mx-lg-0 mx-3">
+        <!-- TODO review排序 -->
         <review-filter class="my-2" />
         <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3 d-none d-sm-block"></review-card>
         <div style="text-align: center" class="my-3 d-block d-sm-none">
