@@ -37,7 +37,6 @@
       <v-card-text class="body-2 black--text pt-3">
         {{ review.review.content }}
       </v-card-text>
-      <!-- TODO 添加is_me -->
       <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 pt-0">
         <v-chip x-small label style="margin-top: 1px; margin-right: 10px" v-if="false" class="mb-1">已编辑</v-chip>
         <v-btn v-if="review.review.is_me" text x-small color="grey" class="mb-2"
@@ -52,10 +51,7 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)">
-        <v-col cols="3" class="shrink pr-0">
-          <v-card-text class="pa-1 pl-3 Caption grey--text">user113</v-card-text>
-        </v-col>
-        <v-col cols="9" style="text-align: right" class="pr-2">
+        <v-col cols="12" style="text-align: right" class="pr-2">
           <v-tooltip right class="ma-0 pa-0" color="white">
             <template v-slot:activator="{ on, attrs }">
               <v-card-text class="pa-1 pl-0 caption" v-bind="attrs" v-on="on">

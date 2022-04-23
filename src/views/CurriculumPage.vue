@@ -1,12 +1,15 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
     <v-breadcrumbs style="background-color: #fbfbfd" class="pl-4">
-      <v-breadcrumbs-item class="text-h6 font-weight-black ml-0">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
-      <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
-      <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
-      <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-3 d-none d-sm-flex" color="accent">{{ v }} 学分 </v-chip>
+      <v-skeleton-loader v-if="loading" type="heading" width="70%" height="20%"></v-skeleton-loader>
+      <template v-if="!loading">
+        <v-breadcrumbs-item class="text-h6 font-weight-black ml-0">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
+        <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
+        <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
+        <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-3 d-none d-sm-flex" color="accent">{{ v }} 学分 </v-chip>
+      </template>
     </v-breadcrumbs>
-    <v-banner class="d-block d-sm-none mt-0 pt-0">
+    <v-banner class="d-block d-sm-none mt-0 pt-0" v-if="!loading">
       <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="accent"
         >{{ v }}
         学分
@@ -16,10 +19,11 @@
     <!-- TODO skeleton -->
     <!-- 电脑以及手机页面  -->
     <v-row>
-      <v-col lg="3" cols="12">
+      <v-col lg="3" cols="12" class="pb-0">
         <v-card class="pb-4">
           <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 评分</v-card-title>
-          <v-expansion-panels flat multiple class="py-0">
+          <v-skeleton-loader v-if="loading" type="paragraph" width="60%" class="ml-10 my-2"></v-skeleton-loader>
+          <v-expansion-panels flat multiple class="py-0" v-if="!loading">
             <v-expansion-panel class="py-0">
               <!-- 总体评分 -->
               <v-expansion-panel-header class="subtitle-1 font-weight-bold secondary--text py-0">
@@ -110,30 +114,55 @@
             </v-expansion-panel>
           </v-expansion-panels>
           <v-card-title class="text-h6 font-weight-black primary--text py-0 pt-1"> > 授课教师</v-card-title>
-          <v-card-actions class="pt-1 pb-1">
+          <v-skeleton-loader v-if="loading" type="sentences" width="60%" class="ml-10 my-2"></v-skeleton-loader>
+          <v-card-actions class="pt-1 pb-1" v-if="!loading">
             <v-chip-group class="ml-4" column mandatory v-model="teacherTag" @change="changeTeacherFilter" active-class="blue--text">
               <v-chip small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
           <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 时间</v-card-title>
-          <v-card-actions class="pt-1 mb-2">
+          <v-skeleton-loader v-if="loading" type="sentences" width="60%" class="ml-10 my-2"></v-skeleton-loader>
+          <v-card-actions class="pt-1 mb-2" v-if="!loading">
             <v-chip-group class="ml-4" column mandatory v-model="timeTag" @change="changeTimeFilter" active-class="blue--text">
               <v-chip small v-for="(v, i) in timeTags()" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
         </v-card>
         <div style="text-align: center" class="mt-3 d-none d-sm-block">
-          <v-btn @click="changeFormView"> 发布测评</v-btn>
+          <v-btn @click="changeFormView" :disabled="loading">发布测评</v-btn>
         </div>
       </v-col>
       <v-col lg="8" class="mx-lg-0 mx-3">
         <!-- TODO review排序 -->
-        <review-filter class="my-2" />
-        <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3 d-none d-sm-block"></review-card>
-        <div style="text-align: center" class="my-3 d-block d-sm-none">
-          <v-btn @click="changePhoneFormView"> 发布测评</v-btn>
+        <review-filter class="my-2" v-if="!loading" />
+        <v-skeleton-loader v-if="loading" type="heading" class="ml-2 my-lg-4"></v-skeleton-loader>
+        <div v-if="!loading" class="d-none d-sm-block">
+          <v-row style="text-align: center">
+            <v-col class="text-h5 my-4 grey--text"> 暂时没有测评 </v-col>
+          </v-row>
+          <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3"></review-card>
         </div>
-        <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-3 d-block d-sm-none"></review-card>
+        <template>
+          <div style="text-align: center" class="my-3 d-block d-sm-none">
+            <v-btn @click="changePhoneFormView" :disabled="loading"> 发布测评</v-btn>
+          </div>
+        </template>
+        <v-card v-if="loading" class="pa-2 mb-3">
+          <v-skeleton-loader type="article, actions" width="100%" class="my-2"></v-skeleton-loader>
+        </v-card>
+        <v-row class="d-flex align-center" v-if="loading">
+          <v-col style="text-align: center">
+            <v-progress-circular :size="60" color="primary" indeterminate class="d-none d-sm-inline-block mt-3"></v-progress-circular>
+            <v-progress-circular :size="40" color="primary" indeterminate class="d-inline-block d-sm-none"></v-progress-circular>
+          </v-col>
+        </v-row>
+        <div v-if="!loading" class="d-block d-sm-none">
+          <v-row style="text-align: center">
+            <v-col class="text-h6 my-2 grey--text"> 暂时没有测评 </v-col>
+          </v-row>
+          <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-3"></review-card>
+        </div>
+        <div class="my-8"></div>
       </v-col>
     </v-row>
     <!-- 电脑表单  -->
@@ -270,6 +299,7 @@ export default Vue.extend({
   components: { ReviewEditor, ReviewFilter, ReviewCard },
   props: ['groupId'],
   data: () => ({
+    loading: true,
     reviewSheet: false,
     reviewTitle: '',
     teacherTag: 0,
@@ -625,6 +655,7 @@ export default Vue.extend({
   async mounted() {
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
     this.allRank = this.$store.getters.calculateCourseOverallRank(this.groupId)
+    this.loading = false
   }
 })
 </script>
