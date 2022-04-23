@@ -50,11 +50,11 @@
         >
       </v-card-text>
       <v-divider></v-divider>
-      <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)">
-        <v-col cols="3" class="shrink pr-0">
+      <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)" class="d-flex align-content-space-between">
+        <div class="shrink pr-0 d-flex" style="text-align: left">
           <v-card-text class="pa-1 pl-3 Caption grey--text">{{ review.review.timeCreated }}</v-card-text>
-        </v-col>
-        <v-col cols="9" style="text-align: right" class="pr-2">
+        </div>
+        <div class="pr-2 ml-auto">
           <v-tooltip right class="ma-0 pa-0" color="white">
             <template v-slot:activator="{ on, attrs }">
               <v-card-text class="pa-1 pl-0 caption" v-bind="attrs" v-on="on">
@@ -72,7 +72,7 @@
               <font-awesome-icon icon="fa-solid fa-frown" class="red--text" />
             </span>
           </v-tooltip>
-        </v-col>
+        </div>
       </v-row>
     </v-card>
   </v-container>

@@ -25,7 +25,7 @@
                       >
                     </v-chip-group>
                   </v-card-subtitle>
-                  <v-card-subtitle class="pt-1 text-h6">{{ v.department }} / {{ v.name }}</v-card-subtitle>
+                  <v-card-subtitle class="pt-1 text-lg-h6 text-subtitle-1">{{ v.department }} / {{ v.name }}</v-card-subtitle>
                 </div>
               </v-card>
             </v-list>
