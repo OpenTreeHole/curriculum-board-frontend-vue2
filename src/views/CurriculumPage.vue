@@ -658,6 +658,7 @@ export default Vue.extend({
   async mounted() {
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
     this.allRank = this.$store.getters.calculateCourseOverallRank(this.groupId)
+    this.loading = false
   }
 })
 </script>
