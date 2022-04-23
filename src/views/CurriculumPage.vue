@@ -16,7 +16,6 @@
       </v-chip>
     </v-banner>
     <!-- TODO pad页面以及表单 -->
-    <!-- TODO skeleton -->
     <!-- 电脑以及手机页面  -->
     <v-row>
       <v-col lg="3" cols="12" class="pb-0">
@@ -29,7 +28,7 @@
               <v-expansion-panel-header class="subtitle-1 font-weight-bold secondary--text py-0">
                 > 全部学期 (共 {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
               </v-expansion-panel-header>
-              <v-expansion-panel-content class="py-0" v-if="courseGroup.courseList.flatMap((course) => course.reviewList || []).length >= 3">
+              <v-expansion-panel-content class="py-0 pl-2" v-if="courseGroup.courseList.flatMap((course) => course.reviewList || []).length >= 3">
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
                     <span class="subtitle-2 ml-1 mt-1 black--text">总体评分 </span>
@@ -63,14 +62,14 @@
                   <v-col cols="4" class="caption">{{ allRank.assessment }} ({{ rankWordAssessment(allRank.assessment) }})</v-col>
                 </v-row>
               </v-expansion-panel-content>
-              <v-expansion-panel-content class="py-0 ma-0" v-else>
+              <v-expansion-panel-content class="py-0 ma-0 pl-2" v-else>
                 <v-subheader class="my-n4 mb-n7"> 评分太少, 不具有参考性 </v-subheader>
               </v-expansion-panel-content>
             </v-expansion-panel>
             <!-- 学期评分 -->
             <v-expansion-panel class="py-0 mt-0" v-for="(reviews, year) in Object.fromEntries(semesterReview().entries())" :key="year + reviews.toString()">
               <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text"> > {{ year }} (共 {{ reviews.length }} 条) </v-expansion-panel-header>
-              <v-expansion-panel-content class="py-0" v-if="reviews.length >= 3">
+              <v-expansion-panel-content class="py-0 pl-2" v-if="reviews.length >= 3">
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
                     <span class="subtitle-2 ml-1 mt-1 black--text">总体评分</span>
@@ -109,7 +108,7 @@
                 </v-row>
               </v-expansion-panel-content>
               <v-expansion-panel-content class="py-0 ma-0" v-else>
-                <v-subheader class="my-n4 mb-n7"> 评分太少, 不具有参考性 </v-subheader>
+                <v-subheader class="my-n4 mb-n7 pl-2"> 评分太少, 不具有参考性 </v-subheader>
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
