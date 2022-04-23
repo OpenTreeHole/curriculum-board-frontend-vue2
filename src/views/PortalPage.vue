@@ -10,7 +10,13 @@
         </v-col>
       </v-row>
       <!-- TODO 添加各种说明 JWT鉴权-->
-      <transition name="fade">
+      <v-row class="d-flex align-center" v-if="loadingSearchResult && this.searchText !== ''">
+        <v-col style="text-align: center">
+          <v-progress-circular :size="60" color="primary" indeterminate class="d-none d-sm-inline-block"></v-progress-circular>
+          <v-progress-circular :size="40" color="primary" indeterminate class="d-inline-block d-sm-none"></v-progress-circular>
+        </v-col>
+      </v-row>
+      <transition name="fade" v-if="!loadingSearchResult">
         <v-row class="ma-0 pa-0">
           <v-spacer />
           <v-col cols="12" lg="6" class="ma-0 pa-0">
@@ -49,6 +55,7 @@ export default Vue.extend({
   name: 'PortalPage',
   data() {
     return {
+      loadingSearchResult: true,
       searchText: '',
       searchResult: [] as CourseGroup[],
       inSearch: false
@@ -182,6 +189,7 @@ export default Vue.extend({
         name: '嘉然今天吃七海nana7mi'
       })
     })
+    this.loadingSearchResult = false
   }
 })
 </script>
