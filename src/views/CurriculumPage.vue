@@ -1,7 +1,8 @@
 <template>
   <v-container fluid class="ma-0 pa-0">
     <v-breadcrumbs style="background-color: #fbfbfd" class="pl-4">
-      <v-skeleton-loader v-if="loading" type="heading" width="70%" height="20%"></v-skeleton-loader>
+      <v-skeleton-loader v-if="loading" type="heading" width="70%" height="40%" class="d-none d-sm-flex" />
+      <v-skeleton-loader v-if="loading" type="heading" width="100%" height="20%" class="d-block d-sm-none" />
       <template v-if="!loading">
         <v-breadcrumbs-item class="text-h6 font-weight-black ml-0">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
         <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
@@ -9,6 +10,9 @@
         <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-3 d-none d-sm-flex" color="accent">{{ v }} 学分 </v-chip>
       </template>
     </v-breadcrumbs>
+    <v-banner class="d-block d-sm-none" v-if="loading">
+      <v-skeleton-loader type="text" width="20%" height="10%"></v-skeleton-loader>
+    </v-banner>
     <v-banner class="d-block d-sm-none mt-0 pt-0" v-if="!loading">
       <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="accent"
         >{{ v }}
@@ -654,7 +658,6 @@ export default Vue.extend({
   async mounted() {
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
     this.allRank = this.$store.getters.calculateCourseOverallRank(this.groupId)
-    this.loading = false
   }
 })
 </script>
