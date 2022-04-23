@@ -1,7 +1,6 @@
 <template>
   <v-container class="pa-0">
     <v-card>
-      <!-- TODO Vditor解决延迟加载-->
       <v-row no-gutters class="d-flex justify-space-between ml-1">
         <v-col class="pa-0 ma-0" cols="10" lg="11" md="11" sm="10">
           <v-card-title class="text-h6 font-weight-bold pt-3 pb-2"> {{ review.review.title }} </v-card-title>

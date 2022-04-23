@@ -1,7 +1,5 @@
 <template>
-  <div :id="this.contentId" class="vditor">
-    <div class="vditor-toolbar pl-0"></div>
-  </div>
+  <div :id="this.contentId" class="vditor"></div>
 </template>
 
 <script lang="ts">
@@ -15,7 +13,7 @@ export default Vue.extend({
     editor: null as Vditor | null,
     contentId: new Date().getTime().toString()
   }),
-  async mounted() {
+  mounted() {
     this.editor = new Vditor(this.contentId, {
       height: window.innerHeight - 600,
       placeholder: '说些什么......',
@@ -25,10 +23,12 @@ export default Vue.extend({
       },
       counter: {
         enable: false
-      },
-      after: async () => {
-        this.editor?.setValue('hello, Vditor + Vue!')
       }
+      /*after: async () => {
+        this.editor?.setValue('hello, Vditor + Vue!')
+      }*/
+      /* 这一部分会导致editor延迟一下渲染, TODO 解决延迟渲染并且可以使用模版 */
+      /* TODO 添加模版 */
     })
     this.$emit('editorReady')
   },
