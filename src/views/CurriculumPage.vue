@@ -137,16 +137,14 @@
         <review-filter class="my-2" v-if="!loading" />
         <v-skeleton-loader v-if="loading" type="heading" class="ml-2 my-lg-4"></v-skeleton-loader>
         <div v-if="!loading" class="d-none d-sm-block">
-          <v-row style="text-align: center">
-            <v-col class="text-h5 my-4 grey--text" v-if="reviews.length === 0"> 暂时没有测评 </v-col>
+          <v-row style="text-align: center" v-if="reviews.length === 0">
+            <v-col class="text-h5 my-4 grey--text"> 暂时没有测评 </v-col>
           </v-row>
           <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3"></review-card>
         </div>
-        <template>
-          <div style="text-align: center" class="my-3 d-block d-sm-none">
-            <v-btn @click="changePhoneFormView" :disabled="loading"> 发布测评</v-btn>
-          </div>
-        </template>
+        <div style="text-align: center" class="my-3 d-block d-sm-none">
+          <v-btn @click="changePhoneFormView" :disabled="loading"> 发布测评</v-btn>
+        </div>
         <v-card v-if="loading" class="pa-2 mb-3">
           <v-skeleton-loader type="article, actions" width="100%" class="my-2"></v-skeleton-loader>
         </v-card>
@@ -157,8 +155,8 @@
           </v-col>
         </v-row>
         <div v-if="!loading" class="d-block d-sm-none">
-          <v-row style="text-align: center">
-            <v-col class="text-h6 my-2 grey--text" v-if="reviews.length === 0"> 暂时没有测评 </v-col>
+          <v-row style="text-align: center" v-if="reviews.length === 0">
+            <v-col class="text-h6 my-2 grey--text"> 暂时没有测评 </v-col>
           </v-row>
           <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-3"></review-card>
         </div>
@@ -169,7 +167,7 @@
     <v-dialog v-model="reviewSheet" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>
-          <span class="text-h6 mb-3">发表测评</span>
+          <span class="text-h6 mb-3">发布测评</span>
         </v-card-title>
         <v-form class="mx-7">
           <v-row>

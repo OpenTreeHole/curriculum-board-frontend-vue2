@@ -51,7 +51,10 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)">
-        <v-col cols="12" style="text-align: right" class="pr-2">
+        <v-col cols="3" class="shrink pr-0">
+          <v-card-text class="pa-1 pl-3 Caption grey--text">{{ review.review.timeCreated }}</v-card-text>
+        </v-col>
+        <v-col cols="9" style="text-align: right" class="pr-2">
           <v-tooltip right class="ma-0 pa-0" color="white">
             <template v-slot:activator="{ on, attrs }">
               <v-card-text class="pa-1 pl-0 caption" v-bind="attrs" v-on="on">
