@@ -1,8 +1,8 @@
 import axios from 'axios'
-import { backendAPI } from '@/config'
+import config from '@/config'
 import { isDebug } from '@/utils/index'
 
-axios.defaults.baseURL = backendAPI
+axios.defaults.baseURL = config.backendAPI
 axios.interceptors.request.use((config) => {
   // Put token into header.
   const token = localStorage.getItem('token')
