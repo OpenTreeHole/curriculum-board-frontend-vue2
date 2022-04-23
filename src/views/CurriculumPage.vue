@@ -13,6 +13,7 @@
       </v-chip>
     </v-banner>
     <!-- TODO pad页面以及表单 -->
+    <!-- TODO skeleton -->
     <!-- 电脑以及手机页面  -->
     <v-row>
       <v-col lg="3" cols="12">
