@@ -23,14 +23,14 @@
     <!-- 电脑以及手机页面  -->
     <v-row>
       <v-col lg="3" cols="12" class="pb-0">
-        <v-card class="pb-4">
-          <v-card-title class="text-h6 font-weight-black primary--text pb-0"> > 评分</v-card-title>
+        <v-card class="pb-4" elevation="0">
+          <v-card-title class="text-h6 font-weight-black primary--text pb-0 ml-1"> 评分</v-card-title>
           <v-skeleton-loader v-if="loading" type="paragraph" width="60%" class="ml-10 my-2"></v-skeleton-loader>
           <v-expansion-panels flat multiple class="py-0" v-if="!loading">
             <v-expansion-panel class="py-0">
               <!-- 总体评分 -->
               <v-expansion-panel-header class="subtitle-1 font-weight-bold secondary--text py-0">
-                > 全部学期 (共 {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
+                全部学期 (共 {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
               </v-expansion-panel-header>
               <v-expansion-panel-content class="py-0 pl-2" v-if="courseGroup.courseList.flatMap((course) => course.reviewList || []).length >= 3">
                 <v-row align="center" no-gutters>
@@ -72,7 +72,7 @@
             </v-expansion-panel>
             <!-- 学期评分 -->
             <v-expansion-panel class="py-0 mt-0" v-for="(reviews, year) in Object.fromEntries(semesterReview().entries())" :key="year + reviews.toString()">
-              <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text"> > {{ year }} (共 {{ reviews.length }} 条) </v-expansion-panel-header>
+              <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text ml-1">{{ year }} (共 {{ reviews.length }} 条) </v-expansion-panel-header>
               <v-expansion-panel-content class="py-0 pl-2" v-if="reviews.length >= 3">
                 <v-row align="center" no-gutters>
                   <v-col cols="3" align-self="end">
@@ -116,37 +116,37 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
-          <v-card-title class="text-h6 font-weight-black primary--text py-0 pt-1"> > 授课教师</v-card-title>
+          <v-card-title class="text-h6 font-weight-black primary--text py-0 pt-1 ml-1">授课教师</v-card-title>
           <v-skeleton-loader v-if="loading" type="sentences" width="60%" class="ml-10 my-2"></v-skeleton-loader>
           <v-card-actions class="pt-1 pb-1" v-if="!loading">
             <v-chip-group class="ml-4" column mandatory v-model="teacherTag" @change="changeTeacherFilter" active-class="blue--text">
               <v-chip small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
-          <v-card-title class="text-h6 font-weight-black primary--text py-0"> > 时间</v-card-title>
+          <v-card-title class="text-h6 font-weight-black primary--text py-0 ml-1">时间</v-card-title>
           <v-skeleton-loader v-if="loading" type="sentences" width="60%" class="ml-10 my-2"></v-skeleton-loader>
           <v-card-actions class="pt-1 mb-2" v-if="!loading">
             <v-chip-group class="ml-4" column mandatory v-model="timeTag" @change="changeTimeFilter" active-class="blue--text">
               <v-chip small v-for="(v, i) in timeTags()" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
+          <v-divider />
         </v-card>
-        <div style="text-align: center" class="mt-3 d-none d-sm-block">
-          <v-btn @click="changeFormView" :disabled="loading">发布测评</v-btn>
+        <div style="text-align: center" class="mt-1 d-none d-sm-block">
+          <v-btn @click="changeFormView" :disabled="loading" elevation="0">发布测评</v-btn>
         </div>
       </v-col>
       <v-col lg="8" class="mx-lg-0 mx-3">
         <!-- TODO review排序 -->
-        <review-filter class="my-2" v-if="!loading" />
         <v-skeleton-loader v-if="loading" type="heading" class="ml-2 my-lg-4"></v-skeleton-loader>
-        <div v-if="!loading" class="d-none d-sm-block">
+        <div v-if="!loading" class="d-none d-sm-block mt-10">
           <v-row style="text-align: center" v-if="reviews.length === 0">
             <v-col class="text-h5 my-4 grey--text"> 暂时没有测评 </v-col>
           </v-row>
           <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3"></review-card>
         </div>
         <div style="text-align: center" class="my-3 d-block d-sm-none">
-          <v-btn @click="changePhoneFormView" :disabled="loading"> 发布测评</v-btn>
+          <v-btn @click="changePhoneFormView" :disabled="loading" elevation="0"> 发布测评</v-btn>
         </div>
         <v-card v-if="loading" class="pa-2 mb-3">
           <v-skeleton-loader type="article, actions" width="100%" class="my-2"></v-skeleton-loader>
@@ -161,7 +161,7 @@
           <v-row style="text-align: center" v-if="reviews.length === 0">
             <v-col class="text-h6 my-2 grey--text"> 暂时没有测评 </v-col>
           </v-row>
-          <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-3"></review-card>
+          <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-5"></review-card>
         </div>
         <div class="my-8"></div>
       </v-col>
@@ -620,11 +620,11 @@ export default Vue.extend({
       semesterTotalScore.assessment = Math.round((semesterTotalScore.assessment / reviews.length) * 20.0)
       return semesterTotalScore
     },
+    changeFormView(): void {
+      this.reviewSheet = !this.reviewSheet
+    },
     async postReview() {
       console.log((this.$refs.reviewEditor as any).getContent())
-    },
-    async changeFormView(): Promise<void> {
-      this.reviewSheet = !this.reviewSheet
     },
     async changePhoneFormView(): Promise<void> {
       this.reviewSheetPhone = !this.reviewSheetPhone
