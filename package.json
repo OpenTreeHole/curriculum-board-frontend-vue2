@@ -5,7 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "serve-vite": "vite",
+    "build-vite": "vite build",
+    "preview-vite": "vite preview"
   },
   "dependencies": {
     "@babel/core": "^7.0.0",
@@ -52,7 +55,12 @@
     "vue-cli-plugin-vuetify": "~2.4.7",
     "vue-cli-plugin-webfontloader": "~0.1.1",
     "vue-template-compiler": "^2.6.14",
-    "vuetify-loader": "^1.7.0"
+    "vuetify-loader": "^1.7.0",
+    "vite-plugin-vue2": "^1.9.0",
+    "vite-plugin-env-compatible": "^1.1.1",
+    "vite-plugin-html": "2.1.1",
+    "vite": "^2.7.2",
+    "@originjs/vite-plugin-commonjs": "^1.0.1"
   },
   "eslintConfig": {
     "root": true,
