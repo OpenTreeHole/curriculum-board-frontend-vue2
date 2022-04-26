@@ -43,6 +43,7 @@ declare module '@vue/runtime-core' {
     VRow: typeof import('vuetify/lib')['VRow']
     VSelect: typeof import('vuetify/lib')['VSelect']
     VSkeletonLoader: typeof import('vuetify/lib')['VSkeletonLoader']
+    VSnackbar: typeof import('vuetify/lib')['VSnackbar']
     VSpacer: typeof import('vuetify/lib')['VSpacer']
     VSubheader: typeof import('vuetify/lib')['VSubheader']
     VTextField: typeof import('vuetify/lib')['VTextField']

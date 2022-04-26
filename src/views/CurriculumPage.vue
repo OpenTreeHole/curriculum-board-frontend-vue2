@@ -174,21 +174,27 @@
         <v-card-title>
           <span class="text-h6 mb-3">发布测评</span>
         </v-card-title>
-        <v-form class="mx-7">
+        <v-form class="mx-7" v-model="valid" ref="reviewSheet">
           <v-row>
             <v-col cols="8">
-              <v-text-field :counter="20" required label="标题" class="pt-1 text-h6" v-model="reviewTitle"></v-text-field>
+              <v-text-field :counter="20" required label="标题" class="pt-1 text-h6" v-model="reviewTitle" :rules="reviewTitleRules"></v-text-field>
             </v-col>
           </v-row>
           <v-row class="pt-0 mt-0">
             <v-col cols="4">
-              <v-select :items="teacherSelect" required label="任课教师"></v-select>
+              <v-select :items="teacherSelect" required label="任课教师" :rules="[(v) => !!v || '请选择任课教师']"></v-select>
             </v-col>
             <v-col cols="4">
-              <v-select :items="timeSelect" required label="课程时间"></v-select>
+              <v-select :items="timeSelect" required label="课程时间" :rules="[(v) => !!v || '请选择课程时间']"></v-select>
             </v-col>
           </v-row>
           <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" />
+          <v-snackbar v-model="snackbar" :timeout="2000"
+            >请输入{{ snackbarContent
+            }}<template v-slot:action="{ attrs }">
+              <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
+            </template></v-snackbar
+          >
         </v-form>
         <v-card-title class="mb-2 mt-2"> 评分</v-card-title>
         <v-row class="mx-3">
@@ -222,31 +228,45 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="reviewSheet = false"> 取消</v-btn>
-          <v-btn color="blue darken-1" text @click="postReview"> 发布</v-btn>
+          <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid"> 发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <!-- 手机表单  -->
-    <v-dialog v-model="reviewSheetPhone" fullscreen transition="dialog-bottom-transition">
+    <v-dialog v-model="reviewSheetPhone" ref="reviewSheet" fullscreen transition="dialog-bottom-transition">
       <v-card>
         <v-card-title>
           <span class="text-h6 mt-5">发布测评</span>
         </v-card-title>
-        <v-form class="mx-10">
+        <v-form class="mx-10" v-model="valid" ref="reviewSheet">
           <v-row class="mt-0">
             <v-col cols="12">
-              <v-text-field :counter="20" required label="标题" class="pt-1 font-weight-bold" style="font-size: small" v-model="reviewTitle"></v-text-field>
+              <v-text-field
+                :counter="20"
+                required
+                label="标题"
+                class="pt-1 font-weight-bold"
+                style="font-size: small"
+                v-model="reviewTitle"
+                :rules="reviewTitleRules"
+              ></v-text-field>
             </v-col>
           </v-row>
           <v-row class="mt-0">
             <v-col cols="6">
-              <v-select :items="teacherSelect" style="font-size: small" required label="任课教师"></v-select>
+              <v-select :items="teacherSelect" style="font-size: small" required label="任课教师" :rules="[(v) => !!v || '请选择任课教师']"></v-select>
             </v-col>
             <v-col cols="6">
-              <v-select :items="timeSelect" style="font-size: small" required label="课程时间"></v-select>
+              <v-select :items="timeSelect" style="font-size: small" required label="课程时间" :rules="[(v) => !!v || '请选择课程时间']"></v-select>
             </v-col>
           </v-row>
           <ReviewEditor class="mt-2" style="font-size: small" ref="reviewEditor" />
+          <v-snackbar v-model="snackbar" :timeout="2000"
+            >请输入{{ snackbarContent
+            }}<template v-slot:action="{ attrs }">
+              <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
+            </template></v-snackbar
+          >
         </v-form>
         <v-card-title class="mb-2 mt-3"> 评分</v-card-title>
         <v-row class="mx-9">
@@ -280,7 +300,7 @@
         <v-card-actions class="mr-4 mt-4">
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="reviewSheetPhone = false" class="mr-0">取消</v-btn>
-          <v-btn color="blue darken-1" class="mr-2 ml-0" text>发布</v-btn>
+          <v-btn color="blue darken-1" class="mr-2 ml-0" text :disabled="!valid" @click="postReview">发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -302,8 +322,12 @@ export default Vue.extend({
   props: ['groupId'],
   data: () => ({
     loading: true,
+    valid: true,
+    snackbarContent: '测评内容',
+    snackbar: false,
     reviewSheet: false,
     reviewTitle: '',
+    reviewTitleRules: [(v: string) => !!v || '评论标题不能为空', (v: string) => v.length <= 20 || '评论标题不能超过20字'],
     teacherTag: 0,
     timeTag: 0,
     rank: {
@@ -326,6 +350,7 @@ export default Vue.extend({
       semester: null as number | null
     }
   }),
+  watch: {},
   computed: {
     postRankWordOverall(): string {
       switch (this.rank.overall) {
@@ -623,7 +648,21 @@ export default Vue.extend({
       this.reviewSheet = !this.reviewSheet
     },
     async postReview() {
-      console.log((this.$refs.reviewEditor as any).getContent())
+      if ((this.$refs.reviewSheet as Vue & { validate: () => boolean }).validate()) {
+        this.snackbar = true
+        if ((this.$refs.reviewEditor as any).getContent().length > 1) {
+          if (this.rank.overall && this.rank.assessment && this.rank.content && this.rank.workload) {
+            this.reviewSheet = false
+            this.reviewSheetPhone = false
+          } else {
+            this.snackbarContent = '评分'
+            this.snackbar = true
+          }
+        } else {
+          this.snackbarContent = '测评内容'
+          this.snackbar = true
+        }
+      }
     },
     async changePhoneFormView(): Promise<void> {
       this.reviewSheetPhone = !this.reviewSheetPhone
