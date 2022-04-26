@@ -20,6 +20,13 @@ export interface IReviewData {
   rank: IRank
   remark: number
 }
+
+export interface postReviewData {
+  title: string
+  content: string
+  rank: IRank
+}
+
 export interface IRank {
   overall: number
   content: number

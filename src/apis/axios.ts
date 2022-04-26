@@ -81,8 +81,8 @@ axios.interceptors.response.use((response) => response, jwt.responseErrorInterce
 authAxios.interceptors.response.use((response) => response, jwt.responseErrorInterceptor)
 
 axios.defaults.baseURL = config.backendAPI
-axios.defaults.baseURL = config.authUrl
-axios.defaults.baseURL = config.authUrl
+authAxios.defaults.baseURL = config.authUrl
+refreshAxios.defaults.baseURL = config.authUrl
 axios.interceptors.request.use(requestInterceptor)
 authAxios.interceptors.request.use(requestInterceptor)
 refreshAxios.interceptors.request.use(refreshRequestInterceptor)

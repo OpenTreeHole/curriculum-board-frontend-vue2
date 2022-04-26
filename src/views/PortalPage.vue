@@ -26,8 +26,8 @@
                   <v-card-subtitle class="monospace grey--text py-0 pt-3 d-flex">
                     <span class="mr-3 d-flex align-center">{{ v.code }}</span>
                     <v-chip-group column>
-                      <v-chip label small :key="credit.credit" v-for="credit in v.courseList" disabled class="black--text font-weight-bold" outlined color="red">
-                        {{ credit.credit }}学分</v-chip
+                      <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" disabled class="black--text font-weight-bold" outlined color="red">
+                        {{ credit }}学分</v-chip
                       >
                     </v-chip-group>
                   </v-card-subtitle>
@@ -87,6 +87,13 @@ export default Vue.extend({
       this.searchResult = (this.$store.state.data.courseGroup as CourseGroup[]).filter(
         (course) => match(course.name, this.searchText) || [course.name, course.code].some((field) => field.includes(this.searchText))
       )
+    }
+  },
+  methods: {
+    credits(courseList: Course[]): number[] {
+      let creditsSet = new Set<number>()
+      courseList.forEach((course) => creditsSet.add(course.credit))
+      return [...creditsSet]
     }
   },
   async mounted() {
@@ -180,6 +187,20 @@ export default Vue.extend({
             semester: 2,
             weekHour: 7,
             year: '2022',
+            name: '嘉然今天吃七海nana7mi',
+            reviewList: []
+          }),
+          new Course({
+            id: 3,
+            codeId: 'JXT114514.03',
+            code: 'JXT114514',
+            department: '嘉心糖',
+            teachers: '向晚',
+            credit: 6,
+            maxStudent: 114514,
+            semester: 2,
+            weekHour: 7,
+            year: '2023',
             name: '嘉然今天吃七海nana7mi',
             reviewList: []
           })

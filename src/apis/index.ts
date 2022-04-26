@@ -1,4 +1,4 @@
-import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, Review } from '@/models'
+import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, postReviewData, Review } from '@/models'
 import axios, { authAxios, jwt, refreshAxios } from '@/apis/axios'
 import config from '@/config'
 import { camelizeKeys, snakifyKeys } from '@/utils'
@@ -159,7 +159,7 @@ export const getReviews = async (courseId: number) => {
   return data.map((v) => new Review(v))
 }
 
-export const addReview = async (courseId: number, reviewData: IReviewData) => {
+export const addReview = async (courseId: number, reviewData: postReviewData) => {
   const response = await axios.post(`/courses/${courseId}/reviews`, reviewData)
   const data: IReview = camelizeKeys(response.data)
   return new Review(data)

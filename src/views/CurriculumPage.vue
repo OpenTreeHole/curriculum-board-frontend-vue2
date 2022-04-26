@@ -29,7 +29,7 @@
           <v-expansion-panels flat multiple class="py-0" v-if="!loading">
             <v-expansion-panel class="py-0">
               <!-- 总体评分 -->
-              <v-expansion-panel-header class="subtitle-1 font-weight-bold secondary--text py-0">
+              <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text ml-1">
                 全部学期 (共 {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
               </v-expansion-panel-header>
               <v-expansion-panel-content class="py-0 pl-2" v-if="courseGroup.courseList.flatMap((course) => course.reviewList || []).length >= 3">
@@ -145,7 +145,7 @@
           </v-row>
           <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3"></review-card>
         </div>
-        <div style="text-align: center" class="my-3 d-block d-sm-none">
+        <div style="text-align: center" class="mb-4 d-block d-sm-none mt-0">
           <v-btn @click="changePhoneFormView" :disabled="loading" elevation="0"> 发布测评</v-btn>
         </div>
         <v-card v-if="loading" class="pa-2 mb-3">
@@ -181,11 +181,35 @@
             </v-col>
           </v-row>
           <v-row class="pt-0 mt-0">
-            <v-col cols="4">
-              <v-select :items="teacherSelect" required label="任课教师" :rules="[(v) => !!v || '请选择任课教师']"></v-select>
+            <v-col cols="3">
+              <v-select
+                :items="teachersSelectList"
+                item-text="title"
+                item-value="value"
+                clearable
+                required
+                label="任课教师"
+                :rules="[(v) => !!v || '请选择任课教师']"
+                class="subtitle-2 font-weight-regular"
+                v-model="teacherSelected"
+              ></v-select>
             </v-col>
-            <v-col cols="4">
-              <v-select :items="timeSelect" required label="课程时间" :rules="[(v) => !!v || '请选择课程时间']"></v-select>
+            <v-col cols="3">
+              <v-select
+                :items="timeSelectList"
+                clearable
+                required
+                item-text="title"
+                item-value="value"
+                label="课程时间"
+                :rules="[(v) => !!v || '请选择课程时间']"
+                class="subtitle-2 font-weight-regular"
+                @change="banTeacher"
+                v-model="timeSelected"
+              ></v-select>
+            </v-col>
+            <v-col cols="3">
+              <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseId"></v-text-field>
             </v-col>
           </v-row>
           <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" />
@@ -228,7 +252,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="reviewSheet = false"> 取消</v-btn>
-          <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid"> 发布</v-btn>
+          <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid" :loading="postingReview"> 发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -300,7 +324,7 @@
         <v-card-actions class="mr-4 mt-4">
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="reviewSheetPhone = false" class="mr-0">取消</v-btn>
-          <v-btn color="blue darken-1" class="mr-2 ml-0" text :disabled="!valid" @click="postReview">发布</v-btn>
+          <v-btn color="blue darken-1" class="mr-2 ml-0" text :disabled="!valid" @click="postReview" :loading="postingReview">发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -314,8 +338,13 @@ import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
 import { parseYearSemester } from '@/utils/course'
-import { toNumber } from 'lodash-es'
+import { forEach, toNumber } from 'lodash-es'
 
+export interface itemList {
+  title: string
+  value: string
+  disabled: boolean
+}
 export default Vue.extend({
   name: 'CurriculumPage',
   components: { ReviewEditor, ReviewCard },
@@ -323,19 +352,24 @@ export default Vue.extend({
   data: () => ({
     loading: true,
     valid: true,
-    snackbarContent: '测评内容',
+    snackbarContent: '',
     snackbar: false,
     reviewSheet: false,
+    postingReview: false,
     reviewTitle: '',
     reviewTitleRules: [(v: string) => !!v || '评论标题不能为空', (v: string) => v.length <= 20 || '评论标题不能超过20字'],
     teacherTag: 0,
     timeTag: 0,
+    teachersSelectList: [] as itemList[],
+    timeSelectList: [] as itemList[],
     rank: {
       overall: 0,
       content: 0,
       workload: 0,
       assessment: 0
     },
+    teacherSelected: '',
+    timeSelected: '',
     allRank: {
       overall: 0,
       content: 0,
@@ -350,10 +384,11 @@ export default Vue.extend({
       semester: null as number | null
     }
   }),
-  watch: {},
   computed: {
     postRankWordOverall(): string {
       switch (this.rank.overall) {
+        case 0:
+          return '无'
         case 1:
           return '特别差评'
         case 2:
@@ -368,6 +403,8 @@ export default Vue.extend({
     },
     postRankWordContent(): string {
       switch (this.rank.content) {
+        case 0:
+          return '无'
         case 1:
           return '非常容易'
         case 2:
@@ -382,6 +419,8 @@ export default Vue.extend({
     },
     postRankWordWorkload(): string {
       switch (this.rank.workload) {
+        case 0:
+          return '无'
         case 1:
           return '非常大'
         case 2:
@@ -396,6 +435,8 @@ export default Vue.extend({
     },
     postRankWordAssessment(): string {
       switch (this.rank.assessment) {
+        case 0:
+          return '无'
         case 1:
           return '非常严格'
         case 2:
@@ -458,6 +499,7 @@ export default Vue.extend({
       }
       return ['所有', ...teachersSet]
     },
+    // TODO 通过id筛选老师和时间
     timeSelect(): string[] {
       let timeSet = new Set<string>()
       this.courseGroup?.courseList.forEach((course) => {
@@ -471,6 +513,9 @@ export default Vue.extend({
         teachersSet.add(course.teachers)
       })
       return [...teachersSet]
+    },
+    courseId(): string {
+      return this.courseGroup?.courseList[0].code ?? ''
     },
     reviews(): ReviewWithCourse[] {
       return (
@@ -486,6 +531,35 @@ export default Vue.extend({
     }
   },
   methods: {
+    banTime(): string[] {
+      let timeBanned = new Set<string>()
+      if (this.teacherSelected !== '') {
+        this.courseGroup?.courseList.forEach((course) => {
+          if (this.teacherSelected !== course.teachers) {
+            timeBanned.add(course.teachers)
+          }
+        })
+      }
+      return [...timeBanned]
+    },
+    // TODO 时间和教师过滤器
+    banTeacher(): void {
+      this.teachersSelectList.forEach((teacher) => {
+        teacher.disabled = false
+      })
+      this.courseGroup?.courseList.forEach((course) => {
+        console.log(this.timeSelected)
+        console.log(parseYearSemester(course))
+        if (this.timeSelected !== parseYearSemester(course)) {
+          console.log(course.teachers)
+          for (const teacher of this.teachersSelectList) {
+            if (teacher.title === course.teachers) {
+              teacher.disabled = true
+            }
+          }
+        }
+      })
+    },
     timeTags(): string[] {
       let timeSet = new Set<string>()
       for (const course of this.courseGroup?.courseList ?? []) {
@@ -649,11 +723,12 @@ export default Vue.extend({
     },
     async postReview() {
       if ((this.$refs.reviewSheet as Vue & { validate: () => boolean }).validate()) {
-        this.snackbar = true
         if ((this.$refs.reviewEditor as any).getContent().length > 1) {
           if (this.rank.overall && this.rank.assessment && this.rank.content && this.rank.workload) {
-            this.reviewSheet = false
-            this.reviewSheetPhone = false
+            this.postingReview = true
+            await api.addReview()
+            // this.reviewSheet = false
+            // this.reviewSheetPhone = false
           } else {
             this.snackbarContent = '评分'
             this.snackbar = true
@@ -696,6 +771,22 @@ export default Vue.extend({
   async mounted() {
     this.courseGroup = await this.getOrLoadCourseGroup(this.groupId)
     this.allRank = this.$store.getters.calculateCourseOverallRank(this.groupId)
+    let timeSet = new Set<string>()
+    let teachersSet = new Set<string>()
+    this.courseGroup?.courseList.forEach((course) => {
+      timeSet.add(parseYearSemester(course))
+    })
+    this.courseGroup?.courseList.forEach((course) => {
+      teachersSet.add(course.teachers)
+    })
+    let timeArray = [...timeSet] as string[]
+    let teachersArray = [...teachersSet] as string[]
+    timeArray.forEach((time) => {
+      this.timeSelectList.push({ title: time, value: time, disabled: false })
+    })
+    teachersArray.forEach((teacher) => {
+      this.teachersSelectList.push({ title: teacher, value: teacher, disabled: false })
+    })
     this.loading = false
   }
 })
