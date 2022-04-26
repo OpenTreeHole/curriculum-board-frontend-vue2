@@ -292,14 +292,13 @@ import Vue from 'vue'
 import { CourseGroup, ReviewWithCourse, totalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
-import ReviewFilter from '@/components/ReviewFilter.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
 import { parseYearSemester } from '@/utils/course'
 import { toNumber } from 'lodash-es'
 
 export default Vue.extend({
   name: 'CurriculumPage',
-  components: { ReviewEditor, ReviewFilter, ReviewCard },
+  components: { ReviewEditor, ReviewCard },
   props: ['groupId'],
   data: () => ({
     loading: true,
