@@ -216,6 +216,7 @@
               <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
             </template></v-snackbar
           >
+          <v-snackbar :timeout="3000" v-model="error" absolute centered right tile color="red accent-2"> 喔嚄, 出错了, {{ ErrorMessage }} </v-snackbar>
         </v-form>
         <v-card-title class="mb-2 mt-2"> 评分</v-card-title>
         <v-row class="mx-3">
@@ -249,7 +250,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="reviewSheet = false"> 取消</v-btn>
-          <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid" :loading="postingReview"> 发布</v-btn>
+          <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid" :loading="postingReviewLoading"> 发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -321,6 +322,7 @@
               <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
             </template></v-snackbar
           >
+          <v-snackbar :timeout="3000" v-model="error" absolute centered right tile color="red accent-2"> 喔嚄, 出错了, {{ ErrorMessage }} </v-snackbar>
         </v-form>
         <v-card-title class="mb-2 mt-3"> 评分</v-card-title>
         <v-row class="mx-9">
@@ -354,7 +356,7 @@
         <v-card-actions class="mr-4 mt-4">
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="reviewSheetPhone = false" class="mr-0">取消</v-btn>
-          <v-btn color="blue darken-1" class="mr-2 ml-0" text :disabled="!valid" @click="postReview" :loading="postingReview">发布</v-btn>
+          <v-btn color="blue darken-1" class="mr-2 ml-0" text :disabled="!valid" @click="postReview" :loading="postingReviewLoading">发布</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -363,12 +365,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, ReviewWithCourse, totalRank } from '@/models'
+import { CourseGroup, postReviewData, ReviewWithCourse, totalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
 import { parseYearSemester } from '@/utils/course'
 import { forEach, toNumber } from 'lodash-es'
+import { addReview } from '@/apis'
 
 export interface itemList {
   title: string
@@ -383,9 +386,11 @@ export default Vue.extend({
     loading: true,
     valid: true,
     snackbarContent: '',
+    error: false,
+    ErrorMessage: '',
     snackbar: false,
     reviewSheet: false,
-    postingReview: false,
+    postingReviewLoading: false,
     reviewTitle: '',
     reviewTitleRules: [(v: string) => !!v || '评论标题不能为空', (v: string) => v.length <= 20 || '评论标题不能超过20字'],
     teacherTag: 0,
@@ -726,9 +731,19 @@ export default Vue.extend({
       if ((this.$refs.reviewSheet as Vue & { validate: () => boolean }).validate()) {
         if ((this.$refs.reviewEditor as any).getContent().length > 1) {
           if (this.rank.overall && this.rank.assessment && this.rank.content && this.rank.workload) {
-            this.postingReview = true
-            // this.reviewSheet = false
-            // this.reviewSheetPhone = false
+            this.postingReviewLoading = true
+            const review = {} as postReviewData
+            review.content = (this.$refs.reviewEditor as any).getContent()
+            review.rank = this.rank
+            review.title = this.reviewTitle
+            let reviewAdded = await addReview(toNumber(this.courseId.split('.')[1]), review)
+            await this.$store.commit('addReview', {
+              id: toNumber(this.courseId.split('.')[1]),
+              review: reviewAdded
+            })
+            this.reviewSheet = false
+            this.reviewSheetPhone = false
+            this.postingReviewLoading = false
           } else {
             this.snackbarContent = '评分'
             this.snackbar = true

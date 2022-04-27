@@ -106,6 +106,15 @@ const dataModule: Module<IDataModuleState, RootState> = {
         })
       })
     },
+    addReview(state, reviewPayload): void {
+      state.courseGroup.forEach((courseGroup) => {
+        courseGroup.courseList.forEach((course) => {
+          if (course.id == reviewPayload.courseId) {
+            course.reviewList?.push(reviewPayload.review)
+          }
+        })
+      })
+    },
     addCourseGroup: addCourseGroupImpl,
     addCourseGroups(state, { newCourseGroups }: { newCourseGroups: CourseGroup[] }) {
       newCourseGroups.forEach((element) => addCourseGroupImpl(state, { newCourseGroup: element }))
