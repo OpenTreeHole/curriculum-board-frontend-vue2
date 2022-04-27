@@ -207,7 +207,7 @@
               v-model="timeSelected"
               return-object
             ></v-select>
-            <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseId" style="width: fit-content"></v-text-field>
+            <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseId" style="width: min-content"></v-text-field>
           </v-row>
           <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" />
           <v-snackbar v-model="snackbar" :timeout="2000"
