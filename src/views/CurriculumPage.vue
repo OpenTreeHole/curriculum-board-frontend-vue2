@@ -389,68 +389,20 @@ export default Vue.extend({
   }),
   computed: {
     postRankWordOverall(): string {
-      switch (this.rank.overall) {
-        case 0:
-          return '无'
-        case 1:
-          return '特别差评'
-        case 2:
-          return '差评'
-        case 4:
-          return '好评'
-        case 5:
-          return '特别好评'
-        default:
-          return '一般'
-      }
+      const rankWordOverall = ['无', '特别差评', '差评', '一般', '好评', '特别好评']
+      return rankWordOverall[this.rank.overall]
     },
     postRankWordContent(): string {
-      switch (this.rank.content) {
-        case 0:
-          return '无'
-        case 1:
-          return '非常容易'
-        case 2:
-          return '容易'
-        case 4:
-          return '较难'
-        case 5:
-          return '硬核'
-        default:
-          return '一般'
-      }
+      const rankWordContent = ['无', '非常容易', '容易', '一般', '较难', '硬核']
+      return rankWordContent[this.rank.content]
     },
     postRankWordWorkload(): string {
-      switch (this.rank.workload) {
-        case 0:
-          return '无'
-        case 1:
-          return '非常大'
-        case 2:
-          return '大'
-        case 4:
-          return '小'
-        case 5:
-          return '非常小'
-        default:
-          return '适中'
-      }
+      const rankWordWorkload = ['无', '非常大', '大', '适中', '小', '非常小']
+      return rankWordWorkload[this.rank.workload]
     },
     postRankWordAssessment(): string {
-      switch (this.rank.assessment) {
-        case 0:
-          return '无'
-        case 1:
-          return '非常严格'
-        case 2:
-          return '严格'
-        case 4:
-          return '宽松'
-        case 5:
-          return '非常宽松'
-        default:
-          return '适中'
-      }
+      const rankWordAssessment = ['无', '非常严格', '严格', '宽松', '非常宽松']
+      return rankWordAssessment[this.rank.assessment]
     },
     postRankColorOverall(): string {
       if (this.rank.overall >= 5) {
