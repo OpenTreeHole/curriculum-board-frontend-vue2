@@ -291,22 +291,22 @@ export default Vue.extend({
         this.like = true
         this.remark = this.remark + 2
         await this.$store.commit('cancelLikeReview', {
-          review: this.review
+          reviewId: this.review
         })
         await this.$store.commit('likeReview', {
-          review: this.review
+          reviewId: this.review?.review.id
         })
       } else if (this.like) {
         this.like = false
         this.remark = this.remark - 1
         await this.$store.commit('cancelLikeReview', {
-          review: this.review
+          reviewId: this.review?.review.id
         })
       } else {
         this.like = true
         this.remark = this.remark + 1
         await this.$store.commit('likeReview', {
-          review: this.review
+          reviewId: this.review?.review.id
         })
       }
     },
@@ -316,22 +316,22 @@ export default Vue.extend({
         this.unlike = true
         this.remark = this.remark - 2
         await this.$store.commit('cancelLikeReview', {
-          review: this.review
+          reviewId: this.review?.review.id
         })
         await this.$store.commit('unlikeReview', {
-          review: this.review
+          reviewId: this.review?.review.id
         })
       } else if (this.unlike) {
         this.unlike = false
         this.remark = this.remark + 1
         await this.$store.commit('cancelUnlikeReview', {
-          review: this.review
+          reviewId: this.review?.review.id
         })
       } else {
         this.unlike = true
         this.remark = this.remark - 1
         await this.$store.commit('unlikeReview', {
-          review: this.review
+          reviewId: this.review?.review.id
         })
       }
     }

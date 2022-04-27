@@ -54,57 +54,57 @@ const dataModule: Module<IDataModuleState, RootState> = {
       }
   },
   mutations: {
-    cancelLikeReview(state, { reviewId }): void {
-      state.courseGroup.reduce((acc, courseGroup) => {
-        courseGroup.courseList.reduce((acc, course) => {
+    cancelLikeReview(state, reviewPayload): void {
+      state.courseGroup.forEach((courseGroup) => {
+        courseGroup.courseList.forEach((course) => {
           if (course.reviewList) {
-            const reviewIndex = course.reviewList.findIndex((review) => review.id == reviewId)
-            course.reviewList[reviewIndex].remark--
-            return true
+            course.reviewList.forEach((review) => {
+              if (review.id == reviewPayload.reviewId) {
+                review.remark--
+              }
+            })
           }
-          return acc
-        }, false)
-        return acc
-      }, false)
+        })
+      })
     },
-    cancelUnlikeReview(state, { reviewId }): void {
-      state.courseGroup.reduce((acc, courseGroup) => {
-        courseGroup.courseList.reduce((acc, course) => {
+    cancelUnlikeReview(state, reviewPayload): void {
+      state.courseGroup.forEach((courseGroup) => {
+        courseGroup.courseList.forEach((course) => {
           if (course.reviewList) {
-            const reviewIndex = course.reviewList.findIndex((review) => review.id == reviewId)
-            course.reviewList[reviewIndex].remark++
-            return true
+            course.reviewList.forEach((review) => {
+              if (review.id == reviewPayload.reviewId) {
+                review.remark++
+              }
+            })
           }
-          return acc
-        }, false)
-        return acc
-      }, false)
+        })
+      })
     },
-    likeReview(state, { reviewId }): void {
-      state.courseGroup.reduce((acc, courseGroup) => {
-        courseGroup.courseList.reduce((acc, course) => {
+    likeReview(state, reviewPayload): void {
+      state.courseGroup.forEach((courseGroup) => {
+        courseGroup.courseList.forEach((course) => {
           if (course.reviewList) {
-            const reviewIndex = course.reviewList.findIndex((review) => review.id == reviewId)
-            course.reviewList[reviewIndex].remark++
-            return true
+            course.reviewList.forEach((review) => {
+              if (review.id == reviewPayload.reviewId) {
+                review.remark++
+              }
+            })
           }
-          return acc
-        }, false)
-        return acc
-      }, false)
+        })
+      })
     },
-    unlikeReview(state, { reviewId }): void {
-      state.courseGroup.reduce((acc, courseGroup) => {
-        courseGroup.courseList.reduce((acc, course) => {
+    unlikeReview(state, reviewPayload): void {
+      state.courseGroup.forEach((courseGroup) => {
+        courseGroup.courseList.forEach((course) => {
           if (course.reviewList) {
-            const reviewIndex = course.reviewList.findIndex((review) => review.id == reviewId)
-            course.reviewList[reviewIndex].remark--
-            return true
+            course.reviewList.forEach((review) => {
+              if (review.id == reviewPayload.reviewId) {
+                review.remark--
+              }
+            })
           }
-          return acc
-        }, false)
-        return acc
-      }, false)
+        })
+      })
     },
     addCourseGroup: addCourseGroupImpl,
     addCourseGroups(state, { newCourseGroups }: { newCourseGroups: CourseGroup[] }) {

@@ -476,7 +476,6 @@ export default Vue.extend({
     teacherTags(): string[] {
       let teachersSet = new Set<string>()
       for (const course of this.courseGroup?.courseList ?? []) {
-        console.log(44444)
         if (course.reviewList !== undefined && course.reviewList.length > 0) {
           teachersSet.add(course.teachers)
         }
