@@ -192,6 +192,7 @@
                 :rules="[(v) => !!v || '请选择任课教师']"
                 class="subtitle-2 font-weight-regular"
                 v-model="teacherSelected"
+                return-object
               ></v-select>
             </v-col>
             <v-col cols="3">
@@ -205,7 +206,9 @@
                 :rules="[(v) => !!v || '请选择课程时间']"
                 class="subtitle-2 font-weight-regular"
                 @change="banTeacher"
+                @click:clear="clearBannedTeacher"
                 v-model="timeSelected"
+                return-object
               ></v-select>
             </v-col>
             <v-col cols="3">
@@ -368,8 +371,8 @@ export default Vue.extend({
       workload: 0,
       assessment: 0
     },
-    teacherSelected: '',
-    timeSelected: '',
+    teacherSelected: {} as itemList,
+    timeSelected: {} as itemList,
     allRank: {
       overall: 0,
       content: 0,
@@ -531,6 +534,14 @@ export default Vue.extend({
     }
   },
   methods: {
+    clearBannedTeacher() {
+      this.teachersSelectList.forEach((teacher) => {
+        teacher.disabled = false
+      })
+    },
+    checkTeacher(): void {
+      if (this.teacherSelected.disabled) this.teacherSelected = {} as itemList
+    },
     banTime(): string[] {
       let timeBanned = new Set<string>()
       if (this.teacherSelected !== '') {
@@ -544,21 +555,25 @@ export default Vue.extend({
     },
     // TODO 时间和教师过滤器
     banTeacher(): void {
-      this.teachersSelectList.forEach((teacher) => {
-        teacher.disabled = false
-      })
-      this.courseGroup?.courseList.forEach((course) => {
-        console.log(this.timeSelected)
-        console.log(parseYearSemester(course))
-        if (this.timeSelected !== parseYearSemester(course)) {
-          console.log(course.teachers)
-          for (const teacher of this.teachersSelectList) {
-            if (teacher.title === course.teachers) {
-              teacher.disabled = true
+      console.log(this.teacherSelected === null)
+      if (this.teacherSelected === null) {
+        for (const teacher of this.teachersSelectList) {
+          teacher.disabled = false
+        }
+      } else {
+        this.teachersSelectList.forEach((teacher) => {
+          teacher.disabled = true
+        })
+        this.courseGroup?.courseList.forEach((course) => {
+          if (this.timeSelected.title === parseYearSemester(course)) {
+            for (const teacher of this.teachersSelectList) {
+              if (teacher.title === course.teachers) {
+                teacher.disabled = false
+              }
             }
           }
-        }
-      })
+        })
+      }
     },
     timeTags(): string[] {
       let timeSet = new Set<string>()
@@ -726,7 +741,6 @@ export default Vue.extend({
         if ((this.$refs.reviewEditor as any).getContent().length > 1) {
           if (this.rank.overall && this.rank.assessment && this.rank.content && this.rank.workload) {
             this.postingReview = true
-            await api.addReview()
             // this.reviewSheet = false
             // this.reviewSheetPhone = false
           } else {
