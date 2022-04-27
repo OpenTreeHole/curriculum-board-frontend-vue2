@@ -137,7 +137,6 @@
         </div>
       </v-col>
       <v-col lg="8" class="mx-lg-0 mx-3">
-        <!-- TODO review排序 -->
         <v-skeleton-loader v-if="loading" type="heading" class="ml-2 my-lg-4"></v-skeleton-loader>
         <div v-if="!loading" class="d-none d-sm-block mt-10">
           <v-row style="text-align: center" v-if="reviews.length === 0">
@@ -168,7 +167,6 @@
     </v-row>
     <!-- 电脑表单  -->
     <!-- TODO 提交表单加载动画以及error message -->
-    <!-- TODO form validator -->
     <v-dialog v-model="reviewSheet" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>

@@ -7,10 +7,7 @@
       max-height="64px"
     >
       <v-container class="py-0 fill-height ml-0">
-        <div style="color: white">
-          <font-awesome-icon icon="fa-solid fa-egg" class="text-h5" />
-        </div>
-        <h1 class="mx-3 white--text">蛋壳</h1>
+        <h1 class="white--text">蛋壳</h1>
       </v-container>
     </v-app-bar>
     <v-main>
