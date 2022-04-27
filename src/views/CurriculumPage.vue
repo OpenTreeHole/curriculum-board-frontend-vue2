@@ -276,12 +276,45 @@
             </v-col>
           </v-row>
           <v-row class="mt-0">
-            <v-col cols="6">
-              <v-select :items="teacherSelect" style="font-size: small" required label="任课教师" :rules="[(v) => !!v || '请选择任课教师']"></v-select>
-            </v-col>
-            <v-col cols="6">
-              <v-select :items="timeSelect" style="font-size: small" required label="课程时间" :rules="[(v) => !!v || '请选择课程时间']"></v-select>
-            </v-col>
+            <v-select
+              :items="teachersSelectList"
+              item-text="title"
+              item-value="value"
+              clearable
+              required
+              label="任课教师"
+              :rules="[(v) => !!v || '请选择任课教师']"
+              class="font-weight-regular mx-3"
+              style="width: min-content; font-size: small"
+              @change="banTime"
+              v-model="teacherSelected"
+              return-object
+            ></v-select>
+            <v-select
+              :items="timeSelectList"
+              clearable
+              required
+              item-text="title"
+              item-value="value"
+              label="课程时间"
+              :rules="[(v) => !!v || '请选择课程时间']"
+              class="font-weight-regular mx-3"
+              style="width: min-content; font-size: small"
+              @change="banTeachers"
+              v-model="timeSelected"
+              return-object
+            ></v-select>
+          </v-row>
+          <v-row class="pa-0">
+            <v-text-field
+              label="课程编号"
+              required
+              readonly
+              dense
+              class="subtitle-2 font-weight-regular mx-3 mt-6 mb-2"
+              v-model="courseId"
+              style="width: max-content; font-size: small"
+            ></v-text-field>
           </v-row>
           <ReviewEditor class="mt-2" style="font-size: small" ref="reviewEditor" />
           <v-snackbar v-model="snackbar" :timeout="2000"
