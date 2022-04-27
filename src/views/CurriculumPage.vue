@@ -133,7 +133,7 @@
           <v-divider />
         </v-card>
         <div style="text-align: center" class="mt-1 d-none d-sm-block">
-          <v-btn @click="changeFormView" :disabled="loading" elevation="0">发布测评</v-btn>
+          <v-btn @click="changeFormView(null)" :disabled="loading || posted" elevation="0">发布测评</v-btn>
         </div>
       </v-col>
       <v-col lg="8" class="mx-lg-0 mx-3">
@@ -145,7 +145,7 @@
           <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3"></review-card>
         </div>
         <div style="text-align: center" class="mb-4 d-block d-sm-none mt-0">
-          <v-btn @click="changePhoneFormView" :disabled="loading" elevation="0"> 发布测评</v-btn>
+          <v-btn @click="changePhoneFormView(null)" :disabled="loading || posted" elevation="0"> 发布测评</v-btn>
         </div>
         <v-card v-if="loading" class="pa-2 mb-3">
           <v-skeleton-loader type="article, actions" width="100%" class="my-2"></v-skeleton-loader>
@@ -209,7 +209,7 @@
             ></v-select>
             <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseId" style="width: min-content"></v-text-field>
           </v-row>
-          <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" />
+          <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" v-if="!RenderingEditor" />
           <v-snackbar v-model="snackbar" :timeout="2000"
             >请输入{{ snackbarContent
             }}<template v-slot:action="{ attrs }">
@@ -365,7 +365,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, postReviewData, ReviewWithCourse, totalRank } from '@/models'
+import { CourseGroup, postReviewData, reviewWithCourse, totalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
@@ -383,6 +383,8 @@ export default Vue.extend({
   components: { ReviewEditor, ReviewCard },
   props: ['groupId'],
   data: () => ({
+    posted: false,
+    RenderingEditor: false,
     loading: true,
     valid: true,
     snackbarContent: '',
@@ -404,8 +406,8 @@ export default Vue.extend({
       workload: 0,
       assessment: 0
     },
-    teacherSelected: null as itemList | null,
-    timeSelected: null as itemList | null,
+    teacherSelected: {} as itemList | null,
+    timeSelected: {} as itemList | null,
     allRank: {
       overall: 0,
       content: 0,
@@ -487,7 +489,7 @@ export default Vue.extend({
       }
       return ['所有', ...teachersSet]
     },
-    reviews(): ReviewWithCourse[] {
+    reviews(): reviewWithCourse[] {
       return (
         this.courseGroup?.courseList
           .filter(
@@ -496,7 +498,7 @@ export default Vue.extend({
               (this.filters.year == null || course.year == this.filters.year) &&
               (this.filters.semester == null || course.semester == this.filters.semester)
           )
-          .flatMap((course) => course.reviewList?.map((review) => new ReviewWithCourse(review, course)) || []) || []
+          .flatMap((course) => course.reviewList?.map((review) => new reviewWithCourse(review, course)) || []) || []
       )
     }
   },
@@ -566,7 +568,7 @@ export default Vue.extend({
       }
       return ['所有', ...timeSet]
     },
-    semesterReview(): Map<string, ReviewWithCourse[]> {
+    semesterReview(): Map<string, reviewWithCourse[]> {
       let courses = this.reviewsCategorizedByYearSemester()
       for (let [key, value] of courses) {
         if (value.length == 0) {
@@ -575,11 +577,11 @@ export default Vue.extend({
       }
       return courses
     },
-    reviewsCategorizedByYearSemester(): Map<string, ReviewWithCourse[]> {
-      let resultMap = new Map<string, ReviewWithCourse[]>()
+    reviewsCategorizedByYearSemester(): Map<string, reviewWithCourse[]> {
+      let resultMap = new Map<string, reviewWithCourse[]>()
       for (const course of this.courseGroup?.courseList || []) {
         const yearSemester = parseYearSemester(course)
-        const reviews = course.reviewList?.map((review) => new ReviewWithCourse(review, course)) || []
+        const reviews = course.reviewList?.map((review) => new reviewWithCourse(review, course)) || []
         if (resultMap.has(yearSemester)) {
           resultMap.get(yearSemester)?.push(...reviews)
         } else {
@@ -705,7 +707,7 @@ export default Vue.extend({
         return '硬核'
       }
     },
-    semesterRank(reviews: ReviewWithCourse[]): totalRank {
+    semesterRank(reviews: reviewWithCourse[]): totalRank {
       const semesterTotalScore = new totalRank({
         overall: 0,
         content: 0,
@@ -724,9 +726,6 @@ export default Vue.extend({
       semesterTotalScore.assessment = Math.round((semesterTotalScore.assessment / reviews.length) * 20.0)
       return semesterTotalScore
     },
-    changeFormView(): void {
-      this.reviewSheet = !this.reviewSheet
-    },
     async postReview() {
       if ((this.$refs.reviewSheet as Vue & { validate: () => boolean }).validate()) {
         if ((this.$refs.reviewEditor as any).getContent().length > 1) {
@@ -741,6 +740,7 @@ export default Vue.extend({
               id: toNumber(this.courseId.split('.')[1]),
               review: reviewAdded
             })
+            if (this.$refs.reviewEditor as any) (this.$refs.reviewEditor as any).setValue('')
             this.reviewSheet = false
             this.reviewSheetPhone = false
             this.postingReviewLoading = false
@@ -754,7 +754,35 @@ export default Vue.extend({
         }
       }
     },
-    async changePhoneFormView(): Promise<void> {
+    // TODO 每个用户只能发布一个评测
+    changeFormView(reviewWithCourse: reviewWithCourse): void {
+      if (reviewWithCourse) {
+        this.rank = reviewWithCourse.review.rank
+        this.reviewTitle = reviewWithCourse.review.title
+        this.RenderingEditor = true
+        if (this.$refs.reviewEditor as any) (this.$refs.reviewEditor as any).setContent(reviewWithCourse.review.content)
+        this.teacherSelected!.title = reviewWithCourse.course.teachers
+        this.teacherSelected!.value = reviewWithCourse.course.teachers
+        this.teacherSelected!.disabled = false
+        this.timeSelected!.title = parseYearSemester(reviewWithCourse.course)
+        this.timeSelected!.value = parseYearSemester(reviewWithCourse.course)
+        this.timeSelected!.disabled = false
+        this.RenderingEditor = false
+      }
+      this.reviewSheet = !this.reviewSheet
+    },
+    changePhoneFormView(reviewWithCourse: reviewWithCourse): void {
+      if (reviewWithCourse) {
+        this.rank = reviewWithCourse.review.rank
+        this.reviewTitle = reviewWithCourse.review.title
+        if (this.$refs.reviewEditor as any) (this.$refs.reviewEditor as any).setContent(reviewWithCourse.review.content)
+        this.teacherSelected!.title = reviewWithCourse.course.teachers
+        this.teacherSelected!.value = reviewWithCourse.course.teachers
+        this.teacherSelected!.disabled = false
+        this.timeSelected!.title = parseYearSemester(reviewWithCourse.course)
+        this.timeSelected!.value = parseYearSemester(reviewWithCourse.course)
+        this.timeSelected!.disabled = false
+      }
       this.reviewSheetPhone = !this.reviewSheetPhone
     },
     // Get or load a course group with all reviews loaded.
@@ -770,7 +798,7 @@ export default Vue.extend({
       const getCourseGroup = async (groupId: number): Promise<CourseGroup | null> => {
         const groups = this.$store.state.data.courseGroup as CourseGroup[]
         const foundGroup = groups.find((group) => group.id == groupId)
-        console.log(foundGroup)
+        // console.log(foundGroup)
         if (foundGroup) return await loadReviews(foundGroup)
         return null
       }
@@ -803,6 +831,15 @@ export default Vue.extend({
       this.teachersSelectList.push({ title: teacher, value: teacher, disabled: false })
     })
     this.courseId = this.courseGroup?.courseList[0].code ?? ''
+    this.reviews.forEach((review) => {
+      if (review.review.is_me) {
+        this.posted = true
+        this.changeFormView(review)
+        this.changePhoneFormView(review)
+        this.reviewSheet = !this.reviewSheet
+        this.reviewSheetPhone = !this.reviewSheetPhone
+      }
+    })
     this.loading = false
   }
 })

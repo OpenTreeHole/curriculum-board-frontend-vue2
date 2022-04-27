@@ -1,4 +1,4 @@
-export class ReviewWithCourse {
+export class reviewWithCourse {
   review: Review
   course: Course
 

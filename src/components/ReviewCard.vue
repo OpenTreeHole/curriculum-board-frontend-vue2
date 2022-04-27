@@ -143,13 +143,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { ReviewWithCourse } from '@/models'
+import { reviewWithCourse } from '@/models'
 import { parseYearSemester } from '@/utils/course'
 
 export default Vue.extend({
   name: 'ReviewCard',
   props: {
-    review: ReviewWithCourse
+    review: reviewWithCourse
   },
   data: () => ({
     remark: 0,
@@ -164,112 +164,39 @@ export default Vue.extend({
   }),
   computed: {
     reviewRemarkClass(): string {
-      if (this.remark < 0) return 'ma-0 py-0 font-weight-regular red--text'
-      else return 'ma-0 py-0 font-weight-regular'
+      return this.remark < 0 ? 'ma-0 py-0 font-weight-regular red--text' : 'ma-0 py-0 font-weight-regular'
     },
     rankColorOverall(): string {
-      if (this.review?.review.rank.overall == 5) {
-        return 'orange--text'
-      } else if (this.review?.review.rank.overall == 4) {
-        return 'brown--text'
-      } else if (this.review?.review.rank.overall == 2) {
-        return 'black--text'
-      } else if (this.review?.review.rank.overall == 1) {
-        return 'red--text'
-      } else {
-        return 'grey--text'
-      }
+      let rankColorOverall = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
+      return rankColorOverall[this.review?.review.rank.overall - 1]
     },
     rankColorContent(): string {
-      if (this.review?.review.rank.content == 5) {
-        return 'orange--text'
-      } else if (this.review?.review.rank.content == 4) {
-        return 'brown--text'
-      } else if (this.review?.review.rank.content == 2) {
-        return 'black--text'
-      } else if (this.review?.review.rank.content == 1) {
-        return 'red--text'
-      } else {
-        return 'grey--text'
-      }
+      let rankColorContent = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
+      return rankColorContent[this.review?.review.rank.content - 1]
     },
     rankColorWorkload(): string {
-      if (this.review?.review.rank.workload == 5) {
-        return 'orange--text'
-      } else if (this.review?.review.rank.workload == 4) {
-        return 'brown--text'
-      } else if (this.review?.review.rank.workload == 2) {
-        return 'black--text'
-      } else if (this.review?.review.rank.workload == 1) {
-        return 'red--text'
-      } else {
-        return 'grey--text'
-      }
+      let rankColorWorkload = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
+      return rankColorWorkload[this.review?.review.rank.workload - 1]
     },
     rankColorAssessment(): string {
-      if (this.review?.review.rank.assessment == 5) {
-        return 'orange--text'
-      } else if (this.review?.review.rank.assessment == 4) {
-        return 'brown--text'
-      } else if (this.review?.review.rank.assessment == 2) {
-        return 'black--text'
-      } else if (this.review?.review.rank.assessment == 1) {
-        return 'red--text'
-      } else {
-        return 'grey--text'
-      }
+      let rankColorAssessment = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
+      return rankColorAssessment[this.review?.review.rank.assessment - 1]
     },
     rankIconOverall(): string {
-      if (this.review?.review.rank.overall === 1) {
-        return 'fa-solid fa-face-frown'
-      } else if (this.review?.review.rank.overall === 2) {
-        return 'fa-solid fa-face-meh'
-      } else if (this.review?.review.rank.overall === 4) {
-        return 'fa-solid fa-face-laugh'
-      } else if (this.review?.review.rank.overall === 5) {
-        return 'fa-solid fa-face-grin-stars'
-      } else {
-        return 'fa-solid fa-face-smile'
-      }
+      let rankIconOverall = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
+      return rankIconOverall[this.review?.review.rank.overall - 1]
     },
     rankIconContent(): string {
-      if (this.review?.review.rank.content === 1) {
-        return 'fa-solid fa-face-frown'
-      } else if (this.review?.review.rank.content === 2) {
-        return 'fa-solid fa-face-meh'
-      } else if (this.review?.review.rank.content === 4) {
-        return 'fa-solid fa-face-laugh'
-      } else if (this.review?.review.rank.content === 5) {
-        return 'fa-solid fa-face-grin-stars'
-      } else {
-        return 'fa-solid fa-face-smile'
-      }
+      let rankIconContent = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
+      return rankIconContent[this.review?.review.rank.content - 1]
     },
     rankIconWorkload(): string {
-      if (this.review?.review.rank.workload === 1) {
-        return 'fa-solid fa-face-frown'
-      } else if (this.review?.review.rank.workload === 2) {
-        return 'fa-solid fa-face-meh'
-      } else if (this.review?.review.rank.workload === 4) {
-        return 'fa-solid fa-face-laugh'
-      } else if (this.review?.review.rank.workload === 5) {
-        return 'fa-solid fa-face-grin-stars'
-      } else {
-        return 'fa-solid fa-face-smile'
-      }
+      let rankIconWorkload = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
+      return rankIconWorkload[this.review?.review.rank.workload - 1]
     },
     rankIconAssessment(): string {
-      if (this.review?.review.rank.assessment === 1) {
-        return 'fa-solid fa-face-frown'
-      } else if (this.review?.review.rank.assessment === 2) {
-        return 'fa-solid fa-face-meh'
-      } else if (this.review?.review.rank.assessment === 4) {
-        return 'fa-solid fa-face-laugh'
-      } else if (this.review?.review.rank.assessment === 5) {
-        return 'fa-solid fa-face-grin-stars'
-      } else {
-        return 'fa-solid fa-face-smile'
-      }
+      let rankIconAssessment = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
+      return rankIconAssessment[this.review?.review.rank.assessment - 1]
     },
     years(): string {
       return parseYearSemester(this.review?.course)
@@ -280,10 +207,10 @@ export default Vue.extend({
   },
   methods: {
     async editForm(): Promise<void> {
-      this.$emit('openEditForm')
+      this.$emit('openEditForm', this.review)
     },
     async editPhoneForm(): Promise<void> {
-      this.$emit('openPhoneEditForm')
+      this.$emit('openPhoneEditForm', this.review)
     },
     async upVote(): Promise<void> {
       if (this.unlike) {
