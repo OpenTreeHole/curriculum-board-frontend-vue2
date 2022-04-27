@@ -181,7 +181,7 @@
             </v-col>
           </v-row>
           <v-row class="pt-0 mt-0">
-            <v-col cols="3">
+            <v-col cols="4">
               <v-select
                 :items="teachersSelectList"
                 item-text="title"
@@ -191,11 +191,12 @@
                 label="任课教师"
                 :rules="[(v) => !!v || '请选择任课教师']"
                 class="subtitle-2 font-weight-regular"
+                @change="banTime"
                 v-model="teacherSelected"
                 return-object
               ></v-select>
             </v-col>
-            <v-col cols="3">
+            <v-col cols="4">
               <v-select
                 :items="timeSelectList"
                 clearable
@@ -205,8 +206,7 @@
                 label="课程时间"
                 :rules="[(v) => !!v || '请选择课程时间']"
                 class="subtitle-2 font-weight-regular"
-                @change="banTeacher"
-                @click:clear="clearBannedTeacher"
+                @change="banTeachers"
                 v-model="timeSelected"
                 return-object
               ></v-select>
@@ -371,8 +371,8 @@ export default Vue.extend({
       workload: 0,
       assessment: 0
     },
-    teacherSelected: {} as itemList,
-    timeSelected: {} as itemList,
+    teacherSelected: null as itemList | null,
+    timeSelected: null as itemList | null,
     allRank: {
       overall: 0,
       content: 0,
@@ -542,21 +542,9 @@ export default Vue.extend({
     checkTeacher(): void {
       if (this.teacherSelected.disabled) this.teacherSelected = {} as itemList
     },
-    banTime(): string[] {
-      let timeBanned = new Set<string>()
-      if (this.teacherSelected !== '') {
-        this.courseGroup?.courseList.forEach((course) => {
-          if (this.teacherSelected !== course.teachers) {
-            timeBanned.add(course.teachers)
-          }
-        })
-      }
-      return [...timeBanned]
-    },
     // TODO 时间和教师过滤器
-    banTeacher(): void {
-      console.log(this.teacherSelected === null)
-      if (this.teacherSelected === null) {
+    banTeachers(): void {
+      if (this.timeSelected === null) {
         for (const teacher of this.teachersSelectList) {
           teacher.disabled = false
         }
@@ -565,10 +553,30 @@ export default Vue.extend({
           teacher.disabled = true
         })
         this.courseGroup?.courseList.forEach((course) => {
-          if (this.timeSelected.title === parseYearSemester(course)) {
+          if (this.timeSelected?.title === parseYearSemester(course)) {
             for (const teacher of this.teachersSelectList) {
               if (teacher.title === course.teachers) {
                 teacher.disabled = false
+              }
+            }
+          }
+        })
+      }
+    },
+    banTime(): void {
+      if (this.teacherSelected === null) {
+        for (const time of this.timeSelectList) {
+          time.disabled = false
+        }
+      } else {
+        this.timeSelectList.forEach((time) => {
+          time.disabled = true
+        })
+        this.courseGroup?.courseList.forEach((course) => {
+          if (this.teacherSelected?.title === course.teachers) {
+            for (const time of this.timeSelectList) {
+              if (time.title === parseYearSemester(course)) {
+                time.disabled = false
               }
             }
           }
