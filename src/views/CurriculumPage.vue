@@ -476,25 +476,12 @@ export default Vue.extend({
     teacherTags(): string[] {
       let teachersSet = new Set<string>()
       for (const course of this.courseGroup?.courseList ?? []) {
+        console.log(44444)
         if (course.reviewList !== undefined && course.reviewList.length > 0) {
           teachersSet.add(course.teachers)
         }
       }
       return ['所有', ...teachersSet]
-    },
-    timeSelect(): string[] {
-      let timeSet = new Set<string>()
-      this.courseGroup?.courseList.forEach((course) => {
-        timeSet.add(parseYearSemester(course))
-      })
-      return [...timeSet]
-    },
-    teacherSelect(): string[] {
-      let teachersSet = new Set<string>()
-      this.courseGroup?.courseList.forEach((course) => {
-        teachersSet.add(course.teachers)
-      })
-      return [...teachersSet]
     },
     reviews(): ReviewWithCourse[] {
       return (
@@ -603,7 +590,16 @@ export default Vue.extend({
         this.filters.semester = null
       } else {
         this.filters.year = this.timeTags()[this.timeTag].split('-')[0]
-        this.filters.semester = toNumber(this.timeTags()[this.timeTag].split('-')[2])
+        let semester = this.timeTags()[this.timeTag].split('-')[2]
+        if (semester === '1') {
+          this.filters.semester = 1
+        } else if (semester === '寒假') {
+          this.filters.semester = 2
+        } else if (semester === '3') {
+          this.filters.semester = 3
+        } else if (semester === '暑假') {
+          this.filters.semester = 4
+        }
       }
     },
     changeTeacherFilter() {

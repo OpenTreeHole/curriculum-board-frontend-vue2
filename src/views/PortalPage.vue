@@ -149,20 +149,6 @@ export default Vue.extend({
               {
                 id: 3,
                 timeCreated: '2022-04-09',
-                title: '你们A/没有自己的测评网站吗',
-                content: '每个脆脆鲨都应该来听的必修课程',
-                rank: {
-                  overall: 4,
-                  content: 4,
-                  workload: 2,
-                  assessment: 2
-                },
-                remark: -110,
-                is_me: true
-              },
-              {
-                id: 3,
-                timeCreated: '2022-04-09',
                 title: 'A/414',
                 content: '每个脆脆鲨都应该来听的必修课程',
                 rank: {
@@ -202,7 +188,22 @@ export default Vue.extend({
             weekHour: 7,
             year: '2023',
             name: '嘉然今天吃七海nana7mi',
-            reviewList: []
+            reviewList: [
+              {
+                id: 3,
+                timeCreated: '2022-04-09',
+                title: '你们A/没有自己的测评网站吗',
+                content: '每个脆脆鲨都应该来听的必修课程',
+                rank: {
+                  overall: 4,
+                  content: 4,
+                  workload: 2,
+                  assessment: 2
+                },
+                remark: -110,
+                is_me: true
+              }
+            ]
           })
         ],
         department: '嘉心糖',
