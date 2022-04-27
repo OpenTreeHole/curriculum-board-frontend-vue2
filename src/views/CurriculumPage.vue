@@ -177,43 +177,39 @@
         <v-form class="mx-7" v-model="valid" ref="reviewSheet">
           <v-row>
             <v-col cols="8">
-              <v-text-field :counter="20" required label="标题" class="pt-1 text-h6" v-model="reviewTitle" :rules="reviewTitleRules"></v-text-field>
+              <v-text-field :counter="20" required label="标题" class="pt-1 font-weight-bold" v-model="reviewTitle" :rules="reviewTitleRules"></v-text-field>
             </v-col>
           </v-row>
-          <v-row class="pt-0 mt-0">
-            <v-col cols="4">
-              <v-select
-                :items="teachersSelectList"
-                item-text="title"
-                item-value="value"
-                clearable
-                required
-                label="任课教师"
-                :rules="[(v) => !!v || '请选择任课教师']"
-                class="subtitle-2 font-weight-regular"
-                @change="banTime"
-                v-model="teacherSelected"
-                return-object
-              ></v-select>
-            </v-col>
-            <v-col cols="4">
-              <v-select
-                :items="timeSelectList"
-                clearable
-                required
-                item-text="title"
-                item-value="value"
-                label="课程时间"
-                :rules="[(v) => !!v || '请选择课程时间']"
-                class="subtitle-2 font-weight-regular"
-                @change="banTeachers"
-                v-model="timeSelected"
-                return-object
-              ></v-select>
-            </v-col>
-            <v-col cols="3">
-              <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseId"></v-text-field>
-            </v-col>
+          <v-row class="pt-0 mt-0 pl-3 mb-2 pr-7">
+            <v-select
+              :items="teachersSelectList"
+              item-text="title"
+              item-value="value"
+              clearable
+              required
+              label="任课教师"
+              :rules="[(v) => !!v || '请选择任课教师']"
+              class="font-weight-regular mr-2"
+              style="width: min-content"
+              @change="banTime"
+              v-model="teacherSelected"
+              return-object
+            ></v-select>
+            <v-select
+              :items="timeSelectList"
+              clearable
+              required
+              item-text="title"
+              item-value="value"
+              label="课程时间"
+              :rules="[(v) => !!v || '请选择课程时间']"
+              class="font-weight-regular mr-2"
+              style="width: min-content"
+              @change="banTeachers"
+              v-model="timeSelected"
+              return-object
+            ></v-select>
+            <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseId" style="width: fit-content"></v-text-field>
           </v-row>
           <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" />
           <v-snackbar v-model="snackbar" :timeout="2000"
@@ -363,6 +359,7 @@ export default Vue.extend({
     reviewTitleRules: [(v: string) => !!v || '评论标题不能为空', (v: string) => v.length <= 20 || '评论标题不能超过20字'],
     teacherTag: 0,
     timeTag: 0,
+    courseId: '',
     teachersSelectList: [] as itemList[],
     timeSelectList: [] as itemList[],
     rank: {
@@ -454,7 +451,6 @@ export default Vue.extend({
       }
       return ['所有', ...teachersSet]
     },
-    // TODO 通过id筛选老师和时间
     timeSelect(): string[] {
       let timeSet = new Set<string>()
       this.courseGroup?.courseList.forEach((course) => {
@@ -468,9 +464,6 @@ export default Vue.extend({
         teachersSet.add(course.teachers)
       })
       return [...teachersSet]
-    },
-    courseId(): string {
-      return this.courseGroup?.courseList[0].code ?? ''
     },
     reviews(): ReviewWithCourse[] {
       return (
@@ -486,15 +479,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    clearBannedTeacher() {
-      this.teachersSelectList.forEach((teacher) => {
-        teacher.disabled = false
-      })
-    },
-    checkTeacher(): void {
-      if (this.teacherSelected.disabled) this.teacherSelected = {} as itemList
-    },
-    // TODO 时间和教师过滤器
     banTeachers(): void {
       if (this.timeSelected === null) {
         for (const teacher of this.teachersSelectList) {
@@ -513,6 +497,15 @@ export default Vue.extend({
             }
           }
         })
+      }
+      if (this.teacherSelected !== null && this.timeSelected !== (null as itemList | null)) {
+        this.courseGroup?.courseList.find((course) => {
+          if (course.teachers === this.teacherSelected?.title && parseYearSemester(course) === this.timeSelected?.title) {
+            this.courseId = course.codeId
+          }
+        })
+      } else {
+        this.courseId = this.courseGroup?.courseList[0].code ?? ''
       }
     },
     banTime(): void {
@@ -534,6 +527,13 @@ export default Vue.extend({
           }
         })
       }
+      if (this.timeSelected !== null && this.teacherSelected !== (null as itemList | null)) {
+        this.courseGroup?.courseList.find((course) => {
+          if (course.teachers === this.teacherSelected?.title && parseYearSemester(course) === this.timeSelected?.title) {
+            this.courseId = course.codeId
+          }
+        })
+      } else this.courseId = this.courseGroup?.courseList[0].code ?? ''
     },
     timeTags(): string[] {
       let timeSet = new Set<string>()
@@ -761,6 +761,7 @@ export default Vue.extend({
     teachersArray.forEach((teacher) => {
       this.teachersSelectList.push({ title: teacher, value: teacher, disabled: false })
     })
+    this.courseId = this.courseGroup?.courseList[0].code ?? ''
     this.loading = false
   }
 })
