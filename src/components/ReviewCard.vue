@@ -22,16 +22,16 @@
               <v-row class="pa-0 my-0 mt-1">
                 <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 pt-lg-3 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
                   <v-chip x-small label style="margin-top: 1px; margin-right: 10px" v-if="false" class="mb-1 d-block">已编辑</v-chip>
-                  <v-btn v-if="review.review.is_me" text x-small color="grey" class="align-content-end"
+                  <v-btn v-if="review.review.isMe" text x-small color="grey" class="align-content-end"
                     ><v-icon small style="padding-bottom: 0; padding-right: 2px">mdi-trash-can</v-icon></v-btn
-                  ><v-btn v-if="review.review.is_me" class="px-0 d-none d-sm-flex" text x-small color="grey" @click="editForm">
+                  ><v-btn v-if="review.review.isMe" class="px-0 d-none d-sm-flex" text x-small color="grey" @click="editForm">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
                 </v-card-text>
               </v-row>
               <v-row class="pa-0 my-0 mt-0">
                 <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 py-1 align-content-end align-end d-none d-sm-block">
-                  <v-btn v-if="review.review.is_me" class="d-block d-sm-none" @click="editPhoneForm" text x-small color="grey"
+                  <v-btn v-if="review.review.isMe" class="d-block d-sm-none" @click="editPhoneForm" text x-small color="grey"
                     ><v-icon small style="padding-right: 2px">mdi-pencil</v-icon></v-btn
                   >
                 </v-card-text>
@@ -207,6 +207,7 @@ export default Vue.extend({
   },
   methods: {
     async editForm(): Promise<void> {
+      console.log('openEditForm')
       this.$emit('openEditForm', this.review)
     },
     async editPhoneForm(): Promise<void> {

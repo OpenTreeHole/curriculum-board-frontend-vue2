@@ -1,4 +1,4 @@
-import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, postReviewData, Review } from '@/models'
+import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, PostReviewData, Review } from '@/models'
 import axios, { authAxios, jwt, refreshAxios } from '@/apis/axios'
 import config from '@/config'
 import { camelizeKeys, snakifyKeys } from '@/utils'
@@ -159,7 +159,7 @@ export const getReviews = async (courseId: number) => {
   return data.map((v) => new Review(v))
 }
 
-export const addReview = async (courseId: number, reviewData: postReviewData) => {
+export const addReview = async (courseId: number, reviewData: PostReviewData) => {
   const response = await axios.post(`/courses/${courseId}/reviews`, reviewData)
   const data: IReview = camelizeKeys(response.data)
   return new Review(data)
@@ -174,6 +174,13 @@ export const modifyReview = async (reviewId: number, reviewData: IReviewData) =>
   const response = await axios.put(`/reviews/${reviewId}`, reviewData)
   const data: IReview = camelizeKeys(response)
   return new Review(data)
+}
+
+export const voteForReview = async (reviewId: number, upvote: boolean) => {
+  const response = await axios.patch(`/reviews/${reviewId}`, {
+    upvote
+  })
+  return new Review(camelizeKeys(response))
 }
 
 // jump to login page when return 401

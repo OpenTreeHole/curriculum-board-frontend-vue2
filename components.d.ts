@@ -5,13 +5,13 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    MessageSnackbar: typeof import('./src/components/MessageSnackbar.vue')['default']
     ReviewCard: typeof import('./src/components/ReviewCard.vue')['default']
     ReviewEditor: typeof import('./src/components/ReviewEditor.vue')['default']
     ReviewFilter: typeof import('./src/components/ReviewFilter.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TopNavBar: typeof import('./src/components/TopNavBar.vue')['default']
-    VAlert: typeof import('vuetify/lib')['VAlert']
     VApp: typeof import('vuetify/lib')['VApp']
     VAppBar: typeof import('vuetify/lib')['VAppBar']
     VBanner: typeof import('vuetify/lib')['VBanner']
@@ -38,7 +38,6 @@ declare module '@vue/runtime-core' {
     VIcon: typeof import('vuetify/lib')['VIcon']
     VList: typeof import('vuetify/lib')['VList']
     VMain: typeof import('vuetify/lib')['VMain']
-    VOverflowBtn: typeof import('vuetify/lib')['VOverflowBtn']
     VProgressCircular: typeof import('vuetify/lib')['VProgressCircular']
     VProgressLinear: typeof import('vuetify/lib')['VProgressLinear']
     VRating: typeof import('vuetify/lib')['VRating']

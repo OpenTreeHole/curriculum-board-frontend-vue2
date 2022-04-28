@@ -130,7 +130,7 @@ export default Vue.extend({
                   assessment: 2
                 },
                 remark: 10,
-                is_me: false
+                isMe: false
               },
               {
                 id: 2,
@@ -144,7 +144,7 @@ export default Vue.extend({
                   assessment: 2
                 },
                 remark: -110,
-                is_me: false
+                isMe: false
               },
               {
                 id: 3,
@@ -158,7 +158,7 @@ export default Vue.extend({
                   assessment: 1
                 },
                 remark: 110,
-                is_me: false
+                isMe: false
               }
             ]
           }),
@@ -201,7 +201,7 @@ export default Vue.extend({
                   assessment: 2
                 },
                 remark: -110,
-                is_me: true
+                isMe: true
               }
             ]
           })

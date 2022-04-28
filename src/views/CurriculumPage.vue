@@ -210,13 +210,13 @@
             <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseId" style="width: min-content"></v-text-field>
           </v-row>
           <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" v-if="!RenderingEditor" />
-          <v-snackbar v-model="snackbar" :timeout="2000"
-            >请输入{{ snackbarContent
+          <v-snackbar v-model="snackbar" :timeout="2000">
+            请输入{{ snackbarContent
             }}<template v-slot:action="{ attrs }">
               <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
-            </template></v-snackbar
-          >
-          <v-snackbar :timeout="3000" v-model="error" absolute centered right tile color="red accent-2"> 喔嚄, 出错了, {{ ErrorMessage }} </v-snackbar>
+            </template>
+          </v-snackbar>
+          <!--          <v-snackbar :timeout="3000" v-model="error" absolute centered right tile color="red accent-2"> 喔嚄, 出错了, {{ ErrorMessage }} </v-snackbar>-->
         </v-form>
         <v-card-title class="mb-2 mt-2"> 评分</v-card-title>
         <v-row class="mx-3">
@@ -365,7 +365,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, postReviewData, reviewWithCourse, totalRank } from '@/models'
+import { CourseGroup, PostReviewData, reviewWithCourse, TotalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
@@ -707,8 +707,8 @@ export default Vue.extend({
         return '硬核'
       }
     },
-    semesterRank(reviews: reviewWithCourse[]): totalRank {
-      const semesterTotalScore = new totalRank({
+    semesterRank(reviews: reviewWithCourse[]): TotalRank {
+      const semesterTotalScore = new TotalRank({
         overall: 0,
         content: 0,
         workload: 0,
@@ -731,7 +731,7 @@ export default Vue.extend({
         if ((this.$refs.reviewEditor as any).getContent().length > 1) {
           if (this.rank.overall && this.rank.assessment && this.rank.content && this.rank.workload) {
             this.postingReviewLoading = true
-            const review = {} as postReviewData
+            const review = {} as PostReviewData
             review.content = (this.$refs.reviewEditor as any).getContent()
             review.rank = this.rank
             review.title = this.reviewTitle
@@ -832,7 +832,7 @@ export default Vue.extend({
     })
     this.courseId = this.courseGroup?.courseList[0].code ?? ''
     this.reviews.forEach((review) => {
-      if (review.review.is_me) {
+      if (review.review.isMe) {
         this.posted = true
         this.changeFormView(review)
         this.changePhoneFormView(review)

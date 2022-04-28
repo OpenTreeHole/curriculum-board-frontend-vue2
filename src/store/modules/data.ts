@@ -1,4 +1,4 @@
-import { CourseGroup, totalRank } from '@/models'
+import { CourseGroup, TotalRank } from '@/models'
 import { Module } from 'vuex'
 import { RootState } from '@/store'
 import { remove } from 'lodash-es'
@@ -24,7 +24,7 @@ const dataModule: Module<IDataModuleState, RootState> = {
       (state: IDataModuleState) =>
       (courseGroupId: number): object => {
         let numOfReviews = 0
-        const totalScore = new totalRank({
+        const totalScore = new TotalRank({
           overall: 0,
           content: 0,
           workload: 0,
