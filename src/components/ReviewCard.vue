@@ -38,14 +38,14 @@
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
-                  <v-btn v-if="review.review.isMe" class="px-0 d-none d-sm-flex" text x-small color="grey" @click="editForm">
+                  <v-btn v-if="review.review.isMe" class="d-none d-sm-flex mx-auto" text x-small color="grey" @click="editForm">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
                 </v-card-text>
               </v-row>
               <v-row class="pa-0 my-0 mt-0">
                 <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 py-1 align-content-end align-end d-none d-sm-block">
-                  <v-btn v-if="review.review.isMe" class="d-block d-sm-none" @click="editPhoneForm" text x-small color="grey">
+                  <v-btn v-if="review.review.isMe" class="d-block d-sm-none mx-auto" @click="editPhoneForm" text x-small color="grey">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
                 </v-card-text>
