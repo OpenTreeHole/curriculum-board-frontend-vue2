@@ -22,9 +22,22 @@
               <v-row class="pa-0 my-0 mt-1">
                 <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 pt-lg-3 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
                   <v-chip x-small label style="margin-top: 1px; margin-right: 10px" v-if="false" class="mb-1 d-block"> 已编辑 </v-chip>
-                  <v-btn v-if="review.review.isMe" text x-small color="grey" class="align-content-end">
-                    <v-icon small style="padding-bottom: 0; padding-right: 2px">mdi-trash-can</v-icon>
-                  </v-btn>
+                  <v-dialog v-model="deleteCheck" persistent max-width="290">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn v-if="isAuth" text x-small color="grey" class="align-content-end" v-bind="attrs" v-on="on">
+                        <v-icon small style="padding-bottom: 0; padding-right: 2px">mdi-trash-can</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title class="text-h5"> 是否删除测评? </v-card-title>
+                      <v-card-text class="pb-1"> 您不可以撤销此操作 </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="deleteCheck = false"> 取消 </v-btn>
+                        <v-btn color="red darken-1" text @click="deleteReview" :loading="deleteReviewLoading"> 删除 </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
                   <v-btn v-if="review.review.isMe" class="px-0 d-none d-sm-flex" text x-small color="grey" @click="editForm">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
@@ -158,6 +171,9 @@ export default Vue.extend({
     }
   },
   data: () => ({
+    isAuth: false,
+    deleteReviewLoading: false,
+    deleteCheck: false,
     remark: 0,
     like: false,
     unlike: false,
@@ -212,8 +228,11 @@ export default Vue.extend({
     this.remark = this.review.review.remark
   },
   methods: {
+    deleteReview() {
+      console.log('delete review')
+    },
     async editForm(): Promise<void> {
-      console.log('openEditForm')
+      // console.log('openEditForm')
       this.$emit('openEditForm', this.review)
     },
     async editPhoneForm(): Promise<void> {

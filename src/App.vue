@@ -21,10 +21,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import MessageSnackbar from '@/components/MessageSnackbar.vue'
+import { voteForReview } from './apis'
 
 export default Vue.extend({
   name: 'App',
   components: { MessageSnackbar },
+  mounted() {
+    voteForReview()
+  },
   data: () => ({
     //
   }),

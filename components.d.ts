@@ -5,6 +5,7 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AddReview: typeof import('./src/components/AddReview.vue')['default']
     MessageSnackbar: typeof import('./src/components/MessageSnackbar.vue')['default']
     ReviewCard: typeof import('./src/components/ReviewCard.vue')['default']
     ReviewEditor: typeof import('./src/components/ReviewEditor.vue')['default']

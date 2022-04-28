@@ -736,10 +736,17 @@ export default Vue.extend({
             review.rank = this.rank
             review.title = this.reviewTitle
             let reviewAdded = await addReview(toNumber(this.courseId.split('.')[1]), review)
-            await this.$store.commit('addReview', {
-              id: toNumber(this.courseId.split('.')[1]),
-              review: reviewAdded
-            })
+            if (this.posted) {
+              await this.$store.commit('addReview', {
+                id: toNumber(this.courseId.split('.')[1]),
+                review: reviewAdded
+              })
+            } else {
+              await this.$store.commit('modifyReview', {
+                id: toNumber(this.courseId.split('.')[1]),
+                review: reviewAdded
+              })
+            }
             if (this.$refs.reviewEditor as any) (this.$refs.reviewEditor as any).setValue('')
             this.reviewSheet = false
             this.reviewSheetPhone = false
@@ -754,7 +761,6 @@ export default Vue.extend({
         }
       }
     },
-    // TODO 每个用户只能发布一个评测
     changeFormView(reviewWithCourse: ReviewWithCourse): void {
       if (reviewWithCourse) {
         this.rank = reviewWithCourse.review.rank
