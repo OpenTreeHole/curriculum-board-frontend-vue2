@@ -7,14 +7,14 @@
         <v-breadcrumbs-item class="text-h6 font-weight-black ml-0">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
         <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
         <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
-        <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-3 d-none d-sm-flex" color="accent">{{ v }} 学分 </v-chip>
+        <v-chip :key="v" v-for="v in credits" label class="subtitle-2 font-weight-bold ml-3 d-none d-sm-flex white--text" color="#FB8C00">{{ v }} 学分 </v-chip>
       </template>
     </v-breadcrumbs>
     <v-banner class="d-block d-sm-none" v-if="loading">
       <v-skeleton-loader type="text" width="20%" height="10%"></v-skeleton-loader>
     </v-banner>
     <v-banner class="d-block d-sm-none mt-0 pt-0" v-if="!loading">
-      <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="accent"
+      <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="#5C6BC0"
         >{{ v }}
         学分
       </v-chip>
@@ -24,7 +24,7 @@
     <v-row>
       <v-col lg="3" cols="12" class="pb-0">
         <v-card class="pb-4" elevation="0">
-          <v-card-title class="text-h6 font-weight-black primary--text pb-0 ml-1"> 评分</v-card-title>
+          <v-card-title class="text-h6 font-weight-black pb-0 ml-1"> 评分</v-card-title>
           <v-skeleton-loader v-if="loading" type="paragraph" width="60%" class="ml-10 my-2"></v-skeleton-loader>
           <v-expansion-panels flat multiple class="py-0" v-if="!loading">
             <v-expansion-panel class="py-0">
@@ -116,18 +116,18 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
           </v-expansion-panels>
-          <v-card-title class="text-h6 font-weight-black primary--text py-0 pt-1 ml-1">授课教师</v-card-title>
+          <v-card-title class="text-h6 font-weight-black py-0 pt-1 ml-1">授课教师</v-card-title>
           <v-skeleton-loader v-if="loading" type="sentences" width="60%" class="ml-10 my-2"></v-skeleton-loader>
           <v-card-actions class="pt-1 pb-1" v-if="!loading">
             <v-chip-group class="ml-4" column mandatory v-model="teacherTag" @change="changeTeacherFilter" active-class="blue--text">
-              <v-chip small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
+              <v-chip active-class="chosen--text" small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
-          <v-card-title class="text-h6 font-weight-black primary--text py-0 ml-1">时间</v-card-title>
+          <v-card-title class="text-h6 font-weight-black py-0 ml-1">时间</v-card-title>
           <v-skeleton-loader v-if="loading" type="sentences" width="60%" class="ml-10 my-2"></v-skeleton-loader>
           <v-card-actions class="pt-1 mb-2" v-if="!loading">
             <v-chip-group class="ml-4" column mandatory v-model="timeTag" @change="changeTimeFilter" active-class="blue--text">
-              <v-chip small v-for="(v, i) in timeTags()" :key="i">{{ v }}</v-chip>
+              <v-chip active-class="chosen--text" small v-for="(v, i) in timeTags()" :key="i">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
           <v-divider />

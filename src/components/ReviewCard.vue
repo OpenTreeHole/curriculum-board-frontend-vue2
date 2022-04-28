@@ -59,32 +59,34 @@
               <v-card-title class="text-h6 font-weight-bold pt-2 pb-0 pl-6"> {{ review.review.title }}</v-card-title>
               <v-row align="center" justify="start" class="ml-3 mt-0 pl-2 align-start align-content-start">
                 <v-col class="shrink pr-0 pl-1 py-0 mt-0 mt-lg-2 mt-md-2 mt-sm-2">
-                  <v-chip small label outlined color="blue" class="d-none d-sm-flex">{{ review.course.teachers }} </v-chip>
-                  <v-chip x-small label outlined color="blue" class="s-flex d-sm-none">{{ review.course.teachers }} </v-chip>
+                  <v-chip small label outlined color="accent" class="d-none d-sm-flex">{{ review.course.teachers }} </v-chip>
+                  <v-chip x-small label outlined color="accent" class="s-flex d-sm-none">{{ review.course.teachers }} </v-chip>
                 </v-col>
                 <v-col class="shrink pr-0 pl-2 py-0 mt-0 mt-lg-2 mt-md-2 mt-sm-2">
-                  <v-chip small label outlined color="red" class="d-none d-sm-flex">{{ years }}</v-chip>
-                  <v-chip x-small label outlined color="red" class="s-flex d-sm-none">{{ years }}</v-chip>
+                  <v-chip small label outlined color="#E91E63" class="d-none d-sm-flex">{{ years }}</v-chip>
+                  <v-chip x-small label outlined color="#E91E63" class="s-flex d-sm-none">{{ years }}</v-chip>
                 </v-col>
               </v-row>
             </v-col>
             <v-col class="pa-0 ma-0 d-flex align-start pl-16 pt-1" cols="3">
               <v-card-text class="pa-1 pl-0 caption pt-2 grey--text d-sm-block align-end ml-auto d-none" style="height: 50%">
                 <div class="d-block align-self-end">
-                  <span class="d-inline-flex"> 总评分 </span>
+                  <span class="d-inline-flex" style="color: #3f51b5"> 总评分 </span>
                   <v-progress-linear
                     :value="review.review.rank.overall * 20"
                     :buffer-value="review.review.rank.overall * 20"
+                    color="#5C6BC0"
                     height="10"
                     class="d-inline-flex ml-1"
                     style="width: 60%; padding-top: 2px"
                   />
                 </div>
                 <div class="d-block">
-                  <span class="d-inline-flex"> 内容 </span>
+                  <span class="d-inline-flex" style="color: #3f51b5"> 内容 </span>
                   <v-progress-linear
                     :value="review.review.rank.content * 20"
                     :buffer-value="review.review.rank.content * 20"
+                    color="#5C6BC0"
                     height="10"
                     class="d-inline-flex ml-4"
                     style="width: 60%; padding-top: 2px"
@@ -92,10 +94,11 @@
                 </div>
                 <div class="d-block">
                   <div class="d-block">
-                    <span class="d-inline-flex"> 工作量 </span>
+                    <span class="d-inline-flex" style="color: #3f51b5"> 工作量 </span>
                     <v-progress-linear
                       :value="review.review.rank.workload * 20"
                       :buffer-value="review.review.rank.workload * 20"
+                      color="#5C6BC0"
                       height="10"
                       class="d-inline-flex ml-1"
                       style="width: 60%; padding-top: 2px"
@@ -104,10 +107,11 @@
                 </div>
                 <div class="d-block">
                   <div class="d-block">
-                    <span class="d-inline-flex"> 考核 </span>
+                    <span class="d-inline-flex" style="color: #3f51b5"> 考核 </span>
                     <v-progress-linear
                       :value="review.review.rank.assessment * 20"
                       :buffer-value="review.review.rank.assessment * 20"
+                      color="#5C6BC0"
                       height="10"
                       class="d-inline-flex ml-4"
                       style="width: 30%; padding-top: 2px"

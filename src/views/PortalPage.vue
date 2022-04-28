@@ -1,12 +1,29 @@
 <template>
   <v-container>
     <div id="search-bar">
-      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>
-      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>
+      <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
+      <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
       <v-row no-gutters class="mt-3 mx-6">
         <v-col>
-          <v-text-field prepend-inner-icon="mdi-magnify" v-model="searchText" outlined class="d-none d-sm-block rounded-pill" filled></v-text-field>
-          <v-text-field prepend-inner-icon="mdi-magnify" v-model="searchText" outlined dense class="d-block d-sm-none rounded-pill" filled></v-text-field>
+          <v-text-field
+            prepend-inner-icon="mdi-magnify"
+            style="margin-top: 32vh"
+            placeholder="请输入课程"
+            v-model="searchText"
+            outlined
+            class="d-none d-sm-block rounded-pill"
+            filled
+          ></v-text-field>
+          <v-text-field
+            prepend-inner-icon="mdi-magnify"
+            style="margin-top: 32vh"
+            placeholder="请输入课程"
+            v-model="searchText"
+            outlined
+            dense
+            class="d-block d-sm-none rounded-pill"
+            filled
+          ></v-text-field>
         </v-col>
       </v-row>
       <v-row class="d-flex align-center" v-if="loadingSearchResult && this.searchText !== ''">
@@ -25,7 +42,7 @@
                   <v-card-subtitle class="monospace grey--text py-0 pt-3 d-flex">
                     <span class="mr-3 d-flex align-center">{{ v.code }}</span>
                     <v-chip-group column>
-                      <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" disabled class="black--text font-weight-bold" outlined color="red">
+                      <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" disabled style="color: #303f9f" outlined>
                         {{ credit }}学分</v-chip
                       >
                     </v-chip-group>
