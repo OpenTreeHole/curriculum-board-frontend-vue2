@@ -136,24 +136,12 @@
           <v-card-text class="pa-1 pl-3 Caption grey--text">{{ review.review.timeCreated }}</v-card-text>
         </div>
         <div class="pr-2 ml-auto">
-          <v-tooltip right class="ma-0 pa-0" color="white">
-            <template v-slot:activator="{ on, attrs }">
-              <v-card-text class="pa-1 pl-0 caption" v-bind="attrs" v-on="on">
-                总评分
-                <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;内容
-                <font-awesome-icon :class="rankColorContent" :icon="rankIconContent" />&nbsp;工作量
-                <font-awesome-icon :class="rankColorWorkload" :icon="rankIconWorkload" />&nbsp;考核
-                <font-awesome-icon :class="rankColorAssessment" :icon="rankIconAssessment" />
-              </v-card-text>
-            </template>
-            <span class="ma-0 pa-0"
-              ><font-awesome-icon icon="fa-solid fa-face-grin-stars" class="orange--text" /><br />
-              <font-awesome-icon icon="fa-solid fa-laugh" class="brown--text" /><br />
-              <font-awesome-icon icon="fa-solid fa-smile" class="grey--text" /><br />
-              <font-awesome-icon icon="fa-solid fa-meh" class="black--text" /><br />
-              <font-awesome-icon icon="fa-solid fa-frown" class="red--text" />
-            </span>
-          </v-tooltip>
+          <v-card-text class="pa-1 pl-0 caption" v-bind="attrs" v-on="on">
+            总评分
+            <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;内容 <font-awesome-icon :class="rankColorContent" :icon="rankIconContent" />&nbsp;工作量
+            <font-awesome-icon :class="rankColorWorkload" :icon="rankIconWorkload" />&nbsp;考核
+            <font-awesome-icon :class="rankColorAssessment" :icon="rankIconAssessment" />
+          </v-card-text>
         </div>
       </v-row>
     </v-card>
