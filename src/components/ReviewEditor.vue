@@ -6,12 +6,15 @@
 import Vditor from 'vditor'
 import 'vditor/dist/index.css'
 import Vue from 'vue'
+import { login } from '@/apis'
+import { after } from 'lodash-es'
 
 export default Vue.extend({
   name: 'ReviewEditor',
   data: () => ({
     editor: null as Vditor | null,
-    contentId: new Date().getTime().toString()
+    contentId: new Date().getTime().toString(),
+    content: ''
   }),
   mounted() {
     this.editor = new Vditor(this.contentId, {
@@ -23,16 +26,19 @@ export default Vue.extend({
       },
       counter: {
         enable: false
+      },
+      after: async () => {
+        this.editor?.setValue(this.content)
       }
-      /*after: async () => {
-        this.editor?.setValue('hello, Vditor + Vue!')
-      }*/
       /* 这一部分会导致editor延迟一下渲染, TODO 解决延迟渲染并且可以使用模版 */
       /* TODO 添加模版 */
     })
     this.$emit('editorReady')
   },
   methods: {
+    setContent(content: string): void {
+      this.editor?.setValue(content)
+    },
     getContent() {
       return this.editor?.getValue()
     }

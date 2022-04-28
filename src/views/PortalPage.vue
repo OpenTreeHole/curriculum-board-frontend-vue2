@@ -1,15 +1,31 @@
 <template>
   <v-container>
     <div id="search-bar">
-      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>
-      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>
+      <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
+      <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
       <v-row no-gutters class="mt-3 mx-6">
         <v-col>
-          <v-text-field prepend-inner-icon="mdi-magnify" v-model="searchText" outlined class="d-none d-sm-block rounded-pill" filled></v-text-field>
-          <v-text-field prepend-inner-icon="mdi-magnify" v-model="searchText" outlined dense class="d-block d-sm-none rounded-pill" filled></v-text-field>
+          <v-text-field
+            prepend-inner-icon="mdi-magnify"
+            style="margin-top: 32vh"
+            placeholder="请输入课程"
+            v-model="searchText"
+            outlined
+            class="d-none d-sm-block rounded-pill"
+            filled
+          ></v-text-field>
+          <v-text-field
+            prepend-inner-icon="mdi-magnify"
+            style="margin-top: 32vh"
+            placeholder="请输入课程"
+            v-model="searchText"
+            outlined
+            dense
+            class="d-block d-sm-none rounded-pill"
+            filled
+          ></v-text-field>
         </v-col>
       </v-row>
-      <!-- TODO 添加各种说明 JWT鉴权-->
       <v-row class="d-flex align-center" v-if="loadingSearchResult && this.searchText !== ''">
         <v-col style="text-align: center">
           <v-progress-circular :size="60" color="primary" indeterminate class="d-none d-sm-inline-block"></v-progress-circular>
@@ -26,8 +42,8 @@
                   <v-card-subtitle class="monospace grey--text py-0 pt-3 d-flex">
                     <span class="mr-3 d-flex align-center">{{ v.code }}</span>
                     <v-chip-group column>
-                      <v-chip label small :key="credit.credit" v-for="credit in v.courseList" disabled class="black--text font-weight-bold" outlined color="red">
-                        {{ credit.credit }}学分</v-chip
+                      <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" disabled style="color: #303f9f" outlined>
+                        {{ credit }}学分</v-chip
                       >
                     </v-chip-group>
                   </v-card-subtitle>
@@ -89,6 +105,13 @@ export default Vue.extend({
       )
     }
   },
+  methods: {
+    credits(courseList: Course[]): number[] {
+      let creditsSet = new Set<number>()
+      courseList.forEach((course) => creditsSet.add(course.credit))
+      return [...creditsSet]
+    }
+  },
   async mounted() {
     if (!isDebug()) {
       this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
@@ -123,7 +146,7 @@ export default Vue.extend({
                   assessment: 2
                 },
                 remark: 10,
-                is_me: false
+                isMe: false
               },
               {
                 id: 2,
@@ -137,21 +160,7 @@ export default Vue.extend({
                   assessment: 2
                 },
                 remark: -110,
-                is_me: false
-              },
-              {
-                id: 3,
-                timeCreated: '2022-04-09',
-                title: '你们A/没有自己的测评网站吗',
-                content: '每个脆脆鲨都应该来听的必修课程',
-                rank: {
-                  overall: 4,
-                  content: 4,
-                  workload: 2,
-                  assessment: 2
-                },
-                remark: -110,
-                is_me: true
+                isMe: false
               },
               {
                 id: 3,
@@ -165,7 +174,7 @@ export default Vue.extend({
                   assessment: 1
                 },
                 remark: 110,
-                is_me: false
+                isMe: false
               }
             ]
           }),
@@ -182,6 +191,35 @@ export default Vue.extend({
             year: '2022',
             name: '嘉然今天吃七海nana7mi',
             reviewList: []
+          }),
+          new Course({
+            id: 3,
+            codeId: 'JXT114514.03',
+            code: 'JXT114514',
+            department: '嘉心糖',
+            teachers: '向晚',
+            credit: 6,
+            maxStudent: 114514,
+            semester: 2,
+            weekHour: 7,
+            year: '2023',
+            name: '嘉然今天吃七海nana7mi',
+            reviewList: [
+              {
+                id: 3,
+                timeCreated: '2022-04-09',
+                title: '你们A/没有自己的测评网站吗',
+                content: '每个脆脆鲨都应该来听的必修课程',
+                rank: {
+                  overall: 4,
+                  content: 4,
+                  workload: 2,
+                  assessment: 2
+                },
+                remark: -110,
+                isMe: true
+              }
+            ]
           })
         ],
         department: '嘉心糖',

@@ -17,23 +17,37 @@
                 <font-awesome-icon :class="this.unlike ? 'red--text' : 'grey--text'" icon="fa-solid fa-caret-down" @click="downVote" />
               </v-row>
               <v-row class="pa-0">
-                <v-card-text class="py-0 pb-1 grey--text d-none d-sm-block" style="font-size: x-small; text-align: center">{{ review.review.timeCreated }}</v-card-text>
+                <v-card-text class="py-0 pb-1 grey--text d-none d-sm-block" style="font-size: x-small; text-align: center">{{ review.review.timeCreated }} </v-card-text>
               </v-row>
               <v-row class="pa-0 my-0 mt-1">
                 <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 pt-lg-3 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
-                  <v-chip x-small label style="margin-top: 1px; margin-right: 10px" v-if="false" class="mb-1 d-block">已编辑</v-chip>
-                  <v-btn v-if="review.review.is_me" text x-small color="grey" class="align-content-end"
-                    ><v-icon small style="padding-bottom: 0; padding-right: 2px">mdi-trash-can</v-icon></v-btn
-                  ><v-btn v-if="review.review.is_me" class="px-0 d-none d-sm-flex" text x-small color="grey" @click="editForm">
+                  <v-chip x-small label style="margin-top: 1px; margin-right: 10px" v-if="false" class="mb-1 d-block"> 已编辑 </v-chip>
+                  <v-dialog v-model="deleteCheck" persistent max-width="290">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn v-if="isAuth" text x-small color="grey" class="align-content-end" v-bind="attrs" v-on="on">
+                        <v-icon small style="padding-bottom: 0; padding-right: 2px">mdi-trash-can</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title class="text-h5"> 是否删除测评? </v-card-title>
+                      <v-card-text class="pb-1"> 您不可以撤销此操作 </v-card-text>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" text @click="deleteCheck = false"> 取消 </v-btn>
+                        <v-btn color="red darken-1" text @click="deleteReview" :loading="deleteReviewLoading"> 删除 </v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+                  <v-btn v-if="review.review.isMe" class="d-none d-sm-flex mx-auto" text x-small color="grey" @click="editForm">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
                 </v-card-text>
               </v-row>
               <v-row class="pa-0 my-0 mt-0">
                 <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 py-1 align-content-end align-end d-none d-sm-block">
-                  <v-btn v-if="review.review.is_me" class="d-block d-sm-none" @click="editPhoneForm" text x-small color="grey"
-                    ><v-icon small style="padding-right: 2px">mdi-pencil</v-icon></v-btn
-                  >
+                  <v-btn v-if="review.review.isMe" class="d-block d-sm-none mx-auto" @click="editPhoneForm" text x-small color="grey">
+                    <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
+                  </v-btn>
                 </v-card-text>
               </v-row>
             </div>
@@ -42,35 +56,37 @@
         <v-col class="pa-0 ma-0">
           <v-row class="pa-0">
             <v-col class="pa-0">
-              <v-card-title class="text-h6 font-weight-bold pt-2 pb-0 pl-6"> {{ review.review.title }} </v-card-title>
+              <v-card-title class="text-h6 font-weight-bold pt-2 pb-0 pl-6"> {{ review.review.title }}</v-card-title>
               <v-row align="center" justify="start" class="ml-3 mt-0 pl-2 align-start align-content-start">
                 <v-col class="shrink pr-0 pl-1 py-0 mt-0 mt-lg-2 mt-md-2 mt-sm-2">
-                  <v-chip small label outlined color="blue" class="d-none d-sm-flex">{{ review.course.teachers }}</v-chip>
-                  <v-chip x-small label outlined color="blue" class="s-flex d-sm-none">{{ review.course.teachers }}</v-chip>
+                  <v-chip small label outlined color="accent" class="d-none d-sm-flex">{{ review.course.teachers }} </v-chip>
+                  <v-chip x-small label outlined color="accent" class="s-flex d-sm-none">{{ review.course.teachers }} </v-chip>
                 </v-col>
                 <v-col class="shrink pr-0 pl-2 py-0 mt-0 mt-lg-2 mt-md-2 mt-sm-2">
-                  <v-chip small label outlined color="red" class="d-none d-sm-flex">{{ years }}</v-chip>
-                  <v-chip x-small label outlined color="red" class="s-flex d-sm-none">{{ years }}</v-chip>
+                  <v-chip small label outlined color="#E91E63" class="d-none d-sm-flex">{{ years }}</v-chip>
+                  <v-chip x-small label outlined color="#E91E63" class="s-flex d-sm-none">{{ years }}</v-chip>
                 </v-col>
               </v-row>
             </v-col>
             <v-col class="pa-0 ma-0 d-flex align-start pl-16 pt-1" cols="3">
               <v-card-text class="pa-1 pl-0 caption pt-2 grey--text d-sm-block align-end ml-auto d-none" style="height: 50%">
                 <div class="d-block align-self-end">
-                  <span class="d-inline-flex"> 总评分 </span>
+                  <span class="d-inline-flex" style="color: #3f51b5"> 总评分 </span>
                   <v-progress-linear
                     :value="review.review.rank.overall * 20"
                     :buffer-value="review.review.rank.overall * 20"
+                    color="#5C6BC0"
                     height="10"
                     class="d-inline-flex ml-1"
                     style="width: 60%; padding-top: 2px"
                   />
                 </div>
                 <div class="d-block">
-                  <span class="d-inline-flex"> 内容 </span>
+                  <span class="d-inline-flex" style="color: #3f51b5"> 内容 </span>
                   <v-progress-linear
                     :value="review.review.rank.content * 20"
                     :buffer-value="review.review.rank.content * 20"
+                    color="#5C6BC0"
                     height="10"
                     class="d-inline-flex ml-4"
                     style="width: 60%; padding-top: 2px"
@@ -78,10 +94,11 @@
                 </div>
                 <div class="d-block">
                   <div class="d-block">
-                    <span class="d-inline-flex"> 工作量 </span>
+                    <span class="d-inline-flex" style="color: #3f51b5"> 工作量 </span>
                     <v-progress-linear
                       :value="review.review.rank.workload * 20"
                       :buffer-value="review.review.rank.workload * 20"
+                      color="#5C6BC0"
                       height="10"
                       class="d-inline-flex ml-1"
                       style="width: 60%; padding-top: 2px"
@@ -90,10 +107,11 @@
                 </div>
                 <div class="d-block">
                   <div class="d-block">
-                    <span class="d-inline-flex"> 考核 </span>
+                    <span class="d-inline-flex" style="color: #3f51b5"> 考核 </span>
                     <v-progress-linear
                       :value="review.review.rank.assessment * 20"
                       :buffer-value="review.review.rank.assessment * 20"
+                      color="#5C6BC0"
                       height="10"
                       class="d-inline-flex ml-4"
                       style="width: 30%; padding-top: 2px"
@@ -105,7 +123,7 @@
           </v-row>
           <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pt-lg-0 pt-md-0 pt-sm-0 pt-6">
             <v-col class="pa-0 ma-0pt-0">
-              <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考</v-card-text>
+              <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考 </v-card-text>
               <v-card-text class="body-2 black--text pt-1 pb-2 px-2">
                 {{ review.review.content }}
               </v-card-text>
@@ -121,7 +139,8 @@
           <v-tooltip right class="ma-0 pa-0" color="white">
             <template v-slot:activator="{ on, attrs }">
               <v-card-text class="pa-1 pl-0 caption" v-bind="attrs" v-on="on">
-                总评分 <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;内容
+                总评分
+                <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;内容
                 <font-awesome-icon :class="rankColorContent" :icon="rankIconContent" />&nbsp;工作量
                 <font-awesome-icon :class="rankColorWorkload" :icon="rankIconWorkload" />&nbsp;考核
                 <font-awesome-icon :class="rankColorAssessment" :icon="rankIconAssessment" />
@@ -145,13 +164,20 @@
 import Vue from 'vue'
 import { ReviewWithCourse } from '@/models'
 import { parseYearSemester } from '@/utils/course'
+import { voteForReview } from '@/apis'
 
 export default Vue.extend({
   name: 'ReviewCard',
   props: {
-    review: ReviewWithCourse
+    review: {
+      type: ReviewWithCourse,
+      required: true
+    }
   },
   data: () => ({
+    isAuth: false,
+    deleteReviewLoading: false,
+    deleteCheck: false,
     remark: 0,
     like: false,
     unlike: false,
@@ -164,175 +190,98 @@ export default Vue.extend({
   }),
   computed: {
     reviewRemarkClass(): string {
-      if (this.remark < 0) return 'ma-0 py-0 font-weight-regular red--text'
-      else return 'ma-0 py-0 font-weight-regular'
+      return this.remark < 0 ? 'ma-0 py-0 font-weight-regular red--text' : 'ma-0 py-0 font-weight-regular'
     },
     rankColorOverall(): string {
-      if (this.review?.review.rank.overall == 5) {
-        return 'orange--text'
-      } else if (this.review?.review.rank.overall == 4) {
-        return 'brown--text'
-      } else if (this.review?.review.rank.overall == 2) {
-        return 'black--text'
-      } else if (this.review?.review.rank.overall == 1) {
-        return 'red--text'
-      } else {
-        return 'grey--text'
-      }
+      const rankColorOverall = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
+      return rankColorOverall[this.review.review.rank.overall - 1]
     },
     rankColorContent(): string {
-      if (this.review?.review.rank.content == 5) {
-        return 'orange--text'
-      } else if (this.review?.review.rank.content == 4) {
-        return 'brown--text'
-      } else if (this.review?.review.rank.content == 2) {
-        return 'black--text'
-      } else if (this.review?.review.rank.content == 1) {
-        return 'red--text'
-      } else {
-        return 'grey--text'
-      }
+      const rankColorContent = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
+      return rankColorContent[this.review.review.rank.content - 1]
     },
     rankColorWorkload(): string {
-      if (this.review?.review.rank.workload == 5) {
-        return 'orange--text'
-      } else if (this.review?.review.rank.workload == 4) {
-        return 'brown--text'
-      } else if (this.review?.review.rank.workload == 2) {
-        return 'black--text'
-      } else if (this.review?.review.rank.workload == 1) {
-        return 'red--text'
-      } else {
-        return 'grey--text'
-      }
+      const rankColorWorkload = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
+      return rankColorWorkload[this.review.review.rank.workload - 1]
     },
     rankColorAssessment(): string {
-      if (this.review?.review.rank.assessment == 5) {
-        return 'orange--text'
-      } else if (this.review?.review.rank.assessment == 4) {
-        return 'brown--text'
-      } else if (this.review?.review.rank.assessment == 2) {
-        return 'black--text'
-      } else if (this.review?.review.rank.assessment == 1) {
-        return 'red--text'
-      } else {
-        return 'grey--text'
-      }
+      const rankColorAssessment = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
+      return rankColorAssessment[this.review.review.rank.assessment - 1]
     },
     rankIconOverall(): string {
-      if (this.review?.review.rank.overall === 1) {
-        return 'fa-solid fa-face-frown'
-      } else if (this.review?.review.rank.overall === 2) {
-        return 'fa-solid fa-face-meh'
-      } else if (this.review?.review.rank.overall === 4) {
-        return 'fa-solid fa-face-laugh'
-      } else if (this.review?.review.rank.overall === 5) {
-        return 'fa-solid fa-face-grin-stars'
-      } else {
-        return 'fa-solid fa-face-smile'
-      }
+      const rankIconOverall = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
+      return rankIconOverall[this.review.review.rank.overall - 1]
     },
     rankIconContent(): string {
-      if (this.review?.review.rank.content === 1) {
-        return 'fa-solid fa-face-frown'
-      } else if (this.review?.review.rank.content === 2) {
-        return 'fa-solid fa-face-meh'
-      } else if (this.review?.review.rank.content === 4) {
-        return 'fa-solid fa-face-laugh'
-      } else if (this.review?.review.rank.content === 5) {
-        return 'fa-solid fa-face-grin-stars'
-      } else {
-        return 'fa-solid fa-face-smile'
-      }
+      const rankIconContent = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
+      return rankIconContent[this.review.review.rank.content - 1]
     },
     rankIconWorkload(): string {
-      if (this.review?.review.rank.workload === 1) {
-        return 'fa-solid fa-face-frown'
-      } else if (this.review?.review.rank.workload === 2) {
-        return 'fa-solid fa-face-meh'
-      } else if (this.review?.review.rank.workload === 4) {
-        return 'fa-solid fa-face-laugh'
-      } else if (this.review?.review.rank.workload === 5) {
-        return 'fa-solid fa-face-grin-stars'
-      } else {
-        return 'fa-solid fa-face-smile'
-      }
+      const rankIconWorkload = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
+      return rankIconWorkload[this.review.review.rank.workload - 1]
     },
     rankIconAssessment(): string {
-      if (this.review?.review.rank.assessment === 1) {
-        return 'fa-solid fa-face-frown'
-      } else if (this.review?.review.rank.assessment === 2) {
-        return 'fa-solid fa-face-meh'
-      } else if (this.review?.review.rank.assessment === 4) {
-        return 'fa-solid fa-face-laugh'
-      } else if (this.review?.review.rank.assessment === 5) {
-        return 'fa-solid fa-face-grin-stars'
-      } else {
-        return 'fa-solid fa-face-smile'
-      }
+      const rankIconAssessment = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
+      return rankIconAssessment[this.review.review.rank.assessment - 1]
     },
     years(): string {
-      return parseYearSemester(this.review?.course)
+      return parseYearSemester(this.review.course)
     }
   },
   beforeMount() {
-    this.remark = this.review?.review.remark
+    this.remark = this.review.review.remark
   },
   methods: {
+    deleteReview() {
+      console.log('delete review')
+    },
     async editForm(): Promise<void> {
-      this.$emit('openEditForm')
+      // console.log('openEditForm')
+      this.$emit('openEditForm', this.review)
     },
     async editPhoneForm(): Promise<void> {
-      this.$emit('openPhoneEditForm')
+      this.$emit('openPhoneEditForm', this.review)
     },
     async upVote(): Promise<void> {
-      if (this.unlike) {
-        this.unlike = false
-        this.like = true
-        this.remark = this.remark + 2
-        await this.$store.commit('cancelLikeReview', {
-          review: this.review
-        })
-        await this.$store.commit('likeReview', {
-          review: this.review
-        })
-      } else if (this.like) {
-        this.like = false
-        this.remark = this.remark - 1
-        await this.$store.commit('cancelLikeReview', {
-          review: this.review
-        })
-      } else {
-        this.like = true
-        this.remark = this.remark + 1
-        await this.$store.commit('likeReview', {
-          review: this.review
-        })
+      // Record original status
+      const originalUnlike = this.unlike
+      const originalLike = this.like
+      const originalRemark = this.review.review.remark
+
+      // Compute status after vote
+      this.review.review.remark += this.unlike ? 2 : this.like ? -1 : 1
+      this.unlike = false
+      this.like = !this.like
+
+      try {
+        const review = await voteForReview(this.review.review.id, true)
+        this.review.review.remark = review.remark
+      } catch (e) {
+        // Request failed, reverse to original status
+        this.unlike = originalUnlike
+        this.like = originalLike
+        this.review.review.remark = originalRemark
       }
     },
     async downVote(): Promise<void> {
-      if (this.like) {
-        this.like = false
-        this.unlike = true
-        this.remark = this.remark - 2
-        await this.$store.commit('cancelLikeReview', {
-          review: this.review
-        })
-        await this.$store.commit('unlikeReview', {
-          review: this.review
-        })
-      } else if (this.unlike) {
-        this.unlike = false
-        this.remark = this.remark + 1
-        await this.$store.commit('cancelUnlikeReview', {
-          review: this.review
-        })
-      } else {
-        this.unlike = true
-        this.remark = this.remark - 1
-        await this.$store.commit('unlikeReview', {
-          review: this.review
-        })
+      // Record original status
+      const originalUnlike = this.unlike
+      const originalLike = this.like
+      const originalRemark = this.review.review.remark
+
+      // Compute status after vote
+      this.review.review.remark += this.like ? -2 : this.unlike ? 1 : -1
+      this.like = false
+      this.unlike = !this.like
+
+      try {
+        const review = await voteForReview(this.review.review.id, false)
+        this.review.review.remark = review.remark
+      } catch (e) {
+        // Request failed, reverse to original status
+        this.unlike = originalUnlike
+        this.like = originalLike
+        this.review.review.remark = originalRemark
       }
     }
   }
