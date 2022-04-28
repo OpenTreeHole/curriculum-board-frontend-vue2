@@ -14,7 +14,7 @@
       <v-skeleton-loader type="text" width="20%" height="10%"></v-skeleton-loader>
     </v-banner>
     <v-banner class="d-block d-sm-none mt-0 pt-0" v-if="!loading">
-      <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3" color="#5C6BC0"
+      <v-chip :key="v" v-for="v in credits" label small class="subtitle-2 font-weight-bold ml-3 white--text" color="#FB8C00"
         >{{ v }}
         学分
       </v-chip>
