@@ -20,6 +20,7 @@
       </v-chip>
     </v-banner>
     <!-- TODO pad页面以及表单 -->
+    <!-- TODO 表单解耦  -->
     <!-- 电脑以及手机页面  -->
     <v-row>
       <v-col lg="3" cols="12" class="pb-0">
@@ -120,14 +121,14 @@
           <v-skeleton-loader v-if="loading" type="sentences" width="60%" class="ml-10 my-2"></v-skeleton-loader>
           <v-card-actions class="pt-1 pb-1" v-if="!loading">
             <v-chip-group class="ml-4" column mandatory v-model="teacherTag" @change="changeTeacherFilter" active-class="blue--text">
-              <v-chip active-class="chosen--text" small v-for="(v, i) in teacherTags" :key="i">{{ v }}</v-chip>
+              <v-chip active-class="chosen--text" small v-for="(v, i) in teacherTags()" :key="i" :disabled="ifTeacherTagDisabled(v)">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
           <v-card-title class="text-h6 font-weight-black py-0 ml-1">时间</v-card-title>
           <v-skeleton-loader v-if="loading" type="sentences" width="60%" class="ml-10 my-2"></v-skeleton-loader>
           <v-card-actions class="pt-1 mb-2" v-if="!loading">
             <v-chip-group class="ml-4" column mandatory v-model="timeTag" @change="changeTimeFilter" active-class="blue--text">
-              <v-chip active-class="chosen--text" small v-for="(v, i) in timeTags()" :key="i">{{ v }}</v-chip>
+              <v-chip active-class="chosen--text" small v-for="(v, i) in timeTags()" :key="i" :disabled="ifTimeTagDisabled(v)">{{ v }}</v-chip>
             </v-chip-group>
           </v-card-actions>
           <v-divider />
@@ -166,7 +167,6 @@
       </v-col>
     </v-row>
     <!-- 电脑表单  -->
-    <!-- TODO 提交表单加载动画以及error message -->
     <v-dialog v-model="reviewSheet" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>
@@ -372,6 +372,7 @@ import ReviewEditor from '@/components/ReviewEditor.vue'
 import { parseYearSemester } from '@/utils/course'
 import { forEach, toNumber } from 'lodash-es'
 import { addReview } from '@/apis'
+import { match } from 'pinyin-pro'
 
 export interface itemList {
   title: string
@@ -398,6 +399,8 @@ export default Vue.extend({
     teacherTag: 0,
     timeTag: 0,
     courseId: '',
+    disabledTeacherTag: [] as string[],
+    disabledTimeTag: [] as string[],
     teachersSelectList: [] as itemList[],
     timeSelectList: [] as itemList[],
     rank: {
@@ -480,15 +483,6 @@ export default Vue.extend({
       this.courseGroup?.courseList.forEach((course) => creditsSet.add(course.credit))
       return [...creditsSet]
     },
-    teacherTags(): string[] {
-      let teachersSet = new Set<string>()
-      for (const course of this.courseGroup?.courseList ?? []) {
-        if (course.reviewList !== undefined && course.reviewList.length > 0) {
-          teachersSet.add(course.teachers)
-        }
-      }
-      return ['所有', ...teachersSet]
-    },
     reviews(): ReviewWithCourse[] {
       return (
         this.courseGroup?.courseList
@@ -503,6 +497,36 @@ export default Vue.extend({
     }
   },
   methods: {
+    ifTeacherTagDisabled(teacherTag: string): boolean {
+      if (this.timeTag === 0 || teacherTag === '所有') {
+        return false
+      } else {
+        let noMatch = true
+        this.courseGroup?.courseList.forEach((course) => {
+          if (this.timeTags()[this.timeTag] === parseYearSemester(course)) {
+            if (course.teachers === teacherTag) {
+              noMatch = false
+            }
+          }
+        })
+        return noMatch
+      }
+    },
+    ifTimeTagDisabled(timeTag: string): boolean {
+      if (this.teacherTag === 0 || timeTag === '所有') {
+        return false
+      } else {
+        let noMatch = true
+        this.courseGroup?.courseList.forEach((course) => {
+          if (this.teacherTags()[this.teacherTag] === course.teachers) {
+            if (timeTag === parseYearSemester(course)) {
+              noMatch = false
+            }
+          }
+        })
+        return noMatch
+      }
+    },
     banTeachers(): void {
       if (this.timeSelected === null) {
         for (const teacher of this.teachersSelectList) {
@@ -567,6 +591,15 @@ export default Vue.extend({
         }
       }
       return ['所有', ...timeSet]
+    },
+    teacherTags(): string[] {
+      let teachersSet = new Set<string>()
+      for (const course of this.courseGroup?.courseList ?? []) {
+        if (course.reviewList !== undefined && course.reviewList.length > 0) {
+          teachersSet.add(course.teachers)
+        }
+      }
+      return ['所有', ...teachersSet]
     },
     semesterReview(): Map<string, ReviewWithCourse[]> {
       let courses = this.reviewsCategorizedByYearSemester()

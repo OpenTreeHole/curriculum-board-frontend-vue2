@@ -30,7 +30,6 @@ export default Vue.extend({
       after: async () => {
         this.editor?.setValue(this.content)
       }
-      /* 这一部分会导致editor延迟一下渲染, TODO 解决延迟渲染并且可以使用模版 */
       /* TODO 添加模版 */
     })
     this.$emit('editorReady')
