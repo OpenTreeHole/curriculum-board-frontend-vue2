@@ -365,7 +365,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, PostReviewData, reviewWithCourse, TotalRank } from '@/models'
+import { CourseGroup, PostReviewData, ReviewWithCourse, TotalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
@@ -489,7 +489,7 @@ export default Vue.extend({
       }
       return ['所有', ...teachersSet]
     },
-    reviews(): reviewWithCourse[] {
+    reviews(): ReviewWithCourse[] {
       return (
         this.courseGroup?.courseList
           .filter(
@@ -498,7 +498,7 @@ export default Vue.extend({
               (this.filters.year == null || course.year == this.filters.year) &&
               (this.filters.semester == null || course.semester == this.filters.semester)
           )
-          .flatMap((course) => course.reviewList?.map((review) => new reviewWithCourse(review, course)) || []) || []
+          .flatMap((course) => course.reviewList?.map((review) => new ReviewWithCourse(review, course)) || []) || []
       )
     }
   },
@@ -568,7 +568,7 @@ export default Vue.extend({
       }
       return ['所有', ...timeSet]
     },
-    semesterReview(): Map<string, reviewWithCourse[]> {
+    semesterReview(): Map<string, ReviewWithCourse[]> {
       let courses = this.reviewsCategorizedByYearSemester()
       for (let [key, value] of courses) {
         if (value.length == 0) {
@@ -577,11 +577,11 @@ export default Vue.extend({
       }
       return courses
     },
-    reviewsCategorizedByYearSemester(): Map<string, reviewWithCourse[]> {
-      let resultMap = new Map<string, reviewWithCourse[]>()
+    reviewsCategorizedByYearSemester(): Map<string, ReviewWithCourse[]> {
+      let resultMap = new Map<string, ReviewWithCourse[]>()
       for (const course of this.courseGroup?.courseList || []) {
         const yearSemester = parseYearSemester(course)
-        const reviews = course.reviewList?.map((review) => new reviewWithCourse(review, course)) || []
+        const reviews = course.reviewList?.map((review) => new ReviewWithCourse(review, course)) || []
         if (resultMap.has(yearSemester)) {
           resultMap.get(yearSemester)?.push(...reviews)
         } else {
@@ -707,7 +707,7 @@ export default Vue.extend({
         return '硬核'
       }
     },
-    semesterRank(reviews: reviewWithCourse[]): TotalRank {
+    semesterRank(reviews: ReviewWithCourse[]): TotalRank {
       const semesterTotalScore = new TotalRank({
         overall: 0,
         content: 0,
@@ -755,7 +755,7 @@ export default Vue.extend({
       }
     },
     // TODO 每个用户只能发布一个评测
-    changeFormView(reviewWithCourse: reviewWithCourse): void {
+    changeFormView(reviewWithCourse: ReviewWithCourse): void {
       if (reviewWithCourse) {
         this.rank = reviewWithCourse.review.rank
         this.reviewTitle = reviewWithCourse.review.title
@@ -771,7 +771,7 @@ export default Vue.extend({
       }
       this.reviewSheet = !this.reviewSheet
     },
-    changePhoneFormView(reviewWithCourse: reviewWithCourse): void {
+    changePhoneFormView(reviewWithCourse: ReviewWithCourse): void {
       if (reviewWithCourse) {
         this.rank = reviewWithCourse.review.rank
         this.reviewTitle = reviewWithCourse.review.title
