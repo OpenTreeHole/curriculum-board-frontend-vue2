@@ -6,6 +6,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import vuetify from './plugins/vuetify'
+import '@/mock/mock-data'
 
 Vue.config.productionTip = false
 

@@ -5,7 +5,6 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    AddReview: typeof import('./src/components/AddReview.vue')['default']
     MessageSnackbar: typeof import('./src/components/MessageSnackbar.vue')['default']
     ReviewCard: typeof import('./src/components/ReviewCard.vue')['default']
     ReviewEditor: typeof import('./src/components/ReviewEditor.vue')['default']
@@ -49,7 +48,6 @@ declare module '@vue/runtime-core' {
     VSpacer: typeof import('vuetify/lib')['VSpacer']
     VSubheader: typeof import('vuetify/lib')['VSubheader']
     VTextField: typeof import('vuetify/lib')['VTextField']
-    VTooltip: typeof import('vuetify/lib')['VTooltip']
   }
 }
 
