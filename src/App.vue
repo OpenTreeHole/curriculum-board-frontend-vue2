@@ -7,7 +7,6 @@
       </v-container>
     </v-app-bar>
     <v-main>
-      <!-- TODO keep-alive -->
       <keep-alive>
         <router-view :key="$route.fullPath" />
       </keep-alive>
