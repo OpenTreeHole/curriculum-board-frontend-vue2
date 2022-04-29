@@ -1,5 +1,7 @@
 # curriculum-board-frontend
 
+Frontend of Curriculum Board
+
 ## Project setup
 ```
 yarn install

@@ -32,5 +32,5 @@ export const snakifyKeys = (obj: any): any => {
 }
 
 export const isDebug = () => {
-  return process.env.NODE_ENV == 'development'
+  return import.meta.env.NODE_ENV == 'development'
 }
