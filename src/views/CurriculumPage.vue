@@ -370,9 +370,9 @@ import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
 import { parseYearSemester } from '@/utils/course'
-import { forEach, toNumber } from 'lodash-es'
+import { toNumber } from 'lodash-es'
 import { addReview } from '@/apis'
-import { match } from 'pinyin-pro'
+// import { match } from 'pinyin-pro'
 
 export interface itemList {
   title: string
@@ -644,7 +644,7 @@ export default Vue.extend({
     changeTeacherFilter() {
       if (this.teacherTag === 0) {
         this.filters.teacher = null
-      } else this.filters.teacher = this.teacherTags[this.teacherTag]
+      } else this.filters.teacher = this.teacherTags()[this.teacherTag]
     },
     rankColorWorkload(workload: number): string {
       if (workload >= 75) {
