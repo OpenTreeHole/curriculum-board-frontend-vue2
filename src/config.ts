@@ -5,4 +5,6 @@ const config = {
   cookieDomain: import.meta.env.VITE_COOKIE_DOMAIN
 }
 
+console.log(config)
+
 export default config

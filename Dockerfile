@@ -4,11 +4,11 @@ WORKDIR /app
 
 COPY package.json yarn.lock /app/
 
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
 COPY . /app
 
-RUN yarn staging-vite
+RUN yarn build-vite
 
 FROM nginx:alpine
 
