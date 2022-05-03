@@ -136,7 +136,7 @@
           <v-card-text class="pa-1 pl-3 Caption grey--text">{{ review.review.timeCreated }}</v-card-text>
         </div>
         <div class="pr-2 ml-auto">
-          <v-card-text class="pa-1 pl-0 caption" v-bind="attrs" v-on="on">
+          <v-card-text class="pa-1 pl-0 caption">
             总评分
             <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;内容 <font-awesome-icon :class="rankColorContent" :icon="rankIconContent" />&nbsp;工作量
             <font-awesome-icon :class="rankColorWorkload" :icon="rankIconWorkload" />&nbsp;考核

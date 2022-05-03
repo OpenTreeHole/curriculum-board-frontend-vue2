@@ -130,6 +130,8 @@ export const listUsers = async (size: number, offset: number) => {
   return data.map((v) => new UserAuth(v))
 }
 
+// Following is Curriculum-related api.
+
 export const addCourse = async (courseData: ICourseData) => {
   const response = await axios.post('/courses', courseData)
   const data: ICourse = camelizeKeys(response.data)
@@ -147,6 +149,7 @@ export const getCourseGroup = async (groupId: number) => {
   const data: ICourseGroup = camelizeKeys(response.data)
   return new CourseGroup(data)
 }
+
 export const getCourse = async (courseId: number) => {
   const response = await axios.get(`/courses/${courseId}`)
   const data: ICourse = camelizeKeys(response.data)
