@@ -24,6 +24,7 @@ Since the Curriculum Board site requires the Auth site to provide authentication
     To know more about environmental variables in docker, visit [Environment variables in Compose](https://docs.docker.com/compose/environment-variables/).
 
 3. Set all environmental variables. The required env variables are listed below.
+   These env variables would be used to replace the bundled js by ```entryPoint.sh``` , and it uses  | as separator. **Thus, if you need to use | in your env variable, please use \ to trope it.**
    ```dotenv
    # .env file
    
