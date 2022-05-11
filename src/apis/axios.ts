@@ -47,7 +47,7 @@ const requestInterceptor = (config: AxiosRequestConfig) => {
     // Put your test token here!
   }
 
-  if (token && config.headers) config.headers.Authorization = token
+  if (token && config.headers) config.headers.Authorization = 'Bearer ' + token
   return config
 }
 
@@ -57,7 +57,7 @@ const refreshRequestInterceptor = (config: AxiosRequestConfig) => {
     // Put your test token here!
   }
 
-  if (token && config.headers) config.headers.Authorization = token
+  if (token && config.headers) config.headers.Authorization = 'Bearer ' + token
   return config
 }
 
