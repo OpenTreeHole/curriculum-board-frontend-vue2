@@ -43,9 +43,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta?.title) {
     document.title = to.meta.title
   }
-  console.log(Cookies.get('refresh'))
   if (Cookies.get('refresh') === undefined && to.name !== 'login') {
-    console.log(11111)
     return next('/login')
   }
   next()
