@@ -439,7 +439,7 @@ export default Vue.extend({
       return rankWordWorkload[this.rank.workload]
     },
     postRankWordAssessment(): string {
-      const rankWordAssessment = ['无', '非常严格', '严格', '宽松', '非常宽松']
+      const rankWordAssessment = ['无', '非常严格', '严格', '适中', '宽松', '非常宽松']
       return rankWordAssessment[this.rank.assessment]
     },
     postRankColorOverall(): string {
