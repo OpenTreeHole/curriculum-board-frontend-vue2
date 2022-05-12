@@ -8,7 +8,7 @@
           <v-text-field
             prepend-inner-icon="mdi-magnify"
             style="margin-top: 32vh"
-            placeholder="请输入课程"
+            placeholder="请输入课程名称或课程代码"
             v-model="searchText"
             outlined
             class="d-none d-sm-block rounded-pill"
@@ -17,7 +17,7 @@
           <v-text-field
             prepend-inner-icon="mdi-magnify"
             style="margin-top: 32vh"
-            placeholder="请输入课程"
+            placeholder="请输入课程名称或课程代码"
             v-model="searchText"
             outlined
             dense
@@ -26,7 +26,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row class="d-flex align-center" v-if="loadingSearchResult && this.searchText !== ''">
+      <v-row class="d-flex align-center" v-if="this.loadingSearchResult && this.searchText !== ''">
         <v-col style="text-align: center">
           <v-progress-circular :size="60" color="primary" indeterminate class="d-none d-sm-inline-block"></v-progress-circular>
           <v-progress-circular :size="40" color="primary" indeterminate class="d-inline-block d-sm-none"></v-progress-circular>
@@ -37,7 +37,7 @@
           <v-spacer />
           <v-col cols="12" lg="6" class="ma-0 pa-0">
             <v-list v-if="inSearch">
-              <v-card v-for="(v, i) in searchResult" :key="i" class="pa-0 pl-3 v-card--hover">
+              <v-card v-for="(v, i) in searchResult" :key="i" class="pa-0 pl-3 v-card--hover mb-2">
                 <div @click="$router.push(`/group/${v.id}`)">
                   <v-card-subtitle class="monospace grey--text py-0 pt-3 d-flex">
                     <span class="mr-3 d-flex align-center">{{ v.code }}</span>
@@ -51,6 +51,9 @@
                 </div>
               </v-card>
             </v-list>
+            <v-row style="text-align: center" v-if="this.noResult">
+              <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
+            </v-row>
           </v-col>
           <v-spacer />
         </v-row>
@@ -66,15 +69,18 @@ import Vue from 'vue'
 import gasp from 'gsap'
 import { match } from 'pinyin-pro'
 import { isDebug } from '@/utils'
+import _ from 'lodash'
 
 export default Vue.extend({
   name: 'PortalPage',
   data() {
     return {
       loadingSearchResult: true,
+      loadingCourses: true,
       searchText: '',
       searchResult: [] as CourseGroup[],
-      inSearch: false
+      inSearch: false,
+      noResult: false
     }
   },
   watch: {
@@ -91,21 +97,28 @@ export default Vue.extend({
         })
       }
     },
-    searchText() {
+    searchText: {
+      handler() {
+        this.debouncedSearch()
+      },
+      deep: true
+    }
+  },
+  methods: {
+    debouncedSearch: _.debounce(function (this: any) {
+      this.noResult = false
       if (this.searchText.trim() == '') {
         this.searchResult = []
         this.inSearch = false
         return
       }
-
       this.inSearch = true
 
       this.searchResult = (this.$store.state.data.courseGroup as CourseGroup[]).filter(
         (course) => match(course.name, this.searchText) || [course.name, course.code].some((field) => field.includes(this.searchText))
       )
-    }
-  },
-  methods: {
+      this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
+    }, 600),
     credits(courseList: Course[]): number[] {
       let creditsSet = new Set<number>()
       courseList.forEach((course) => creditsSet.add(course.credit))
@@ -226,6 +239,7 @@ export default Vue.extend({
       })
     } else {
       this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
+      this.debouncedSearch()
     }
     this.loadingSearchResult = false
   }
