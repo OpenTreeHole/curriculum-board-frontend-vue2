@@ -22,6 +22,7 @@
     </v-banner>
     <!-- TODO pad页面以及表单 -->
     <!-- TODO 表单解耦  -->
+    <!-- TODO 手机skeleton  -->
     <!-- 电脑以及手机页面  -->
     <v-row>
       <v-col lg="3" cols="12" class="pb-0">
@@ -499,8 +500,15 @@ export default Vue.extend({
   },
   methods: {
     ifTeacherTagDisabled(teacherTag: string): boolean {
-      if (this.timeTag === 0 || teacherTag === '所有') {
-        return false
+      if (teacherTag === '所有') return false
+      else if (this.timeTag === 0) {
+        let noReview = true
+        this.courseGroup?.courseList.forEach((course) => {
+          if (course.teachers === teacherTag) {
+            if (course.reviewList !== undefined && course.reviewList?.length > 0) noReview = false
+          }
+        })
+        return noReview
       } else {
         let noMatch = true
         this.courseGroup?.courseList.forEach((course) => {
@@ -514,8 +522,15 @@ export default Vue.extend({
       }
     },
     ifTimeTagDisabled(timeTag: string): boolean {
-      if (this.teacherTag === 0 || timeTag === '所有') {
-        return false
+      if (timeTag === '所有') return false
+      else if (this.teacherTag === 0) {
+        let noReview = true
+        this.courseGroup?.courseList.forEach((course) => {
+          if (timeTag === parseYearSemester(course)) {
+            if (course.reviewList !== undefined && course.reviewList?.length > 0) noReview = false
+          }
+        })
+        return noReview
       } else {
         let noMatch = true
         this.courseGroup?.courseList.forEach((course) => {
@@ -587,18 +602,14 @@ export default Vue.extend({
     timeTags(): string[] {
       let timeSet = new Set<string>()
       for (const course of this.courseGroup?.courseList ?? []) {
-        if (course.reviewList !== undefined && course.reviewList.length > 0) {
-          timeSet.add(parseYearSemester(course))
-        }
+        timeSet.add(parseYearSemester(course))
       }
       return ['所有', ...timeSet]
     },
     teacherTags(): string[] {
       let teachersSet = new Set<string>()
       for (const course of this.courseGroup?.courseList ?? []) {
-        if (course.reviewList !== undefined && course.reviewList.length > 0) {
-          teachersSet.add(course.teachers)
-        }
+        teachersSet.add(course.teachers)
       }
       return ['所有', ...teachersSet]
     },
@@ -867,6 +878,8 @@ export default Vue.extend({
     timeArray.forEach((time) => {
       this.timeSelectList.push({ title: time, value: time, disabled: false })
     })
+    console.log(timeArray)
+    console.log(teachersArray)
     teachersArray.forEach((teacher) => {
       this.teachersSelectList.push({ title: teacher, value: teacher, disabled: false })
     })

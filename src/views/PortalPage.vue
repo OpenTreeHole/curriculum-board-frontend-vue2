@@ -86,6 +86,7 @@ export default Vue.extend({
   watch: {
     inSearch() {
       if (this.inSearch) {
+        // TODO 手机上移距离
         gasp.to('#search-bar', {
           y: -100,
           duration: 0.2
@@ -196,12 +197,12 @@ export default Vue.extend({
               codeId: 'JXT114514.02',
               code: 'JXT114514',
               department: '嘉心糖',
-              teachers: '丁烷人',
+              teachers: '丙烷人',
               credit: 5,
               maxStudent: 114514,
               semester: 2,
               weekHour: 7,
-              year: '2022',
+              year: '2012',
               name: '嘉然今天吃七海nana7mi',
               reviewList: []
             }),
