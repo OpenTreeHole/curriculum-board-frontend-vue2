@@ -86,15 +86,16 @@ export default Vue.extend({
   watch: {
     inSearch() {
       if (this.inSearch) {
-        // TODO 手机上移距离
+        // TODO pad上移距离
+        let distance = window.innerWidth < 600 ? -240 : -150
         gasp.to('#search-bar', {
-          y: -100,
-          duration: 0.2
+          y: distance,
+          duration: 0.3
         })
       } else {
         gasp.to('#search-bar', {
           y: 0,
-          duration: 0.2
+          duration: 0.3
         })
       }
     },
