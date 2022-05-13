@@ -779,22 +779,33 @@ export default Vue.extend({
             review.content = (this.$refs.reviewEditor as any).getContent()
             review.rank = this.rank
             review.title = this.reviewTitle
-            let reviewAdded = await addReview(toNumber(this.courseId.split('.')[1]), review)
             if (this.posted) {
-              await this.$store.commit('addReview', {
-                id: toNumber(this.courseId.split('.')[1]),
-                review: reviewAdded
-              })
-            } else {
-              await this.$store.commit('modifyReview', {
-                id: toNumber(this.courseId.split('.')[1]),
-                review: reviewAdded
-              })
+              let [reviewAdded, error] = await addReview(toNumber(this.courseId.split('.')[1]), review)
+                .catch((error) => [null, error])
+                .then((res) => [res, null])
+              if (error) {
+                console.log(error)
+                this.postingReviewLoading = false
+              } else if (reviewAdded) {
+                console.log(this.posted)
+                if (this.posted) {
+                  await this.$store.commit('addReview', {
+                    id: toNumber(this.courseId.split('.')[1]),
+                    review: reviewAdded
+                  })
+                  this.reviewSheetPhone = false
+                  this.reviewSheet = false
+                } else {
+                  await this.$store.commit('modifyReview', {
+                    id: toNumber(this.courseId.split('.')[1]),
+                    review: reviewAdded
+                  })
+                  this.reviewSheetPhone = false
+                  this.reviewSheet = false
+                }
+                this.postingReviewLoading = false
+              }
             }
-            if (this.$refs.reviewEditor as any) (this.$refs.reviewEditor as any).setValue('')
-            this.reviewSheet = false
-            this.reviewSheetPhone = false
-            this.postingReviewLoading = false
           } else {
             this.snackbarContent = '评分'
             this.snackbar = true

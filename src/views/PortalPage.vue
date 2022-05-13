@@ -128,7 +128,7 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    if (isDebug()) {
+    if (0) {
       this.$store.commit('addCourseGroup', {
         newCourseGroup: new CourseGroup({
           code: 'JXT114514',
