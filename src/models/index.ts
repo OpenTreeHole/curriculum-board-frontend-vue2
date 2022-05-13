@@ -19,6 +19,7 @@ export interface IReviewData {
   content: string
   rank: IRank
   remark: number
+  reviewerId: number
 }
 
 export interface PostReviewData {
@@ -80,6 +81,7 @@ export class Review implements IReview {
   timeCreated: string
   title: string
   isMe: boolean
+  reviewerId: number
 
   constructor(review: IReview) {
     this.content = review.content
@@ -89,6 +91,7 @@ export class Review implements IReview {
     this.timeCreated = review.timeCreated
     this.title = review.title
     this.isMe = review.isMe
+    this.reviewerId = review.reviewerId
   }
 }
 

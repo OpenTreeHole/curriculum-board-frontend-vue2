@@ -17,10 +17,10 @@
                 <font-awesome-icon :class="this.unlike ? 'red--text' : 'grey--text'" icon="fa-solid fa-caret-down" @click="downVote" />
               </v-row>
               <v-row class="pa-0">
-                <v-card-text class="py-0 pb-1 grey--text d-none d-sm-block" style="font-size: x-small; text-align: center">{{ review.review.timeCreated }} </v-card-text>
+                <v-card-text class="py-0 pb-1 grey--text d-none d-sm-block" style="font-size: 11px; text-align: center">{{ review.review.timeCreated }} </v-card-text>
               </v-row>
               <v-row class="pa-0 my-0 mt-1">
-                <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 pt-lg-3 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
+                <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 pt-lg-1 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
                   <v-chip x-small label style="margin-top: 1px; margin-right: 10px" v-if="false" class="mb-1 d-block"> 已编辑 </v-chip>
                   <v-dialog v-model="deleteCheck" persistent max-width="290">
                     <template v-slot:activator="{ on, attrs }">
@@ -41,6 +41,7 @@
                   <v-btn v-if="review.review.isMe" class="d-none d-sm-flex mx-auto" text x-small color="grey" @click="editForm">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
+                  <v-card-text v-else class="py-0 py-0 grey--text d-none d-sm-block" style="font-size: 11px; text-align: center">user{{ review.review.reviewerId }} </v-card-text>
                 </v-card-text>
               </v-row>
               <v-row class="pa-0 my-0 mt-0">
