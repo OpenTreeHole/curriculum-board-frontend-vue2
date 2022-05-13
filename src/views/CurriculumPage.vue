@@ -4,6 +4,7 @@
       <v-skeleton-loader v-if="loading" type="heading" width="70%" height="40%" class="d-none d-sm-flex" />
       <v-skeleton-loader v-if="loading" type="heading" width="100%" height="20%" class="d-block d-sm-none" />
       <template v-if="!loading">
+        <v-breadcrumbs-item class="text-h6 font-weight-black mx-2" to="/"><font-awesome-icon icon="fa-solid fa-chevron-left" /></v-breadcrumbs-item>
         <v-breadcrumbs-item class="text-h6 font-weight-black ml-0">&nbsp;{{ courseGroup.department }}</v-breadcrumbs-item>
         <v-breadcrumbs-divider class="text-h6 font-weight-black">/</v-breadcrumbs-divider>
         <v-breadcrumbs-item class="text-h6 font-weight-black">{{ courseGroup.name }}</v-breadcrumbs-item>
