@@ -149,6 +149,7 @@ export default Vue.extend({
                   timeCreated: '2022-04-09',
                   title: '绝世好课',
                   content: '每个脆脆鲨都应该来听的必修课程每个脆脆鲨都应该来听的必修课程',
+                  reviewerId: 1,
                   rank: {
                     overall: 5,
                     content: 4,
@@ -163,6 +164,7 @@ export default Vue.extend({
                   timeCreated: '2022-04-09',
                   title: 'A/414',
                   content: '每个脆脆鲨都应该来听的必修课程',
+                  reviewerId: 2,
                   rank: {
                     overall: 4,
                     content: 4,
@@ -177,6 +179,7 @@ export default Vue.extend({
                   timeCreated: '2022-04-09',
                   title: 'A/414',
                   content: '每个脆脆鲨都应该来听的必修课程',
+                  reviewerId: 5,
                   rank: {
                     overall: 1,
                     content: 2,
@@ -220,6 +223,7 @@ export default Vue.extend({
                   timeCreated: '2022-04-09',
                   title: '你们A/没有自己的测评网站吗',
                   content: '每个脆脆鲨都应该来听的必修课程',
+                  reviewerId: 7,
                   rank: {
                     overall: 4,
                     content: 4,
