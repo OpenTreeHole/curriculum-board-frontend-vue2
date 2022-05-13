@@ -22,7 +22,6 @@
     </v-banner>
     <!-- TODO pad页面以及表单 -->
     <!-- TODO 表单解耦  -->
-    <!-- TODO 手机skeleton  -->
     <!-- 电脑以及手机页面  -->
     <v-row>
       <v-col lg="3" cols="12" class="pb-0">
@@ -140,7 +139,7 @@
         </div>
       </v-col>
       <v-col lg="8" class="mx-lg-0 mx-3">
-        <v-skeleton-loader v-if="loading" type="heading" class="ml-2 my-lg-4"></v-skeleton-loader>
+        <v-skeleton-loader v-if="loading" type="heading" class="ml-2 my-lg-4 mb-5"></v-skeleton-loader>
         <div v-if="!loading" class="d-none d-sm-block mt-10">
           <v-row style="text-align: center" v-if="reviews.length === 0">
             <v-col class="text-h5 my-4 grey--text"> 暂时没有测评 </v-col>
@@ -878,8 +877,6 @@ export default Vue.extend({
     timeArray.forEach((time) => {
       this.timeSelectList.push({ title: time, value: time, disabled: false })
     })
-    console.log(timeArray)
-    console.log(teachersArray)
     teachersArray.forEach((teacher) => {
       this.teachersSelectList.push({ title: teacher, value: teacher, disabled: false })
     })
