@@ -17,7 +17,7 @@
                 <font-awesome-icon :class="this.unlike ? 'red--text' : 'grey--text'" icon="fa-solid fa-caret-down" @click="downVote" />
               </v-row>
               <v-row class="pa-0">
-                <v-card-text class="py-0 pb-1 grey--text d-none d-sm-block" style="font-size: 11px; text-align: center">{{ review.review.timeCreated }} </v-card-text>
+                <v-card-text class="py-0 pb-1 grey--text d-none d-sm-block" style="font-size: 11px; text-align: center">{{ review.review.timeCreated.slice(0, 10) }} </v-card-text>
               </v-row>
               <v-row class="pa-0 my-0 mt-1">
                 <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 pt-lg-1 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
@@ -134,7 +134,7 @@
       </v-row>
       <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)" class="d-flex align-content-space-between d-sm-none mt-1">
         <div class="shrink pr-0 d-flex" style="text-align: left">
-          <v-card-text class="pa-1 pl-3 Caption grey--text">{{ review.review.timeCreated }}</v-card-text>
+          <v-card-text class="pa-1 pl-3 Caption grey--text">{{ review.review.timeCreated.slice(0, 10) }}</v-card-text>
         </div>
         <div class="pr-2 ml-auto">
           <v-card-text class="pa-1 pl-0 caption">
