@@ -173,9 +173,9 @@ export const removeReview = async (reviewId: number): Promise<string> => {
   return response.data
 }
 
-export const modifyReview = async (reviewId: number, reviewData: IReviewData) => {
+export const modifyReview = async (reviewId: number, reviewData: PostReviewData) => {
   const response = await axios.put(`/reviews/${reviewId}`, reviewData)
-  const data: IReview = camelizeKeys(response)
+  const data: IReview = camelizeKeys(response.data)
   return new Review(data)
 }
 

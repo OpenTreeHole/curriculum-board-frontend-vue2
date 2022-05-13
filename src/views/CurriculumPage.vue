@@ -366,13 +366,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, PostReviewData, ReviewWithCourse, TotalRank } from '@/models'
+import { CourseGroup, PostReviewData, Review, ReviewWithCourse, TotalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
 import { parseYearSemester } from '@/utils/course'
 import { toNumber } from 'lodash-es'
-import { addReview } from '@/apis'
+import { addReview, modifyReview } from '@/apis'
 // import { match } from 'pinyin-pro'
 
 export interface itemList {
@@ -779,32 +779,59 @@ export default Vue.extend({
             review.content = (this.$refs.reviewEditor as any).getContent()
             review.rank = this.rank
             review.title = this.reviewTitle
-            if (this.posted) {
-              let [reviewAdded, error] = await addReview(toNumber(this.courseId.split('.')[1]), review)
+            if (!this.posted) {
+              let id = 0
+              this.courseGroup?.courseList.forEach((course) => {
+                if (course.codeId === this.courseId) {
+                  id = course.id
+                }
+              })
+              let [reviewAdded, error] = (await addReview(toNumber(id), review)
                 .catch((error) => [null, error])
-                .then((res) => [res, null])
+                .then((res) => [res, null])) as [Review, Error]
               if (error) {
                 console.log(error)
                 this.postingReviewLoading = false
               } else if (reviewAdded) {
-                console.log(this.posted)
-                if (this.posted) {
-                  await this.$store.commit('addReview', {
-                    id: toNumber(this.courseId.split('.')[1]),
-                    review: reviewAdded
-                  })
-                  this.reviewSheetPhone = false
-                  this.reviewSheet = false
-                } else {
-                  await this.$store.commit('modifyReview', {
-                    id: toNumber(this.courseId.split('.')[1]),
-                    review: reviewAdded
-                  })
-                  this.reviewSheetPhone = false
-                  this.reviewSheet = false
-                }
-                this.postingReviewLoading = false
+                reviewAdded.isMe = true
+                this.$store.commit('addReview', {
+                  id: toNumber(id),
+                  review: reviewAdded
+                })
+                this.reviewSheetPhone = false
+                this.reviewSheet = false
+                this.posted = true
+                this.loading = true
+                this.loading = false
               }
+              this.postingReviewLoading = false
+              console.log(this.courseGroup)
+            } else {
+              let id = 0
+              this.courseGroup?.courseList.forEach((course) => {
+                course.reviewList?.forEach((review) => {
+                  review.isMe = true
+                  id = review.id
+                })
+              })
+              let [reviewAdded, error] = (await modifyReview(toNumber(id), review)
+                .catch((error) => [null, error])
+                .then((res) => [res, null])) as [Review, Error]
+              if (error) {
+                console.log(error)
+                this.postingReviewLoading = false
+              } else if (reviewAdded) {
+                reviewAdded.isMe = true
+                this.$store.commit('modifyReview', {
+                  id: toNumber(id),
+                  review: reviewAdded
+                })
+                this.reviewSheetPhone = false
+                this.reviewSheet = false
+                this.loading = true
+                this.loading = false
+              }
+              this.postingReviewLoading = false
             }
           } else {
             this.snackbarContent = '评分'
@@ -899,6 +926,8 @@ export default Vue.extend({
         this.changePhoneFormView(review)
         this.reviewSheet = !this.reviewSheet
         this.reviewSheetPhone = !this.reviewSheetPhone
+        this.banTeachers()
+        this.banTime()
       }
     })
     this.loading = false

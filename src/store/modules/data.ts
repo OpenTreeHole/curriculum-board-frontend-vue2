@@ -109,9 +109,22 @@ const dataModule: Module<IDataModuleState, RootState> = {
     addReview(state, reviewPayload): void {
       state.courseGroup.forEach((courseGroup) => {
         courseGroup.courseList.forEach((course) => {
-          if (course.id == reviewPayload.courseId) {
+          if (course.id == reviewPayload.id) {
             course.reviewList?.push(reviewPayload.review)
           }
+        })
+      })
+    },
+    modifyReview(state, reviewPayload): void {
+      state.courseGroup.forEach((courseGroup) => {
+        courseGroup.courseList.forEach((course) => {
+          course.reviewList?.forEach((review) => {
+            if (review.id == reviewPayload.id) {
+              review.rank = reviewPayload.review.rank
+              review.content = reviewPayload.review.content
+              review.title = reviewPayload.review.title
+            }
+          })
         })
       })
     },
