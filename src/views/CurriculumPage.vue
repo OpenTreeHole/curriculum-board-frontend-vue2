@@ -375,7 +375,7 @@ import { toNumber } from 'lodash-es'
 import { addReview, modifyReview } from '@/apis'
 // import { match } from 'pinyin-pro'
 
-export interface itemList {
+export interface ItemList {
   title: string
   value: string
   disabled: boolean
@@ -402,16 +402,16 @@ export default Vue.extend({
     courseId: '',
     disabledTeacherTag: [] as string[],
     disabledTimeTag: [] as string[],
-    teachersSelectList: [] as itemList[],
-    timeSelectList: [] as itemList[],
+    teachersSelectList: [] as ItemList[],
+    timeSelectList: [] as ItemList[],
     rank: {
       overall: 0,
       content: 0,
       workload: 0,
       assessment: 0
     },
-    teacherSelected: {} as itemList | null,
-    timeSelected: {} as itemList | null,
+    teacherSelected: {} as ItemList | null,
+    timeSelected: {} as ItemList | null,
     allRank: {
       overall: 0,
       content: 0,
@@ -561,7 +561,7 @@ export default Vue.extend({
           }
         })
       }
-      if (this.teacherSelected !== null && this.timeSelected !== (null as itemList | null)) {
+      if (this.teacherSelected !== null && this.timeSelected !== (null as ItemList | null)) {
         this.courseGroup?.courseList.find((course) => {
           if (course.teachers === this.teacherSelected?.title && parseYearSemester(course) === this.timeSelected?.title) {
             this.courseId = course.codeId
@@ -590,7 +590,7 @@ export default Vue.extend({
           }
         })
       }
-      if (this.timeSelected !== null && this.teacherSelected !== (null as itemList | null)) {
+      if (this.timeSelected !== null && this.teacherSelected !== (null as ItemList | null)) {
         this.courseGroup?.courseList.find((course) => {
           if (course.teachers === this.teacherSelected?.title && parseYearSemester(course) === this.timeSelected?.title) {
             this.courseId = course.codeId
