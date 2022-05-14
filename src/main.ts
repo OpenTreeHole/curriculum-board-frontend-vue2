@@ -7,6 +7,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import vuetify from './plugins/vuetify'
 // import '@/mock/mock-data'
+// import '@/apis/database'
 
 Vue.config.productionTip = false
 

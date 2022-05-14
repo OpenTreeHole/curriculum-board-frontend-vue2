@@ -70,6 +70,7 @@ import gasp from 'gsap'
 import { match } from 'pinyin-pro'
 import { isDebug } from '@/utils'
 import _ from 'lodash'
+import { courseGroupTable } from '@/apis/database'
 
 export default Vue.extend({
   name: 'PortalPage',
@@ -107,7 +108,7 @@ export default Vue.extend({
     }
   },
   methods: {
-    debouncedSearch: _.debounce(function (this: any) {
+    debouncedSearch: _.debounce(async function (this: any) {
       this.noResult = false
       if (this.searchText.trim() == '') {
         this.searchResult = []
@@ -116,9 +117,16 @@ export default Vue.extend({
       }
       this.inSearch = true
 
-      this.searchResult = (this.$store.state.data.courseGroup as CourseGroup[]).filter(
-        (course) => match(course.name, this.searchText) || [course.name, course.code].some((field) => field.includes(this.searchText))
-      )
+      this.searchResult = (
+        await courseGroupTable
+          .filter(
+            (courseGroup) =>
+              !!match(courseGroup.courseGroup.name, this.searchText) ||
+              [courseGroup.courseGroup.name, courseGroup.courseGroup.code].some((field) => field.includes(this.searchText))
+          )
+          .limit(200)
+          .toArray()
+      ).map((courseGroup) => courseGroup.courseGroup)
       this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
     }, 600),
     credits(courseList: Course[]): number[] {
@@ -249,7 +257,16 @@ export default Vue.extend({
         })
       })
     } else {
-      this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
+      // this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
+      await api.fetchCourseGroups()
+      // const response = await courseGroupsDB.search({
+      //   query: '军事',
+      //   fields: ['name'],
+      //   include_docs: true
+      // })
+      // console.log(response)
+      // const response = await courseGroupTable.filter((courseGroup) => !courseGroup.index.every((v) => !new RegExp('军事', 'i').test(v))).toArray()
+      // console.log(response)
       this.debouncedSearch()
     }
     this.loadingSearchResult = false
