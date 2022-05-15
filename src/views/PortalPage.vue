@@ -1,75 +1,67 @@
 <template>
-  <v-container id="container">
+  <v-container>
     <message-snackbar ref="message" />
-    <div id="search-bar">
-      <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
-      <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
-      <v-row no-gutters class="mt-3 mx-6" style="height: min-content">
-        <v-col style="height: min-content" align-self="start">
+    <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
+    <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
+    <div class="d-flex justify-center">
+      <v-row class="mx-6" id="search-bar" style="margin-top: 32vh">
+        <v-col>
           <v-text-field
             prepend-inner-icon="mdi-magnify"
-            style="margin-top: 32vh"
             placeholder="请输入课程名称或课程代码"
             v-model="searchText"
             outlined
-            class="d-none d-sm-flex rounded-pill mt-0"
+            class="d-none d-sm-block rounded-pill"
             filled
           ></v-text-field>
           <v-text-field
             prepend-inner-icon="mdi-magnify"
-            style="margin-top: 32vh"
             placeholder="请输入课程名称或课程代码"
             v-model="searchText"
             outlined
             dense
-            class="d-flex d-sm-none rounded-pill mt-0"
+            class="d-block d-sm-none rounded-pill"
             filled
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row class="d-flex align-center" v-if="this.loadingSearchResult && this.searchText !== ''">
-        <v-col style="text-align: center">
-          <v-progress-circular :size="60" color="primary" indeterminate class="d-none d-sm-inline-block"></v-progress-circular>
-          <v-progress-circular :size="40" color="primary" indeterminate class="d-inline-block d-sm-none"></v-progress-circular>
-        </v-col>
-      </v-row>
-      <v-row class="ma-0 pa-0">
-        <v-col class="pa-0 ma-0">
-          <transition name="fade" v-if="!loadingSearchResult">
-            <v-row class="ma-0 pa-0">
-              <v-spacer />
-              <v-col cols="12" lg="6" class="ma-0 pa-0">
-                <v-list v-if="inSearch" two-line>
-                  <template v-for="(v, i) in searchResult">
-                    <v-divider :key="'divider' + i"></v-divider>
-                    <v-list-item :key="i" class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)">
-                      <div class="pl-4">
-                        <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
-                          <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                          <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分</v-chip>
-                        </v-list-item-subtitle>
-                        <v-list-item-content text x-large class="ma-n2 pa-2 pb-3 pl-4" style="height: initial">
-                          <span class="font-weight-black fontsize-ensurer text-subtitle-1"
-                            ><span class="d-inline-block">{{ v.department }}&nbsp;/&nbsp;</span><span class="d-inline-block mt-2">{{ v.name }}</span></span
-                          >
-                        </v-list-item-content>
-                      </div>
-                    </v-list-item>
-                  </template>
-                </v-list>
-                <v-row style="text-align: center" v-if="this.noResult">
-                  <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
-                </v-row>
-                <v-row style="text-align: center" v-else-if="this.searchResult.length >= 10">
-                  <v-col class="text-subtitle-1 my-2 grey--text"> 到底了 </v-col>
-                </v-row>
-              </v-col>
-              <v-spacer />
-            </v-row>
-          </transition>
-        </v-col>
-      </v-row>
     </div>
+
+    <v-row class="d-flex align-center" v-if="this.loadingSearchResult && this.searchText !== ''">
+      <v-col style="text-align: center">
+        <v-progress-circular :size="60" color="primary" indeterminate class="d-none d-sm-inline-block"></v-progress-circular>
+        <v-progress-circular :size="40" color="primary" indeterminate class="d-inline-block d-sm-none"></v-progress-circular>
+      </v-col>
+    </v-row>
+    <transition name="fade" v-if="!loadingSearchResult">
+      <v-row class="ma-0 pa-0">
+        <v-spacer />
+        <v-col cols="12" lg="6" class="ma-0 pa-0">
+          <v-list v-if="inSearch" two-line>
+            <template v-for="(v, i) in searchResult">
+              <v-divider :key="'divider' + i"></v-divider>
+              <v-list-item :key="i" class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)">
+                <div class="pl-4">
+                  <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
+                    <span class="mr-3 d-flex align-center">{{ v.code }}</span>
+                    <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分</v-chip>
+                  </v-list-item-subtitle>
+                  <v-list-item-content text x-large class="ma-n2 pa-2 pb-3 pl-4" style="height: initial">
+                          <span class="font-weight-black fontsize-ensurer text-subtitle-1"
+                          ><span class="d-inline-block">{{ v.department }}&nbsp;/&nbsp;</span><span class="d-inline-block mt-2">{{ v.name }}</span></span
+                          >
+                  </v-list-item-content>
+                </div>
+              </v-list-item>
+            </template>
+          </v-list>
+          <v-row style="text-align: center" v-if="this.noResult">
+            <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
+          </v-row>
+        </v-col>
+        <v-spacer />
+      </v-row>
+    </transition>
   </v-container>
 </template>
 
@@ -78,13 +70,10 @@ import * as api from '@/apis'
 import { Course, CourseGroup } from '@/models'
 import Vue from 'vue'
 import gasp from 'gsap'
-import { match } from 'pinyin-pro'
-import { isDebug } from '@/utils'
-import _ from 'lodash'
 import { courseGroupTable } from '@/apis/database'
-import { load } from 'chinese-tokenizer'
 import { generateIndex, initializeTokenize } from '@/utils/tokenize'
 import MessageSnackbar from '@/components/MessageSnackbar.vue'
+import { debounce } from 'lodash-es'
 
 export default Vue.extend({
   name: 'PortalPage',
@@ -103,27 +92,27 @@ export default Vue.extend({
     searchText: {
       handler() {
         this.debouncedSearch()
-        this.loadingSearchResult = false
       },
       deep: true
     }
   },
   methods: {
-    debouncedSearch: _.debounce(async function (this: any) {
+    debouncedSearch: debounce(async function (this: any) {
       this.noResult = false
       if (this.searchText.trim() == '') {
         this.searchResult = []
         this.inSearch = false
-        let distance = window.innerWidth < 600 ? 250 : 300
         gasp.to('#search-bar', {
-          y: distance,
+          marginTop: '32vh',
+          flex: '0 0 100%',
           duration: 0.3
         })
         return
       } else {
         // TODO pad上移距离
         gasp.to('#search-bar', {
-          y: 0,
+          marginTop: '7vh',
+          flex: '0 0 60%',
           duration: 0.3
         })
         this.inSearch = true
@@ -271,12 +260,8 @@ export default Vue.extend({
       })
     } else {
       // this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
+
       await api.fetchCourseGroups()
-      let distance = window.innerWidth < 600 ? 250 : 300
-      gasp.to('#search-bar', {
-        y: distance,
-        duration: 0
-      })
 
       await initializeTokenize()
 
