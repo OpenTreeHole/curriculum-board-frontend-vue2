@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <message-snackbar ref="message" />
     <div id="search-bar">
       <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
       <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
@@ -71,9 +72,13 @@ import { match } from 'pinyin-pro'
 import { isDebug } from '@/utils'
 import _ from 'lodash'
 import { courseGroupTable } from '@/apis/database'
+import { load } from 'chinese-tokenizer'
+import { generateIndex, initializeTokenize } from '@/utils/tokenize'
+import MessageSnackbar from '@/components/MessageSnackbar.vue'
 
 export default Vue.extend({
   name: 'PortalPage',
+  components: { MessageSnackbar },
   data() {
     return {
       loadingSearchResult: true,
@@ -119,11 +124,13 @@ export default Vue.extend({
 
       this.searchResult = (
         await courseGroupTable
-          .filter(
-            (courseGroup) =>
-              !!match(courseGroup.courseGroup.name, this.searchText) ||
-              [courseGroup.courseGroup.name, courseGroup.courseGroup.code].some((field) => field.includes(this.searchText))
-          )
+          // .filter(
+          //   (courseGroup) =>
+          //     !!match(courseGroup.courseGroup.name, this.searchText) ||
+          //     [courseGroup.courseGroup.name, courseGroup.courseGroup.code].some((field) => field.includes(this.searchText))
+          // )
+          .where('index')
+          .startsWithAnyOfIgnoreCase(this.searchText)
           .limit(200)
           .toArray()
       ).map((courseGroup) => courseGroup.courseGroup)
@@ -258,15 +265,13 @@ export default Vue.extend({
       })
     } else {
       // this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
+
       await api.fetchCourseGroups()
-      // const response = await courseGroupsDB.search({
-      //   query: '军事',
-      //   fields: ['name'],
-      //   include_docs: true
-      // })
-      // console.log(response)
-      // const response = await courseGroupTable.filter((courseGroup) => !courseGroup.index.every((v) => !new RegExp('军事', 'i').test(v))).toArray()
-      // console.log(response)
+
+      await initializeTokenize()
+
+      console.log(generateIndex('毛泽东思想和中国特色社会主义理论体系概论（上）'))
+
       this.debouncedSearch()
     }
     this.loadingSearchResult = false

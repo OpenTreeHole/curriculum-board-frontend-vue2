@@ -12,7 +12,7 @@ export class CourseGroupDexie extends Dexie {
 
   constructor() {
     super('courseGroups')
-    this.version(1).stores({
+    this.version(1.3).stores({
       courseGroupTable: '&id, *index, courseGroups'
     })
   }

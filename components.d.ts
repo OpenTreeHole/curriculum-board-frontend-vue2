@@ -37,6 +37,7 @@ declare module '@vue/runtime-core' {
     VForm: typeof import('vuetify/lib')['VForm']
     VIcon: typeof import('vuetify/lib')['VIcon']
     VList: typeof import('vuetify/lib')['VList']
+    VListItem: typeof import('vuetify/lib')['VListItem']
     VMain: typeof import('vuetify/lib')['VMain']
     VProgressCircular: typeof import('vuetify/lib')['VProgressCircular']
     VProgressLinear: typeof import('vuetify/lib')['VProgressLinear']
