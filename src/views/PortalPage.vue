@@ -4,15 +4,15 @@
     <div id="search-bar">
       <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
       <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
-      <v-row no-gutters class="mt-3 mx-6">
-        <v-col>
+      <v-row no-gutters class="mt-3 mx-6" style="height: min-content">
+        <v-col style="height: min-content" align-self="start">
           <v-text-field
             prepend-inner-icon="mdi-magnify"
             style="margin-top: 32vh"
             placeholder="请输入课程名称或课程代码"
             v-model="searchText"
             outlined
-            class="d-none d-sm-block rounded-pill"
+            class="d-none d-sm-flex rounded-pill mt-0"
             filled
           ></v-text-field>
           <v-text-field
@@ -22,7 +22,7 @@
             v-model="searchText"
             outlined
             dense
-            class="d-block d-sm-none rounded-pill"
+            class="d-flex d-sm-none rounded-pill mt-0"
             filled
           ></v-text-field>
         </v-col>
@@ -33,40 +33,44 @@
           <v-progress-circular :size="40" color="primary" indeterminate class="d-inline-block d-sm-none"></v-progress-circular>
         </v-col>
       </v-row>
-      <transition name="fade" v-if="!loadingSearchResult">
-        <v-row class="ma-0 pa-0">
-          <v-spacer />
-          <v-col cols="12" lg="6" class="ma-0 pa-0">
-            <v-list v-if="inSearch">
-              <template v-for="(v, i) in searchResult">
-                <v-divider :key="'divider' + i"></v-divider>
-                <v-list-item :key="i" class="pa-0 pl-3 mt-2 mb-3">
-                  <div @click="$router.push(`/group/${v.id}`)">
-                    <v-list-item-subtitle class="monospace grey--text py-0 d-flex">
-                      <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                      <v-chip-group column>
-                        <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" disabled style="color: #303f9f" outlined>
-                          {{ credit }}学分</v-chip
-                        >
-                      </v-chip-group>
-                    </v-list-item-subtitle>
-                    <v-list-item-content text x-large class="ma-n2 pa-2" style="height: initial">
-                      <span class="font-weight-black">{{ v.department }} / {{ v.name }}</span>
-                    </v-list-item-content>
-                  </div>
-                </v-list-item>
-              </template>
-            </v-list>
-            <v-row style="text-align: center" v-if="this.noResult">
-              <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
+      <v-row class="ma-0 pa-0">
+        <v-col class="pa-0 ma-0">
+          <transition name="fade" v-if="!loadingSearchResult">
+            <v-row class="ma-0 pa-0">
+              <v-spacer />
+              <v-col cols="12" lg="6" class="ma-0 pa-0">
+                <v-list v-if="inSearch">
+                  <template v-for="(v, i) in searchResult">
+                    <v-divider :key="'divider' + i"></v-divider>
+                    <v-list-item :key="i" class="pa-0 pl-3 mt-2 mb-3">
+                      <div @click="$router.push(`/group/${v.id}`)">
+                        <v-list-item-subtitle class="monospace grey--text py-0 d-flex">
+                          <span class="mr-3 d-flex align-center">{{ v.code }}</span>
+                          <v-chip-group column>
+                            <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" disabled style="color: #303f9f" outlined>
+                              {{ credit }}学分</v-chip
+                            >
+                          </v-chip-group>
+                        </v-list-item-subtitle>
+                        <v-list-item-content text x-large class="ma-n2 pa-2" style="height: initial">
+                          <span class="font-weight-black">{{ v.department }} / {{ v.name }}</span>
+                        </v-list-item-content>
+                      </div>
+                    </v-list-item>
+                  </template>
+                </v-list>
+                <v-row style="text-align: center" v-if="this.noResult">
+                  <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
+                </v-row>
+                <v-row style="text-align: center" v-else-if="this.searchResult.length >= 20">
+                  <v-col class="text-subtitle-2 my-2 grey--text"> 到底了 </v-col>
+                </v-row>
+              </v-col>
+              <v-spacer />
             </v-row>
-            <v-row style="text-align: center" v-else-if="this.searchResult.length >= 20">
-              <v-col class="text-subtitle-2 my-2 grey--text"> 到底了 </v-col>
-            </v-row>
-          </v-col>
-          <v-spacer />
-        </v-row>
-      </transition>
+          </transition>
+        </v-col>
+      </v-row>
     </div>
   </v-container>
 </template>
@@ -102,12 +106,6 @@ export default Vue.extend({
       handler() {
         if (this.searchText.length > 0) {
           // TODO pad上移距离
-          let distance = window.innerWidth < 600 ? -250 : -150
-          gasp.to('#search-bar', {
-            y: distance,
-            duration: 0.3
-          })
-        } else {
           gasp.to('#search-bar', {
             y: 0,
             duration: 0.3
@@ -115,6 +113,15 @@ export default Vue.extend({
         }
         this.debouncedSearch()
         this.loadingSearchResult = false
+        if (this.searchText.length === 0) {
+          window.setTimeout(() => {
+            let distance = window.innerWidth < 600 ? 250 : 150
+            gasp.to('#search-bar', {
+              y: distance,
+              duration: 0.3
+            })
+          }, 600)
+        }
       },
       deep: true
     }
@@ -126,22 +133,22 @@ export default Vue.extend({
         this.searchResult = []
         this.inSearch = false
         return
+      } else {
+        this.inSearch = true
+        this.searchResult = (
+          await courseGroupTable
+            // .filter(
+            //   (courseGroup) =>
+            //     !!match(courseGroup.courseGroup.name, this.searchText) ||
+            //     [courseGroup.courseGroup.name, courseGroup.courseGroup.code].some((field) => field.includes(this.searchText))
+            // )
+            .where('index')
+            .startsWithAnyOfIgnoreCase(this.searchText)
+            .limit(200)
+            .toArray()
+        ).map((courseGroup) => courseGroup.courseGroup)
+        this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
       }
-      this.inSearch = true
-
-      this.searchResult = (
-        await courseGroupTable
-          // .filter(
-          //   (courseGroup) =>
-          //     !!match(courseGroup.courseGroup.name, this.searchText) ||
-          //     [courseGroup.courseGroup.name, courseGroup.courseGroup.code].some((field) => field.includes(this.searchText))
-          // )
-          .where('index')
-          .startsWithAnyOfIgnoreCase(this.searchText)
-          .limit(200)
-          .toArray()
-      ).map((courseGroup) => courseGroup.courseGroup)
-      this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
     }, 600),
     credits(courseList: Course[]): number[] {
       let creditsSet = new Set<number>()
@@ -272,8 +279,12 @@ export default Vue.extend({
       })
     } else {
       // this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
-
       await api.fetchCourseGroups()
+      let distance = window.innerWidth < 600 ? 250 : 150
+      gasp.to('#search-bar', {
+        y: distance,
+        duration: 0
+      })
 
       await initializeTokenize()
 
