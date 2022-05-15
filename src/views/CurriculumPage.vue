@@ -29,7 +29,7 @@
           <v-card-title class="text-h6 font-weight-black pb-0 ml-1"> 评分</v-card-title>
           <v-skeleton-loader v-if="loading" type="paragraph" width="60%" class="ml-10 my-2"></v-skeleton-loader>
           <v-expansion-panels flat multiple class="py-0" v-if="!loading">
-            <v-expansion-panel class="py-0">
+            <v-expansion-panel class="py-0 pb-2">
               <!-- 总体评分 -->
               <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text ml-1">
                 全部学期 (共 {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
@@ -73,7 +73,7 @@
               </v-expansion-panel-content>
             </v-expansion-panel>
             <!-- 学期评分 -->
-            <v-expansion-panel class="py-0 mt-0" v-for="(reviews, year) in Object.fromEntries(semesterReview().entries())" :key="year + reviews.toString()">
+            <v-expansion-panel class="py-0 mt-0 pb-2" v-for="(reviews, year) in Object.fromEntries(semesterReview().entries())" :key="year + reviews.toString()">
               <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text ml-1">{{ year }} (共 {{ reviews.length }} 条) </v-expansion-panel-header>
               <v-expansion-panel-content class="py-0 pl-2" v-if="reviews.length >= 3">
                 <v-row align="center" no-gutters>

@@ -91,6 +91,22 @@ export default Vue.extend({
   watch: {
     searchText: {
       handler() {
+        if (this.searchText.trim() === '') {
+          window.setTimeout(() => {
+            if (window.innerWidth < 600) {
+              gasp.to('#search-bar', {
+                marginTop: '32vh',
+                duration: 0.3
+              })
+            } else {
+              gasp.to('#search-bar', {
+                marginTop: '32vh',
+                flex: '0 0 100%',
+                duration: 0.3
+              })
+            }
+          }, 600)
+        }
         this.debouncedSearch()
       },
       deep: true
@@ -100,20 +116,9 @@ export default Vue.extend({
     debouncedSearch: debounce(async function (this: any) {
       this.noResult = false
       if (this.searchText.trim() == '') {
+        console.log(1111111)
         this.searchResult = []
         this.inSearch = false
-        if (window.innerWidth < 600) {
-          gasp.to('#search-bar', {
-            marginTop: '32vh',
-            duration: 0.3
-          })
-        } else {
-          gasp.to('#search-bar', {
-            marginTop: '32vh',
-            flex: '0 0 100%',
-            duration: 0.3
-          })
-        }
         return
       } else {
         // TODO pad上移距离
