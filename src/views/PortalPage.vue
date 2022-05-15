@@ -46,7 +46,7 @@
                     <span class="mr-3 d-flex align-center">{{ v.code }}</span>
                     <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分</v-chip>
                   </v-list-item-subtitle>
-                  <v-list-item-content text x-large class="ma-n2 pa-2 pb-3 pl-4" style="height: initial">
+                  <v-list-item-content text x-large class="ma-n2 pa-2 pb-3" style="height: initial">
                     <span class="font-weight-black fontsize-ensurer text-subtitle-1"
                       ><span class="d-inline-block">{{ v.department }}&nbsp;/&nbsp;</span><span class="d-inline-block mt-2">{{ v.name }}</span></span
                     >
