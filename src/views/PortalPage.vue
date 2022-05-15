@@ -39,21 +39,19 @@
             <v-row class="ma-0 pa-0">
               <v-spacer />
               <v-col cols="12" lg="6" class="ma-0 pa-0">
-                <v-list v-if="inSearch">
+                <v-list v-if="inSearch" two-line>
                   <template v-for="(v, i) in searchResult">
                     <v-divider :key="'divider' + i"></v-divider>
-                    <v-list-item :key="i" class="pa-0 pl-3 mt-2 mb-3">
-                      <div @click="$router.push(`/group/${v.id}`)">
-                        <v-list-item-subtitle class="monospace grey--text py-0 d-flex">
+                    <v-list-item :key="i" class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)">
+                      <div class="pl-4">
+                        <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
                           <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                          <v-chip-group column>
-                            <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" disabled style="color: #303f9f" outlined>
-                              {{ credit }}学分</v-chip
-                            >
-                          </v-chip-group>
+                          <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分</v-chip>
                         </v-list-item-subtitle>
-                        <v-list-item-content text x-large class="ma-n2 pa-2" style="height: initial">
-                          <span class="font-weight-black">{{ v.department }} / {{ v.name }}</span>
+                        <v-list-item-content text x-large class="ma-n2 pa-2 pb-3 pl-4" style="height: initial">
+                          <span class="font-weight-black fontsize-ensurer text-subtitle-1"
+                            ><span class="d-inline-block">{{ v.department }}&nbsp;/&nbsp;</span><span class="d-inline-block mt-2">{{ v.name }}</span></span
+                          >
                         </v-list-item-content>
                       </div>
                     </v-list-item>
@@ -63,7 +61,7 @@
                   <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
                 </v-row>
                 <v-row style="text-align: center" v-else-if="this.searchResult.length >= 20">
-                  <v-col class="text-subtitle-2 my-2 grey--text"> 到底了 </v-col>
+                  <v-col class="text-subtitle-1 my-2 grey--text"> 到底了 </v-col>
                 </v-row>
               </v-col>
               <v-spacer />
@@ -280,7 +278,7 @@ export default Vue.extend({
     } else {
       // this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
       await api.fetchCourseGroups()
-      let distance = window.innerWidth < 600 ? 250 : 150
+      let distance = window.innerWidth < 600 ? 250 : 300
       gasp.to('#search-bar', {
         y: distance,
         duration: 0
