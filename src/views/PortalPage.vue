@@ -60,7 +60,7 @@
                 <v-row style="text-align: center" v-if="this.noResult">
                   <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
                 </v-row>
-                <v-row style="text-align: center" v-else-if="this.searchResult.length >= 20">
+                <v-row style="text-align: center" v-else-if="this.searchResult.length >= 10">
                   <v-col class="text-subtitle-1 my-2 grey--text"> 到底了 </v-col>
                 </v-row>
               </v-col>
