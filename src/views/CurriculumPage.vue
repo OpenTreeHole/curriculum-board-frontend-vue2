@@ -805,7 +805,7 @@ export default Vue.extend({
                 this.loading = false
               }
               this.postingReviewLoading = false
-              console.log(this.courseGroup)
+              // console.log(this.courseGroup)
             } else {
               let id = 0
               this.courseGroup?.courseList.forEach((course) => {

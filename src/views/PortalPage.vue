@@ -102,30 +102,8 @@ export default Vue.extend({
   watch: {
     searchText: {
       handler() {
-        if (this.searchText.trim().length > 0) {
-          // TODO pad上移距离
-          gasp.to('#search-bar', {
-            y: 0,
-            duration: 0.3
-          })
-        }
-        if (this.searchText.trim() == '') {
-          this.searchResult = []
-          this.inSearch = false
-          return
-        } else {
-          this.debouncedSearch()
-        }
+        this.debouncedSearch()
         this.loadingSearchResult = false
-        if (this.searchText.trim().length === 0) {
-          window.setTimeout(() => {
-            let distance = window.innerWidth < 600 ? 250 : 150
-            gasp.to('#search-bar', {
-              y: distance,
-              duration: 0.3
-            })
-          }, 600)
-        }
       },
       deep: true
     }
@@ -136,8 +114,18 @@ export default Vue.extend({
       if (this.searchText.trim() == '') {
         this.searchResult = []
         this.inSearch = false
+        let distance = window.innerWidth < 600 ? 250 : 300
+        gasp.to('#search-bar', {
+          y: distance,
+          duration: 0.3
+        })
         return
       } else {
+        // TODO pad上移距离
+        gasp.to('#search-bar', {
+          y: 0,
+          duration: 0.3
+        })
         this.inSearch = true
         this.searchResult = (
           await courseGroupTable
@@ -292,7 +280,7 @@ export default Vue.extend({
 
       await initializeTokenize()
 
-      console.log(generateIndex('毛泽东思想和中国特色社会主义理论体系概论（上）'))
+      // console.log(generateIndex('毛泽东思想和中国特色社会主义理论体系概论（上）'))
 
       this.debouncedSearch()
     }
