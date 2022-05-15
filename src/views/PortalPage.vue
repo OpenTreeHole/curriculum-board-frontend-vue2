@@ -38,19 +38,24 @@
           <v-spacer />
           <v-col cols="12" lg="6" class="ma-0 pa-0">
             <v-list v-if="inSearch">
-              <v-card v-for="(v, i) in searchResult" :key="i" class="pa-0 pl-3 v-card--hover mb-2">
-                <div @click="$router.push(`/group/${v.id}`)">
-                  <v-card-subtitle class="monospace grey--text py-0 pt-3 d-flex">
-                    <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                    <v-chip-group column>
-                      <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" disabled style="color: #303f9f" outlined>
-                        {{ credit }}学分</v-chip
-                      >
-                    </v-chip-group>
-                  </v-card-subtitle>
-                  <v-card-subtitle class="pt-1 text-lg-h6 text-subtitle-1">{{ v.department }} / {{ v.name }}</v-card-subtitle>
-                </div>
-              </v-card>
+              <template v-for="(v, i) in searchResult">
+                <v-divider :key="'divider' + i"></v-divider>
+                <v-list-item :key="i" class="pa-0 pl-3 mt-2 mb-3">
+                  <div @click="$router.push(`/group/${v.id}`)">
+                    <v-list-item-subtitle class="monospace grey--text py-0 d-flex">
+                      <span class="mr-3 d-flex align-center">{{ v.code }}</span>
+                      <v-chip-group column>
+                        <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" disabled style="color: #303f9f" outlined>
+                          {{ credit }}学分</v-chip
+                        >
+                      </v-chip-group>
+                    </v-list-item-subtitle>
+                    <v-btn text x-large class="ma-n2 pa-2" style="height: initial">
+                      <span class="font-weight-black">{{ v.department }} / {{ v.name }}</span>
+                    </v-btn>
+                  </div>
+                </v-list-item>
+              </template>
             </v-list>
             <v-row style="text-align: center" v-if="this.noResult">
               <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
