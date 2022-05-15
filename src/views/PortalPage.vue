@@ -116,7 +116,6 @@ export default Vue.extend({
     debouncedSearch: debounce(async function (this: any) {
       this.noResult = false
       if (this.searchText.trim() == '') {
-        console.log(1111111)
         this.searchResult = []
         this.inSearch = false
         return
