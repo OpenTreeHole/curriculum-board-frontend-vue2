@@ -102,16 +102,22 @@ export default Vue.extend({
   watch: {
     searchText: {
       handler() {
-        if (this.searchText.length > 0) {
+        if (this.searchText.trim().length > 0) {
           // TODO pad上移距离
           gasp.to('#search-bar', {
             y: 0,
             duration: 0.3
           })
         }
-        this.debouncedSearch()
+        if (this.searchText.trim() == '') {
+          this.searchResult = []
+          this.inSearch = false
+          return
+        } else {
+          this.debouncedSearch()
+        }
         this.loadingSearchResult = false
-        if (this.searchText.length === 0) {
+        if (this.searchText.trim().length === 0) {
           window.setTimeout(() => {
             let distance = window.innerWidth < 600 ? 250 : 150
             gasp.to('#search-bar', {
