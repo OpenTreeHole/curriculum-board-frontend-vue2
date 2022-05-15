@@ -47,9 +47,9 @@
                     <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分</v-chip>
                   </v-list-item-subtitle>
                   <v-list-item-content text x-large class="ma-n2 pa-2 pb-3 pl-4" style="height: initial">
-                          <span class="font-weight-black fontsize-ensurer text-subtitle-1"
-                          ><span class="d-inline-block">{{ v.department }}&nbsp;/&nbsp;</span><span class="d-inline-block mt-2">{{ v.name }}</span></span
-                          >
+                    <span class="font-weight-black fontsize-ensurer text-subtitle-1"
+                      ><span class="d-inline-block">{{ v.department }}&nbsp;/&nbsp;</span><span class="d-inline-block mt-2">{{ v.name }}</span></span
+                    >
                   </v-list-item-content>
                 </div>
               </v-list-item>
@@ -102,33 +102,49 @@ export default Vue.extend({
       if (this.searchText.trim() == '') {
         this.searchResult = []
         this.inSearch = false
-        gasp.to('#search-bar', {
-          marginTop: '32vh',
-          flex: '0 0 100%',
-          duration: 0.3
-        })
+        if (window.innerWidth < 600) {
+          gasp.to('#search-bar', {
+            marginTop: '32vh',
+            duration: 0.3
+          })
+        } else {
+          gasp.to('#search-bar', {
+            marginTop: '32vh',
+            flex: '0 0 100%',
+            duration: 0.3
+          })
+        }
         return
       } else {
         // TODO pad上移距离
-        gasp.to('#search-bar', {
-          marginTop: '7vh',
-          flex: '0 0 60%',
-          duration: 0.3
-        })
+        if (window.innerWidth < 600) {
+          gasp.to('#search-bar', {
+            marginTop: '0',
+            duration: 0.3
+          })
+        } else {
+          gasp.to('#search-bar', {
+            marginTop: '3vh',
+            flex: '0 0 60%',
+            duration: 0.3
+          })
+        }
         this.inSearch = true
-        this.searchResult = (
-          await courseGroupTable
-            // .filter(
-            //   (courseGroup) =>
-            //     !!match(courseGroup.courseGroup.name, this.searchText) ||
-            //     [courseGroup.courseGroup.name, courseGroup.courseGroup.code].some((field) => field.includes(this.searchText))
-            // )
-            .where('index')
-            .startsWithAnyOfIgnoreCase(this.searchText)
-            .limit(200)
-            .toArray()
-        ).map((courseGroup) => courseGroup.courseGroup)
-        this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
+        window.setTimeout(async () => {
+          this.searchResult = (
+            await courseGroupTable
+              // .filter(
+              //   (courseGroup) =>
+              //     !!match(courseGroup.courseGroup.name, this.searchText) ||
+              //     [courseGroup.courseGroup.name, courseGroup.courseGroup.code].some((field) => field.includes(this.searchText))
+              // )
+              .where('index')
+              .startsWithAnyOfIgnoreCase(this.searchText)
+              .limit(200)
+              .toArray()
+          ).map((courseGroup) => courseGroup.courseGroup)
+          this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
+        }, 350)
       }
     }, 600),
     credits(courseList: Course[]): number[] {
