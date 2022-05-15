@@ -71,7 +71,7 @@ import { Course, CourseGroup } from '@/models'
 import Vue from 'vue'
 import gasp from 'gsap'
 import { courseGroupTable } from '@/apis/database'
-import { generateIndex, initializeTokenize } from '@/utils/tokenize'
+import { initializeTokenize } from '@/utils/tokenize'
 import MessageSnackbar from '@/components/MessageSnackbar.vue'
 import { debounce } from 'lodash-es'
 
