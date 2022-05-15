@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container id="container">
     <message-snackbar ref="message" />
     <div id="search-bar">
       <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
@@ -50,15 +50,18 @@
                         >
                       </v-chip-group>
                     </v-list-item-subtitle>
-                    <v-btn text x-large class="ma-n2 pa-2" style="height: initial">
+                    <v-list-item-content text x-large class="ma-n2 pa-2" style="height: initial">
                       <span class="font-weight-black">{{ v.department }} / {{ v.name }}</span>
-                    </v-btn>
+                    </v-list-item-content>
                   </div>
                 </v-list-item>
               </template>
             </v-list>
             <v-row style="text-align: center" v-if="this.noResult">
               <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
+            </v-row>
+            <v-row style="text-align: center" v-else-if="this.searchResult.length >= 20">
+              <v-col class="text-subtitle-2 my-2 grey--text"> 到底了 </v-col>
             </v-row>
           </v-col>
           <v-spacer />
@@ -95,24 +98,23 @@ export default Vue.extend({
     }
   },
   watch: {
-    inSearch() {
-      if (this.inSearch) {
-        // TODO pad上移距离
-        let distance = window.innerWidth < 600 ? -240 : -150
-        gasp.to('#search-bar', {
-          y: distance,
-          duration: 0.3
-        })
-      } else {
-        gasp.to('#search-bar', {
-          y: 0,
-          duration: 0.3
-        })
-      }
-    },
     searchText: {
       handler() {
+        if (this.searchText.length > 0) {
+          // TODO pad上移距离
+          let distance = window.innerWidth < 600 ? -250 : -150
+          gasp.to('#search-bar', {
+            y: distance,
+            duration: 0.3
+          })
+        } else {
+          gasp.to('#search-bar', {
+            y: 0,
+            duration: 0.3
+          })
+        }
         this.debouncedSearch()
+        this.loadingSearchResult = false
       },
       deep: true
     }
