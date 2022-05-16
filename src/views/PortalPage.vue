@@ -11,16 +11,8 @@
             placeholder="请输入课程名称或课程代码"
             v-model="searchText"
             outlined
-            class="d-none d-sm-block rounded-pill"
-            filled
-          ></v-text-field>
-          <v-text-field
-            prepend-inner-icon="mdi-magnify"
-            placeholder="请输入课程名称或课程代码"
-            v-model="searchText"
-            outlined
-            dense
-            class="d-block d-sm-none rounded-pill"
+            :dense="$vuetify.breakpoint.xsOnly"
+            class="d-block rounded-pill"
             filled
           ></v-text-field>
         </v-col>
