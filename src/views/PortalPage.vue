@@ -36,7 +36,7 @@
     <transition name="fade" v-if="!loadingSearchResult">
       <v-row class="ma-0 pa-0">
         <v-spacer />
-        <v-col cols="12" lg="6" class="ma-0 pa-0">
+        <v-col cols="12" md="10" lg="7" xl="6" class="ma-0 pa-0">
           <recycle-scroller :item-size="96" :items="searchResult" v-slot="{ item: v }" page-mode>
             <v-divider></v-divider>
             <v-list-item class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)">
@@ -89,22 +89,6 @@ export default Vue.extend({
   watch: {
     searchText: {
       handler() {
-        if (this.searchText.trim() === '') {
-          window.setTimeout(() => {
-            if (window.innerWidth < 600) {
-              gasp.to('#search-bar', {
-                marginTop: '32vh',
-                duration: 0.3
-              })
-            } else {
-              gasp.to('#search-bar', {
-                marginTop: '32vh',
-                flex: '0 0 100%',
-                duration: 0.3
-              })
-            }
-          }, 600)
-        }
         this.debouncedSearch()
       },
       deep: true
@@ -116,30 +100,34 @@ export default Vue.extend({
       if (this.searchText.trim() == '') {
         this.searchResult = []
         this.inSearch = false
+        gasp.to('#search-bar', {
+          marginTop: '32vh',
+          flex: '0 0 100%',
+          duration: 0.3
+        })
         return
       } else {
         const searchResultPromise = (async () => {
           return (await courseGroupTable.where('index').startsWithAnyOfIgnoreCase(this.searchText).distinct().toArray()).map((courseGroup) => courseGroup.courseGroup)
         })()
 
+        let flexShrinkProportion = 100
+        if (this.$vuetify.breakpoint.md) {
+          flexShrinkProportion = 93
+        } else if (this.$vuetify.breakpoint.lg) {
+          flexShrinkProportion = 65
+        } else if (this.$vuetify.breakpoint.xl) {
+          flexShrinkProportion = 60
+        }
+
         if (!this.inSearch) {
-          // TODO pad上移距离
-          if (window.innerWidth < 600) {
-            await gasp
-              .to('#search-bar', {
-                marginTop: '0',
-                duration: 0.3
-              })
-              .then()
-          } else {
-            await gasp
-              .to('#search-bar', {
-                marginTop: '3vh',
-                flex: '0 0 60%',
-                duration: 0.3
-              })
-              .then()
-          }
+          await gasp
+            .to('#search-bar', {
+              marginTop: '3vh',
+              flex: '0 0 ' + flexShrinkProportion + '%',
+              duration: 0.3
+            })
+            .then()
           this.inSearch = true
         }
 
