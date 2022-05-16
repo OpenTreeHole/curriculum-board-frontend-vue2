@@ -37,24 +37,23 @@
       <v-row class="ma-0 pa-0">
         <v-spacer />
         <v-col cols="12" lg="6" class="ma-0 pa-0">
-          <v-list v-if="inSearch" two-line>
-            <template v-for="(v, i) in searchResult">
-              <v-divider :key="'divider' + i"></v-divider>
-              <v-list-item :key="i" class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)">
-                <div class="pl-4">
-                  <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
-                    <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                    <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分</v-chip>
-                  </v-list-item-subtitle>
-                  <v-list-item-content text x-large class="ma-n2 pa-2 pb-3" style="height: initial">
-                    <span class="font-weight-black fontsize-ensurer text-subtitle-1"
-                      ><span class="d-inline-block">{{ v.department }}&nbsp;/&nbsp;</span><span class="d-inline-block mt-2">{{ v.name }}</span></span
-                    >
-                  </v-list-item-content>
-                </div>
-              </v-list-item>
-            </template>
-          </v-list>
+          <recycle-scroller :item-size="96" :items="searchResult" v-slot="{ item: v }" page-mode>
+            <v-divider></v-divider>
+            <v-list-item class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)">
+              <div class="pl-4">
+                <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
+                  <span class="mr-3 d-flex align-center">{{ v.code }}</span>
+                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分</v-chip>
+                </v-list-item-subtitle>
+                <v-list-item-content text x-large class="ma-n2 pa-2 pb-3" style="height: initial">
+                  <span class="font-weight-black fontsize-ensurer text-subtitle-1">
+                    <span class="d-inline-block">{{ v.department }}&nbsp;/&nbsp;</span>
+                    <span class="d-inline-block mt-2">{{ v.name }}</span>
+                  </span>
+                </v-list-item-content>
+              </div>
+            </v-list-item>
+          </recycle-scroller>
           <v-row style="text-align: center" v-if="this.noResult">
             <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
           </v-row>
@@ -74,7 +73,6 @@ import { courseGroupTable } from '@/apis/database'
 import { initializeTokenize } from '@/utils/tokenize'
 import MessageSnackbar from '@/components/MessageSnackbar.vue'
 import { debounce } from 'lodash-es'
-
 export default Vue.extend({
   name: 'PortalPage',
   components: { MessageSnackbar },
@@ -120,37 +118,36 @@ export default Vue.extend({
         this.inSearch = false
         return
       } else {
-        // TODO pad上移距离
-        if (window.innerWidth < 600) {
-          gasp.to('#search-bar', {
-            marginTop: '0',
-            duration: 0.3
-          })
-        } else {
-          gasp.to('#search-bar', {
-            marginTop: '3vh',
-            flex: '0 0 60%',
-            duration: 0.3
-          })
+        const searchResultPromise = (async () => {
+          return (await courseGroupTable.where('index').startsWithAnyOfIgnoreCase(this.searchText).distinct().toArray()).map((courseGroup) => courseGroup.courseGroup)
+        })()
+
+        if (!this.inSearch) {
+          // TODO pad上移距离
+          if (window.innerWidth < 600) {
+            await gasp
+              .to('#search-bar', {
+                marginTop: '0',
+                duration: 0.3
+              })
+              .then()
+          } else {
+            await gasp
+              .to('#search-bar', {
+                marginTop: '3vh',
+                flex: '0 0 60%',
+                duration: 0.3
+              })
+              .then()
+          }
+          this.inSearch = true
         }
-        this.inSearch = true
-        window.setTimeout(async () => {
-          this.searchResult = (
-            await courseGroupTable
-              // .filter(
-              //   (courseGroup) =>
-              //     !!match(courseGroup.courseGroup.name, this.searchText) ||
-              //     [courseGroup.courseGroup.name, courseGroup.courseGroup.code].some((field) => field.includes(this.searchText))
-              // )
-              .where('index')
-              .startsWithAnyOfIgnoreCase(this.searchText)
-              .limit(200)
-              .toArray()
-          ).map((courseGroup) => courseGroup.courseGroup)
-          this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
-        }, 350)
+
+        this.searchResult = await searchResultPromise
+
+        this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
       }
-    }, 600),
+    }, 200),
     credits(courseList: Course[]): number[] {
       let creditsSet = new Set<number>()
       courseList.forEach((course) => creditsSet.add(course.credit))
