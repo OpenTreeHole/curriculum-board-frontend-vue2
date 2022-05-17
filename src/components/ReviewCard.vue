@@ -53,7 +53,7 @@
               </v-row>
               <v-row class="pa-0 my-0 mt-0">
                 <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 py-1 align-content-end align-end d-none d-sm-block">
-                  <v-btn v-if="review.review.isMe" class="d-block d-sm-none mx-auto" @click="editPhoneForm" text x-small color="grey">
+                  <v-btn v-if="review.review.isMe" class="d-block d-sm-none mx-auto" @click="editForm" text x-small color="grey">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
                 </v-card-text>
@@ -231,12 +231,9 @@ export default Vue.extend({
     deleteReview() {
       console.log('delete review')
     },
-    async editForm(): Promise<void> {
+    editForm(): void {
       // console.log('openEditForm')
       this.$emit('openEditForm', this.review)
-    },
-    async editPhoneForm(): Promise<void> {
-      this.$emit('openPhoneEditForm', this.review)
     },
     async upVote(): Promise<void> {
       // Record original status

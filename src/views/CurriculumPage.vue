@@ -162,12 +162,12 @@
           <v-row style="text-align: center" v-if="reviews.length === 0">
             <v-col class="text-h6 my-2 grey--text"> 暂时没有测评 </v-col>
           </v-row>
-          <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openPhoneEditForm="reviewSheet = true" class="mb-5"></review-card>
+          <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openEditForm="reviewSheet = true" class="mb-5"></review-card>
         </div>
         <div class="my-8"></div>
       </v-col>
     </v-row>
-    <ReviewForm
+    <review-form
       v-model="reviewSheet"
       :course-group="courseGroup"
       :review-title-filled="reviewTitle"
@@ -178,7 +178,7 @@
       :teacher-list="teachersSelectList"
       :time-list="timeSelectList"
       :posted="posted"
-    ></ReviewForm>
+    ></review-form>
   </v-container>
 </template>
 
