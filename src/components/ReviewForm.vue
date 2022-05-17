@@ -1,6 +1,11 @@
 <template>
-  <v-dialog v-bind:value="value" max-width="50%" class="d-none d-sm-flex">
-    <v-card class="pa-4 ma-0">
+  <v-dialog
+    v-bind:value="value"
+    max-width="50%"
+    :fullscreen="this.$vuetify.breakpoint.xsOnly"
+    :transition="this.$vuetify.breakpoint.xsOnly ? 'dialog-bottom-transition' : 'dialog-transition'"
+  >
+    <v-card class="pa-4 ma-0 d-none d-sm-block">
       <v-card-title>
         <span class="text-h6 mb-3">发布测评</span>
       </v-card-title>
@@ -42,6 +47,7 @@
           ></v-select>
           <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseIdSelect" style="width: min-content"></v-text-field>
         </v-row>
+        <div :id="this.contentId" class="vditor"></div>
         <v-snackbar v-model="snackbar" :timeout="2000">
           请输入{{ snackbarContent
           }}<template v-slot:action="{ attrs }">
@@ -84,6 +90,101 @@
         <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid" :loading="postingReviewLoading"> 发布</v-btn>
       </v-card-actions>
     </v-card>
+    <!-- 手机表单布局-->
+    <v-card class="d-sm-none">
+      <v-card-title>
+        <span class="text-h6 mt-5">发布测评</span>
+      </v-card-title>
+      <v-form class="mx-10" v-model="valid" ref="reviewSheet">
+        <v-row class="mt-0">
+          <v-col cols="12">
+            <v-text-field :counter="20" required label="标题" class="pt-1 font-weight-bold" style="font-size: small" v-model="reviewTitle" :rules="reviewTitleRules"></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row class="mt-0">
+          <v-select
+            :items="teachersList"
+            item-text="title"
+            item-value="value"
+            clearable
+            required
+            label="任课教师"
+            :rules="[(v) => !!v || '请选择任课教师']"
+            class="font-weight-regular mx-3"
+            style="width: min-content; font-size: small"
+            @change="banTime"
+            v-model="teacherSelect"
+            return-object
+          ></v-select>
+          <v-select
+            :items="timesList"
+            clearable
+            required
+            item-text="title"
+            item-value="value"
+            label="课程时间"
+            :rules="[(v) => !!v || '请选择课程时间']"
+            class="font-weight-regular mx-3"
+            style="width: min-content; font-size: small"
+            @change="banTeachers"
+            v-model="timeSelect"
+            return-object
+          ></v-select>
+        </v-row>
+        <v-row class="pa-0">
+          <v-text-field
+            label="课程编号"
+            required
+            readonly
+            dense
+            class="subtitle-2 font-weight-regular mx-3 mt-6 mb-2"
+            v-model="courseIdSelect"
+            style="width: max-content; font-size: small"
+          ></v-text-field>
+        </v-row>
+        <ReviewEditor class="mt-2" style="font-size: small" ref="reviewEditor" />
+        <v-snackbar v-model="snackbar" :timeout="2000"
+          >请输入{{ snackbarContent
+          }}<template v-slot:action="{ attrs }">
+            <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
+          </template></v-snackbar
+        >
+      </v-form>
+      <v-card-title class="mb-2 mt-3"> 评分</v-card-title>
+      <v-row class="mx-9">
+        <v-col cols="12" class="d-flex pb-2">
+          <span class="subtitle-1 mr-5">总体评分</span>
+          <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="postRankColorOverall"></v-rating>
+          <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
+        </v-col>
+      </v-row>
+      <v-row class="mx-9 pt-0">
+        <v-col cols="12" class="d-flex pt-0 pb-2">
+          <span class="subtitle-1 mr-5">课程内容</span>
+          <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="postRankColorContent"></v-rating>
+          <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
+        </v-col>
+      </v-row>
+      <v-row class="mx-9 pt-0">
+        <v-col cols="12" class="d-flex pt-0 pb-2">
+          <span class="subtitle-1 mr-9">工作量</span>
+          <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="postRankColorWorkload"></v-rating>
+          <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
+        </v-col>
+      </v-row>
+      <v-row class="mx-9 pt-0">
+        <v-col cols="12" class="d-flex pt-0 pb-2">
+          <span class="subtitle-1 mr-5">考核要求</span>
+          <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="postRankColorAssessment"></v-rating>
+          <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
+        </v-col>
+      </v-row>
+      <v-card-actions class="mr-4 mt-4">
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text v-on:click="$emit('input', $event.target.value)" class="mr-0">取消</v-btn>
+        <v-btn color="blue darken-1" class="mr-2 ml-0" text :disabled="!valid" @click="postReview" :loading="postingReviewLoading">发布</v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
 </template>
 
@@ -93,6 +194,7 @@ import { Course, CourseGroup, PostReviewData, Review } from '@/models'
 import { parseYearSemester } from '@/utils/course'
 import { addReview, modifyReview } from '@/apis'
 import { toNumber } from 'lodash-es'
+import Vditor from 'vditor'
 
 export interface ItemList {
   title: string
@@ -124,6 +226,10 @@ export default Vue.extend({
       }
     },
     courseIdSelected: {
+      type: String,
+      default: () => ''
+    },
+    reviewContentPosted: {
       type: String,
       default: () => ''
     },
@@ -159,13 +265,16 @@ export default Vue.extend({
       formDisplay: this.value as boolean,
       teachersList: this.teacherList as ItemList[],
       timesList: this.timeList as ItemList[],
-      courseList: this.courseGroup as CourseGroup,
+      coursesList: this.courseGroup as CourseGroup,
+      editor: null as Vditor | null,
       // data for post review
       reviewTitle: this.reviewTitleFilled as string,
       teacherSelect: this.teacherSelected as ItemList,
       timeSelect: this.timeSelected as ItemList,
       courseIdSelect: this.courseIdSelected as string,
+      reviewContent: this.reviewContentPosted as string,
       rank: this.rankScored,
+      contentId: new Date().getTime().toString(),
       // form rules
       valid: true,
       snackbar: false,
@@ -236,7 +345,7 @@ export default Vue.extend({
     },
     // lists
     courseGroup() {
-      this.courseList = this.courseGroup as CourseGroup
+      this.coursesList = this.courseGroup as CourseGroup
     },
     teachersList() {
       this.teachersList = this.teacherList as ItemList[]
@@ -254,6 +363,11 @@ export default Vue.extend({
     reviewTitleFilled() {
       this.reviewTitle = this.reviewTitleFilled as string
     },
+    reviewContentPosted() {
+      this.reviewContent = this.reviewContentPosted as string
+      console.log(111111)
+      this.editor?.setValue(this.reviewContentPosted)
+    },
     rankScored() {
       this.rank = this.rankScored
     },
@@ -263,7 +377,7 @@ export default Vue.extend({
   },
   methods: {
     banTeachers(): void {
-      console.log(this.courseList)
+      console.log(this.coursesList)
       if (this.timeSelect === (null as unknown as ItemList)) {
         for (const teacher of this.teachersList) {
           teacher.disabled = false
@@ -272,7 +386,7 @@ export default Vue.extend({
         this.teachersList.forEach((teacher: { disabled: boolean }) => {
           teacher.disabled = true
         })
-        this.courseList.courseList.forEach((course: Course) => {
+        this.coursesList.courseList.forEach((course: Course) => {
           if (this.timeSelect.title === parseYearSemester(course)) {
             for (const teacher of this.teachersList) {
               if (teacher.title === course.teachers) {
@@ -283,13 +397,13 @@ export default Vue.extend({
         })
       }
       if (this.teacherSelect !== (null as unknown as ItemList) && this.timeSelect !== (null as unknown as ItemList)) {
-        this.courseList.courseList.find((course: Course) => {
+        this.coursesList.courseList.find((course: Course) => {
           if (course.teachers === this.teacherSelect.title && parseYearSemester(course) === this.timeSelect.title) {
             this.courseIdSelect = course.codeId
           }
         })
       } else {
-        this.courseIdSelect = this.courseList?.courseList[0].code ?? ''
+        this.courseIdSelect = this.coursesList?.courseList[0].code ?? ''
       }
     },
     banTime(): void {
@@ -301,7 +415,7 @@ export default Vue.extend({
         this.timesList.forEach((time: { disabled: boolean }) => {
           time.disabled = true
         })
-        this.courseList.courseList.forEach((course: Course) => {
+        this.coursesList.courseList.forEach((course: Course) => {
           if (this.teacherSelect?.title === course.teachers) {
             for (const time of this.timesList) {
               if (time.title === parseYearSemester(course)) {
@@ -312,12 +426,12 @@ export default Vue.extend({
         })
       }
       if (this.timeSelect !== (null as unknown as ItemList) && this.teacherSelect !== (null as unknown as ItemList)) {
-        this.courseList.courseList.find((course) => {
+        this.coursesList.courseList.find((course) => {
           if (course.teachers === this.teacherSelect.title && parseYearSemester(course) === this.timeSelect.title) {
             this.courseIdSelect = course.codeId
           }
         })
-      } else this.courseIdSelect = this.courseList.courseList[0].code ?? ''
+      } else this.courseIdSelect = this.coursesList.courseList[0].code ?? ''
     },
     async postReview() {
       if ((this.$refs.reviewSheet as Vue & { validate: () => boolean }).validate()) {
@@ -330,7 +444,7 @@ export default Vue.extend({
             review.title = this.reviewTitle
             if (!this.posted) {
               let id = 0
-              this.courseList.courseList.forEach((course) => {
+              this.coursesList.courseList.forEach((course) => {
                 if (course.codeId === this.courseIdSelect) {
                   id = course.id
                 }
@@ -356,7 +470,7 @@ export default Vue.extend({
               // console.log(this.courseGroup)
             } else {
               let id = 0
-              this.courseList.courseList.forEach((course) => {
+              this.coursesList.courseList.forEach((course) => {
                 course.reviewList?.forEach((review) => {
                   review.isMe = true
                   id = review.id
@@ -390,6 +504,24 @@ export default Vue.extend({
         }
       }
     }
+  },
+  created() {
+    this.editor = new Vditor(this.contentId, {
+      height: window.innerHeight - 600,
+      placeholder: '说些什么......',
+      toolbar: [],
+      cache: {
+        enable: true
+      },
+      counter: {
+        enable: false
+      },
+      after: async () => {
+        this.editor?.setValue(this.reviewContentPosted)
+      }
+      /* TODO 添加模版 */
+    })
+    this.$emit('editorReady')
   }
 })
 </script>

@@ -32,7 +32,8 @@
             <v-expansion-panel class="py-0 pb-2">
               <!-- 总体评分 -->
               <v-expansion-panel-header class="mt-0 py-0 subtitle-1 font-weight-bold secondary--text ml-1">
-                全部学期 (共 {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
+                全部学期 (共
+                {{ courseGroup.courseList.flatMap((course) => course.reviewList || []).length }} 条)
               </v-expansion-panel-header>
               <v-expansion-panel-content class="py-0 pl-2" v-if="courseGroup.courseList.flatMap((course) => course.reviewList || []).length >= 3">
                 <v-row align="center" no-gutters>
@@ -147,7 +148,7 @@
           <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3"></review-card>
         </div>
         <div style="text-align: center" class="mb-4 d-block d-sm-none mt-0">
-          <v-btn @click="changePhoneFormView(null)" :disabled="loading || posted" elevation="0"> 发布测评</v-btn>
+          <v-btn @click="reviewSheet = true" :disabled="loading || posted" elevation="0"> 发布测评</v-btn>
         </div>
         <v-card v-if="loading" class="pa-2 mb-3">
           <v-skeleton-loader type="article, actions" width="100%" class="my-2"></v-skeleton-loader>
@@ -180,7 +181,7 @@
       :time-list="timeSelectList"
       :posted="posted"
     ></ReviewForm>
-    <v-dialog v-model="reviewSheetPhone" max-width="50%" class="d-none d-sm-flex">
+    <!--    <v-dialog v-model="reviewSheetPhone" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>
           <span class="text-h6 mb-3">发布测评</span>
@@ -229,35 +230,35 @@
               <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
             </template>
           </v-snackbar>
-          <!--          <v-snackbar :timeout="3000" v-model="error" absolute centered right tile color="red accent-2"> 喔嚄, 出错了, {{ ErrorMessage }} </v-snackbar>-->
+          &lt;!&ndash;          <v-snackbar :timeout="3000" v-model="error" absolute centered right tile color="red accent-2"> 喔嚄, 出错了, {{ ErrorMessage }} </v-snackbar>&ndash;&gt;
         </v-form>
         <v-card-title class="mb-2 mt-2"> 评分</v-card-title>
         <v-row class="mx-3">
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="postRankColorOverall"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ postRankWordOverall }}</span>
+            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">{{ postRankWordOverall }}</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">课程内容</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="postRankColorContent"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ postRankWordContent }}</span>
+            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">{{ postRankWordContent }}</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-9">工作量</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="postRankColorWorkload"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ postRankWordWorkload }}</span>
+            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">{{ postRankWordWorkload }}</span>
           </v-col>
         </v-row>
         <v-row class="mx-3 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">考核要求</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="postRankColorAssessment"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ postRankWordAssessment }}</span>
+            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">{{ postRankWordAssessment }}</span>
           </v-col>
         </v-row>
         <v-card-actions>
@@ -266,9 +267,9 @@
           <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid" :loading="postingReviewLoading"> 发布</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog>-->
     <!-- 手机表单  -->
-    <v-dialog v-model="reviewSheetPhone" ref="reviewSheet" fullscreen transition="dialog-bottom-transition">
+    <!--    <v-dialog v-model="reviewSheetPhone" ref="reviewSheet" fullscreen transition="dialog-bottom-transition">
       <v-card>
         <v-card-title>
           <span class="text-h6 mt-5">发布测评</span>
@@ -342,28 +343,28 @@
           <v-col cols="12" class="d-flex pb-2">
             <span class="subtitle-1 mr-5">总体评分</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="postRankColorOverall"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">特别好评</span>
+            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">特别好评</span>
           </v-col>
         </v-row>
         <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">课程内容</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="postRankColorContent"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">硬核</span>
+            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">硬核</span>
           </v-col>
         </v-row>
         <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-9">工作量</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="postRankColorWorkload"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">轻松</span>
+            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">轻松</span>
           </v-col>
         </v-row>
         <v-row class="mx-9 pt-0">
           <v-col cols="12" class="d-flex pt-0 pb-2">
             <span class="subtitle-1 mr-5">考核要求</span>
             <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="postRankColorAssessment"></v-rating>
-            <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">严格</span>
+            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">严格</span>
           </v-col>
         </v-row>
         <v-card-actions class="mr-4 mt-4">
@@ -372,7 +373,7 @@
           <v-btn color="blue darken-1" class="mr-2 ml-0" text :disabled="!valid" @click="postReview" :loading="postingReviewLoading">发布</v-btn>
         </v-card-actions>
       </v-card>
-    </v-dialog>
+    </v-dialog>-->
   </v-container>
 </template>
 
