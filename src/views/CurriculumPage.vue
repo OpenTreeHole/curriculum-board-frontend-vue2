@@ -184,13 +184,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CourseGroup, PostReviewData, Review, ReviewWithCourse, TotalRank } from '@/models'
+import { CourseGroup, ReviewWithCourse, TotalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewForm from '@/components/ReviewForm.vue'
 import { parseYearSemester } from '@/utils/course'
-import { toNumber } from 'lodash-es'
-import { addReview, modifyReview } from '@/apis'
 // import { match } from 'pinyin-pro'
 
 export interface ItemList {
@@ -475,109 +473,6 @@ export default Vue.extend({
       semesterTotalScore.workload = Math.round((semesterTotalScore.workload / reviews.length) * 20.0)
       semesterTotalScore.assessment = Math.round((semesterTotalScore.assessment / reviews.length) * 20.0)
       return semesterTotalScore
-    },
-    async postReview() {
-      if ((this.$refs.reviewSheet as Vue & { validate: () => boolean }).validate()) {
-        if ((this.$refs.reviewEditor as any).getContent().length > 1) {
-          if (this.rank.overall && this.rank.assessment && this.rank.content && this.rank.workload) {
-            this.postingReviewLoading = true
-            const review = {} as PostReviewData
-            review.content = (this.$refs.reviewEditor as any).getContent()
-            review.rank = this.rank
-            review.title = this.reviewTitle
-            if (!this.posted) {
-              let id = 0
-              this.courseGroup?.courseList.forEach((course) => {
-                if (course.codeId === this.courseId) {
-                  id = course.id
-                }
-              })
-              let [reviewAdded, error] = (await addReview(toNumber(id), review)
-                .catch((error) => [null, error])
-                .then((res) => [res, null])) as [Review, Error]
-              if (error) {
-                console.log(error)
-                this.postingReviewLoading = false
-              } else if (reviewAdded) {
-                reviewAdded.isMe = true
-                this.$store.commit('addReview', {
-                  id: toNumber(id),
-                  review: reviewAdded
-                })
-                this.reviewSheetPhone = false
-                this.reviewSheet = false
-                this.posted = true
-                this.loading = true
-                this.loading = false
-              }
-              this.postingReviewLoading = false
-              // console.log(this.courseGroup)
-            } else {
-              let id = 0
-              this.courseGroup?.courseList.forEach((course) => {
-                course.reviewList?.forEach((review) => {
-                  review.isMe = true
-                  id = review.id
-                })
-              })
-              let [reviewAdded, error] = (await modifyReview(toNumber(id), review)
-                .catch((error) => [null, error])
-                .then((res) => [res, null])) as [Review, Error]
-              if (error) {
-                console.log(error)
-                this.postingReviewLoading = false
-              } else if (reviewAdded) {
-                reviewAdded.isMe = true
-                this.$store.commit('modifyReview', {
-                  id: toNumber(id),
-                  review: reviewAdded
-                })
-                this.reviewSheetPhone = false
-                this.reviewSheet = false
-                this.loading = true
-                this.loading = false
-              }
-              this.postingReviewLoading = false
-            }
-          } else {
-            this.snackbarContent = '评分'
-            this.snackbar = true
-          }
-        } else {
-          this.snackbarContent = '测评内容'
-          this.snackbar = true
-        }
-      }
-    },
-    changeFormView(reviewWithCourse: ReviewWithCourse): void {
-      if (reviewWithCourse) {
-        this.rank = reviewWithCourse.review.rank
-        this.reviewTitle = reviewWithCourse.review.title
-        this.RenderingEditor = true
-        if (this.$refs.reviewEditor as any) (this.$refs.reviewEditor as any).setContent(reviewWithCourse.review.content)
-        this.teacherSelected!.title = reviewWithCourse.course.teachers
-        this.teacherSelected!.value = reviewWithCourse.course.teachers
-        this.teacherSelected!.disabled = false
-        this.timeSelected!.title = parseYearSemester(reviewWithCourse.course)
-        this.timeSelected!.value = parseYearSemester(reviewWithCourse.course)
-        this.timeSelected!.disabled = false
-        this.RenderingEditor = false
-      }
-      this.reviewSheet = !this.reviewSheet
-    },
-    changePhoneFormView(reviewWithCourse: ReviewWithCourse): void {
-      if (reviewWithCourse) {
-        this.rank = reviewWithCourse.review.rank
-        this.reviewTitle = reviewWithCourse.review.title
-        if (this.$refs.reviewEditor as any) (this.$refs.reviewEditor as any).setContent(reviewWithCourse.review.content)
-        this.teacherSelected!.title = reviewWithCourse.course.teachers
-        this.teacherSelected!.value = reviewWithCourse.course.teachers
-        this.teacherSelected!.disabled = false
-        this.timeSelected!.title = parseYearSemester(reviewWithCourse.course)
-        this.timeSelected!.value = parseYearSemester(reviewWithCourse.course)
-        this.timeSelected!.disabled = false
-      }
-      this.reviewSheetPhone = !this.reviewSheetPhone
     },
     // Get or load a course group with all reviews loaded.
     async getOrLoadCourseGroup(groupId: number): Promise<CourseGroup | null> {
