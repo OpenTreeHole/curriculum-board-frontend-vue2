@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="formDisplay" max-width="50%" class="d-none d-sm-flex">
+  <v-dialog v-bind:value="value" max-width="50%" class="d-none d-sm-flex">
     <v-card class="pa-4 ma-0">
       <v-card-title>
         <span class="text-h6 mb-3">发布测评</span>
@@ -10,6 +10,7 @@
             <v-text-field :counter="20" required label="标题" class="pt-1 font-weight-bold" v-model="reviewTitle" :rules="reviewTitleRules"></v-text-field>
           </v-col>
         </v-row>
+        <!-- TODO select宽度 -->
         <v-row class="pt-0 mt-0 pl-3 mb-2 pr-7">
           <v-select
             :items="teachersList"
@@ -41,7 +42,6 @@
           ></v-select>
           <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseIdSelect" style="width: min-content"></v-text-field>
         </v-row>
-        <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" v-if="!RenderingEditor" />
         <v-snackbar v-model="snackbar" :timeout="2000">
           请输入{{ snackbarContent
           }}<template v-slot:action="{ attrs }">
@@ -80,7 +80,7 @@
       </v-row>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="reviewSheet = false"> 取消</v-btn>
+        <v-btn color="blue darken-1" text v-on:click="$emit('input', $event.target.value)"> 取消</v-btn>
         <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid" :loading="postingReviewLoading"> 发布</v-btn>
       </v-card-actions>
     </v-card>
@@ -89,8 +89,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { Course, CourseGroup, PostReviewData, Review, ReviewWithCourse, TotalRank } from '@/models'
+import { Course, CourseGroup, PostReviewData, Review } from '@/models'
 import { parseYearSemester } from '@/utils/course'
+import { addReview, modifyReview } from '@/apis'
+import { toNumber } from 'lodash-es'
 
 export interface ItemList {
   title: string
@@ -100,70 +102,74 @@ export interface ItemList {
 
 export default Vue.extend({
   name: 'ReviewForm',
-  props() {
-    return {
-      value: {
-        type: Boolean,
-        default: false
-      },
-      reviewSheet: {
-        type: Boolean,
-        default: false
-      },
-      reviewTitleFilled: {
-        type: String,
-        default: ''
-      },
-      teacherSelected: {
-        type: Object as unknown as ItemList,
-        default: null as unknown as ItemList
-      },
-      timeSelected: {
-        type: Object as unknown as ItemList,
-        default: null as unknown as ItemList
-      },
-      courseIdSelected: {
-        type: String,
-        default: ''
-      },
-      rankScored: {
-        type: TotalRank,
-        default: {
-          overall: 0,
-          content: 0,
-          workload: 0,
-          assessment: 0
-        }
-      },
-      teacherList: {
-        type: Array as unknown as ItemList,
-        default: [] as unknown as ItemList
-      },
-      timeList: {
-        type: Array as unknown as ItemList,
-        default: [] as unknown as ItemList
-      },
-      courseGroup: {
-        type: CourseGroup,
-        default: {} as CourseGroup
+  props: {
+    value: {
+      type: Boolean,
+      default: () => false
+    },
+    reviewTitleFilled: {
+      type: String,
+      default: () => ''
+    },
+    teacherSelected: {
+      type: Object,
+      default: () => {
+        return {}
       }
+    },
+    timeSelected: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    courseIdSelected: {
+      type: String,
+      default: () => ''
+    },
+    rankScored: {
+      type: Object,
+      default: () => ({
+        overall: 0,
+        content: 0,
+        workload: 0,
+        assessment: 0
+      })
+    },
+    teacherList: {
+      type: Array,
+      default: () => []
+    },
+    timeList: {
+      type: Array,
+      default: () => []
+    },
+    courseGroup: {
+      type: Object,
+      default: null
+    },
+    posted: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       // form items
-      formDisplay: this.reviewSheet as boolean,
-      teachersList: this.$props.teacherList as ItemList[],
-      timesList: this.$props.timeList as ItemList[],
-      courseList: this.$props.courseGroup as CourseGroup,
+      formDisplay: this.value as boolean,
+      teachersList: this.teacherList as ItemList[],
+      timesList: this.timeList as ItemList[],
+      courseList: this.courseGroup as CourseGroup,
       // data for post review
-      reviewTitle: this.$props.reviewTitleFilled as string,
-      teacherSelect: this.$props.teacherSelected as ItemList,
-      timeSelect: this.$props.timeSelected as ItemList,
-      courseIdSelect: this.$props.courseIdSelected as string,
-      rank: this.$props.rankScored as TotalRank,
+      reviewTitle: this.reviewTitleFilled as string,
+      teacherSelect: this.teacherSelected as ItemList,
+      timeSelect: this.timeSelected as ItemList,
+      courseIdSelect: this.courseIdSelected as string,
+      rank: this.rankScored,
       // form rules
       valid: true,
+      snackbar: false,
+      reviewPosted: false,
       snackbarContent: '',
       reviewTitleRules: [(v: string) => !!v || '评论标题不能为空', (v: string) => v.length <= 20 || '评论标题不能超过20字'],
       // form loading
@@ -224,8 +230,40 @@ export default Vue.extend({
       }
     }
   },
+  watch: {
+    courseIdSelected() {
+      this.courseIdSelect = this.courseIdSelected as string
+    },
+    // lists
+    courseGroup() {
+      this.courseList = this.courseGroup as CourseGroup
+    },
+    teachersList() {
+      this.teachersList = this.teacherList as ItemList[]
+    },
+    timesList() {
+      this.timesList = this.timeList as ItemList[]
+    },
+    // selected items
+    teacherSelected() {
+      this.teacherSelect = this.teacherSelected as ItemList
+    },
+    timeSelected() {
+      this.timeSelect = this.timeSelected as ItemList
+    },
+    reviewTitleFilled() {
+      this.reviewTitle = this.reviewTitleFilled as string
+    },
+    rankScored() {
+      this.rank = this.rankScored
+    },
+    posted() {
+      this.reviewPosted = this.posted
+    }
+  },
   methods: {
     banTeachers(): void {
+      console.log(this.courseList)
       if (this.timeSelect === (null as unknown as ItemList)) {
         for (const teacher of this.teachersList) {
           teacher.disabled = false
@@ -280,10 +318,78 @@ export default Vue.extend({
           }
         })
       } else this.courseIdSelect = this.courseList.courseList[0].code ?? ''
+    },
+    async postReview() {
+      if ((this.$refs.reviewSheet as Vue & { validate: () => boolean }).validate()) {
+        if ((this.$refs.reviewEditor as any).getContent().length > 1) {
+          if (this.rank.overall && this.rank.assessment && this.rank.content && this.rank.workload) {
+            this.postingReviewLoading = true
+            const review = {} as PostReviewData
+            review.content = (this.$refs.reviewEditor as any).getContent()
+            review.rank = this.rank
+            review.title = this.reviewTitle
+            if (!this.posted) {
+              let id = 0
+              this.courseList.courseList.forEach((course) => {
+                if (course.codeId === this.courseIdSelect) {
+                  id = course.id
+                }
+              })
+              let [reviewAdded, error] = (await addReview(toNumber(id), review)
+                .catch((error) => [null, error])
+                .then((res) => [res, null])) as [Review, Error]
+              if (error) {
+                console.log(error)
+                this.postingReviewLoading = false
+              } else if (reviewAdded) {
+                reviewAdded.isMe = true
+                this.$store.commit('addReview', {
+                  id: toNumber(id),
+                  review: reviewAdded
+                })
+                this.formDisplay = false
+                this.reviewPosted = true
+                this.postingReviewLoading = false
+                this.$emit('input', false)
+              }
+              this.postingReviewLoading = false
+              // console.log(this.courseGroup)
+            } else {
+              let id = 0
+              this.courseList.courseList.forEach((course) => {
+                course.reviewList?.forEach((review) => {
+                  review.isMe = true
+                  id = review.id
+                })
+              })
+              let [reviewAdded, error] = (await modifyReview(toNumber(id), review)
+                .catch((error) => [null, error])
+                .then((res) => [res, null])) as [Review, Error]
+              if (error) {
+                console.log(error)
+                this.postingReviewLoading = false
+              } else if (reviewAdded) {
+                reviewAdded.isMe = true
+                this.$store.commit('modifyReview', {
+                  id: toNumber(id),
+                  review: reviewAdded
+                })
+                this.formDisplay = false
+                this.reviewPosted = true
+                this.postingReviewLoading = false
+              }
+              this.postingReviewLoading = false
+            }
+          } else {
+            this.snackbarContent = '评分'
+            this.snackbar = true
+          }
+        } else {
+          this.snackbarContent = '测评内容'
+          this.snackbar = true
+        }
+      }
     }
-  },
-  mounted() {
-    console.log(this.revi)
   }
 })
 </script>

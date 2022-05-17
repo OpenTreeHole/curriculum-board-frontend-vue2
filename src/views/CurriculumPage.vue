@@ -135,7 +135,7 @@
           <v-divider />
         </v-card>
         <div style="text-align: center" class="mt-1 d-none d-sm-block">
-          <v-btn @click="changeFormView(null)" :disabled="loading || posted" elevation="0">发布测评</v-btn>
+          <v-btn @click="reviewSheet = true" :disabled="loading || posted" elevation="0">发布测评</v-btn>
         </div>
       </v-col>
       <v-col lg="8" class="mx-lg-0 mx-3">
@@ -168,8 +168,19 @@
       </v-col>
     </v-row>
     <!-- 电脑表单  -->
-    <ReviewForm v-model="reviewSheet" :teacher-selected="teacherSelected"></ReviewForm>
-    <v-dialog v-model="reviewSheet22" max-width="50%" class="d-none d-sm-flex">
+    <ReviewForm
+      v-model="reviewSheet"
+      :course-group="courseGroup"
+      :review-title-filled="reviewTitle"
+      :teacher-selected="teacherSelected"
+      :course-id-selected="courseId"
+      :time-selected="timeSelected"
+      :rank-scored="rank"
+      :teacher-list="teachersSelectList"
+      :time-list="timeSelectList"
+      :posted="posted"
+    ></ReviewForm>
+    <v-dialog v-model="reviewSheetPhone" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>
           <span class="text-h6 mb-3">发布测评</span>
@@ -395,7 +406,7 @@ export default Vue.extend({
     error: false,
     ErrorMessage: '',
     snackbar: false,
-    reviewSheet: true,
+    reviewSheet: false,
     postingReviewLoading: false,
     reviewTitle: '',
     reviewTitleRules: [(v: string) => !!v || '评论标题不能为空', (v: string) => v.length <= 20 || '评论标题不能超过20字'],
@@ -860,6 +871,10 @@ export default Vue.extend({
         this.RenderingEditor = false
       }
       this.reviewSheet = !this.reviewSheet
+    },
+    changeFormView1(data: boolean): void {
+      this.reviewSheet = data
+      console.log(this.reviewSheet)
     },
     changePhoneFormView(reviewWithCourse: ReviewWithCourse): void {
       if (reviewWithCourse) {
