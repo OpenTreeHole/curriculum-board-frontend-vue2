@@ -145,7 +145,7 @@
           <v-row style="text-align: center" v-if="reviews.length === 0">
             <v-col class="text-h5 my-4 grey--text"> 暂时没有测评 </v-col>
           </v-row>
-          <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="changeFormView" class="mb-3"></review-card>
+          <review-card v-for="(v, i) in reviews" :key="'review' + i" :review="v" @openEditForm="reviewSheet = true" class="mb-3"></review-card>
         </div>
         <div style="text-align: center" class="mb-4 d-block d-sm-none mt-0">
           <v-btn @click="reviewSheet = true" :disabled="loading || posted" elevation="0"> 发布测评</v-btn>
@@ -163,12 +163,11 @@
           <v-row style="text-align: center" v-if="reviews.length === 0">
             <v-col class="text-h6 my-2 grey--text"> 暂时没有测评 </v-col>
           </v-row>
-          <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openPhoneEditForm="changePhoneFormView" class="mb-5"></review-card>
+          <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openPhoneEditForm="reviewSheet = true" class="mb-5"></review-card>
         </div>
         <div class="my-8"></div>
       </v-col>
     </v-row>
-    <!-- 电脑表单  -->
     <ReviewForm
       v-model="reviewSheet"
       :course-group="courseGroup"
@@ -181,199 +180,6 @@
       :time-list="timeSelectList"
       :posted="posted"
     ></ReviewForm>
-    <!--    <v-dialog v-model="reviewSheetPhone" max-width="50%" class="d-none d-sm-flex">
-      <v-card class="pa-4 ma-0">
-        <v-card-title>
-          <span class="text-h6 mb-3">发布测评</span>
-        </v-card-title>
-        <v-form class="mx-7" v-model="valid" ref="reviewSheet">
-          <v-row>
-            <v-col cols="8">
-              <v-text-field :counter="20" required label="标题" class="pt-1 font-weight-bold" v-model="reviewTitle" :rules="reviewTitleRules"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row class="pt-0 mt-0 pl-3 mb-2 pr-7">
-            <v-select
-              :items="teachersSelectList"
-              item-text="title"
-              item-value="value"
-              clearable
-              required
-              label="任课教师"
-              :rules="[(v) => !!v || '请选择任课教师']"
-              class="font-weight-regular mr-2"
-              style="width: min-content"
-              @change="banTime"
-              v-model="teacherSelected"
-              return-object
-            ></v-select>
-            <v-select
-              :items="timeSelectList"
-              clearable
-              required
-              item-text="title"
-              item-value="value"
-              label="课程时间"
-              :rules="[(v) => !!v || '请选择课程时间']"
-              class="font-weight-regular mr-2"
-              style="width: min-content"
-              @change="banTeachers"
-              v-model="timeSelected"
-              return-object
-            ></v-select>
-            <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseId" style="width: min-content"></v-text-field>
-          </v-row>
-          <ReviewEditor class="mt-2 mr-3" ref="reviewEditor" v-if="!RenderingEditor" />
-          <v-snackbar v-model="snackbar" :timeout="2000">
-            请输入{{ snackbarContent
-            }}<template v-slot:action="{ attrs }">
-              <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
-            </template>
-          </v-snackbar>
-          &lt;!&ndash;          <v-snackbar :timeout="3000" v-model="error" absolute centered right tile color="red accent-2"> 喔嚄, 出错了, {{ ErrorMessage }} </v-snackbar>&ndash;&gt;
-        </v-form>
-        <v-card-title class="mb-2 mt-2"> 评分</v-card-title>
-        <v-row class="mx-3">
-          <v-col cols="12" class="d-flex pb-2">
-            <span class="subtitle-1 mr-5">总体评分</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="postRankColorOverall"></v-rating>
-            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">{{ postRankWordOverall }}</span>
-          </v-col>
-        </v-row>
-        <v-row class="mx-3 pt-0">
-          <v-col cols="12" class="d-flex pt-0 pb-2">
-            <span class="subtitle-1 mr-5">课程内容</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="postRankColorContent"></v-rating>
-            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">{{ postRankWordContent }}</span>
-          </v-col>
-        </v-row>
-        <v-row class="mx-3 pt-0">
-          <v-col cols="12" class="d-flex pt-0 pb-2">
-            <span class="subtitle-1 mr-9">工作量</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="postRankColorWorkload"></v-rating>
-            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">{{ postRankWordWorkload }}</span>
-          </v-col>
-        </v-row>
-        <v-row class="mx-3 pt-0">
-          <v-col cols="12" class="d-flex pt-0 pb-2">
-            <span class="subtitle-1 mr-5">考核要求</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="postRankColorAssessment"></v-rating>
-            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">{{ postRankWordAssessment }}</span>
-          </v-col>
-        </v-row>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="reviewSheet = false"> 取消</v-btn>
-          <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid" :loading="postingReviewLoading"> 发布</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>-->
-    <!-- 手机表单  -->
-    <!--    <v-dialog v-model="reviewSheetPhone" ref="reviewSheet" fullscreen transition="dialog-bottom-transition">
-      <v-card>
-        <v-card-title>
-          <span class="text-h6 mt-5">发布测评</span>
-        </v-card-title>
-        <v-form class="mx-10" v-model="valid" ref="reviewSheet">
-          <v-row class="mt-0">
-            <v-col cols="12">
-              <v-text-field
-                :counter="20"
-                required
-                label="标题"
-                class="pt-1 font-weight-bold"
-                style="font-size: small"
-                v-model="reviewTitle"
-                :rules="reviewTitleRules"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row class="mt-0">
-            <v-select
-              :items="teachersSelectList"
-              item-text="title"
-              item-value="value"
-              clearable
-              required
-              label="任课教师"
-              :rules="[(v) => !!v || '请选择任课教师']"
-              class="font-weight-regular mx-3"
-              style="width: min-content; font-size: small"
-              @change="banTime"
-              v-model="teacherSelected"
-              return-object
-            ></v-select>
-            <v-select
-              :items="timeSelectList"
-              clearable
-              required
-              item-text="title"
-              item-value="value"
-              label="课程时间"
-              :rules="[(v) => !!v || '请选择课程时间']"
-              class="font-weight-regular mx-3"
-              style="width: min-content; font-size: small"
-              @change="banTeachers"
-              v-model="timeSelected"
-              return-object
-            ></v-select>
-          </v-row>
-          <v-row class="pa-0">
-            <v-text-field
-              label="课程编号"
-              required
-              readonly
-              dense
-              class="subtitle-2 font-weight-regular mx-3 mt-6 mb-2"
-              v-model="courseId"
-              style="width: max-content; font-size: small"
-            ></v-text-field>
-          </v-row>
-          <ReviewEditor class="mt-2" style="font-size: small" ref="reviewEditor" />
-          <v-snackbar v-model="snackbar" :timeout="2000"
-            >请输入{{ snackbarContent
-            }}<template v-slot:action="{ attrs }">
-              <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
-            </template></v-snackbar
-          >
-          <v-snackbar :timeout="3000" v-model="error" absolute centered right tile color="red accent-2"> 喔嚄, 出错了, {{ ErrorMessage }} </v-snackbar>
-        </v-form>
-        <v-card-title class="mb-2 mt-3"> 评分</v-card-title>
-        <v-row class="mx-9">
-          <v-col cols="12" class="d-flex pb-2">
-            <span class="subtitle-1 mr-5">总体评分</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.overall" :color="postRankColorOverall"></v-rating>
-            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">特别好评</span>
-          </v-col>
-        </v-row>
-        <v-row class="mx-9 pt-0">
-          <v-col cols="12" class="d-flex pt-0 pb-2">
-            <span class="subtitle-1 mr-5">课程内容</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="postRankColorContent"></v-rating>
-            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">硬核</span>
-          </v-col>
-        </v-row>
-        <v-row class="mx-9 pt-0">
-          <v-col cols="12" class="d-flex pt-0 pb-2">
-            <span class="subtitle-1 mr-9">工作量</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.workload" :color="postRankColorWorkload"></v-rating>
-            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">轻松</span>
-          </v-col>
-        </v-row>
-        <v-row class="mx-9 pt-0">
-          <v-col cols="12" class="d-flex pt-0 pb-2">
-            <span class="subtitle-1 mr-5">考核要求</span>
-            <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.assessment" :color="postRankColorAssessment"></v-rating>
-            <span class="subtitle-2 grey&#45;&#45;text ml-2" style="margin-top: 2px">严格</span>
-          </v-col>
-        </v-row>
-        <v-card-actions class="mr-4 mt-4">
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="reviewSheetPhone = false" class="mr-0">取消</v-btn>
-          <v-btn color="blue darken-1" class="mr-2 ml-0" text :disabled="!valid" @click="postReview" :loading="postingReviewLoading">发布</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>-->
   </v-container>
 </template>
 
@@ -382,7 +188,6 @@ import Vue from 'vue'
 import { CourseGroup, PostReviewData, Review, ReviewWithCourse, TotalRank } from '@/models'
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
-import ReviewEditor from '@/components/ReviewEditor.vue'
 import ReviewForm from '@/components/ReviewForm.vue'
 import { parseYearSemester } from '@/utils/course'
 import { toNumber } from 'lodash-es'
@@ -396,7 +201,7 @@ export interface ItemList {
 }
 export default Vue.extend({
   name: 'CurriculumPage',
-  components: { ReviewEditor, ReviewCard, ReviewForm },
+  components: { ReviewCard, ReviewForm },
   props: ['groupId'],
   data: () => ({
     posted: false,
@@ -441,58 +246,6 @@ export default Vue.extend({
     }
   }),
   computed: {
-    postRankWordOverall(): string {
-      const rankWordOverall = ['无', '特别差评', '差评', '一般', '好评', '特别好评']
-      return rankWordOverall[this.rank.overall]
-    },
-    postRankWordContent(): string {
-      const rankWordContent = ['无', '非常容易', '容易', '一般', '较难', '硬核']
-      return rankWordContent[this.rank.content]
-    },
-    postRankWordWorkload(): string {
-      const rankWordWorkload = ['无', '非常大', '大', '适中', '小', '非常小']
-      return rankWordWorkload[this.rank.workload]
-    },
-    postRankWordAssessment(): string {
-      const rankWordAssessment = ['无', '非常严格', '严格', '适中', '宽松', '非常宽松']
-      return rankWordAssessment[this.rank.assessment]
-    },
-    postRankColorOverall(): string {
-      if (this.rank.overall >= 5) {
-        return 'green'
-      } else if (this.rank.overall >= 2) {
-        return 'orange'
-      } else {
-        return 'red'
-      }
-    },
-    postRankColorContent(): string {
-      if (this.rank.content >= 5) {
-        return 'green'
-      } else if (this.rank.content >= 2) {
-        return 'orange'
-      } else {
-        return 'red'
-      }
-    },
-    postRankColorWorkload(): string {
-      if (this.rank.workload >= 5) {
-        return 'green'
-      } else if (this.rank.workload >= 2) {
-        return 'orange'
-      } else {
-        return 'red'
-      }
-    },
-    postRankColorAssessment(): string {
-      if (this.rank.assessment >= 5) {
-        return 'green'
-      } else if (this.rank.assessment >= 2) {
-        return 'orange'
-      } else {
-        return 'red'
-      }
-    },
     credits(): number[] {
       let creditsSet = new Set<number>()
       this.courseGroup?.courseList.forEach((course) => creditsSet.add(course.credit))
@@ -581,9 +334,7 @@ export default Vue.extend({
             this.courseId = course.codeId
           }
         })
-      } else {
-        this.courseId = this.courseGroup?.courseList[0].code ?? ''
-      }
+      } else this.courseId = this.courseGroup?.courseList[0].code ?? ''
     },
     banTime(): void {
       if (this.teacherSelected === null) {
@@ -873,10 +624,6 @@ export default Vue.extend({
       }
       this.reviewSheet = !this.reviewSheet
     },
-    changeFormView1(data: boolean): void {
-      this.reviewSheet = data
-      console.log(this.reviewSheet)
-    },
     changePhoneFormView(reviewWithCourse: ReviewWithCourse): void {
       if (reviewWithCourse) {
         this.rank = reviewWithCourse.review.rank
@@ -940,12 +687,23 @@ export default Vue.extend({
     this.reviews.forEach((review) => {
       if (review.review.isMe) {
         this.posted = true
-        this.changeFormView(review)
-        this.changePhoneFormView(review)
-        this.reviewSheet = !this.reviewSheet
-        this.reviewSheetPhone = !this.reviewSheetPhone
-        this.banTeachers()
-        this.banTime()
+        this.reviewTitle = review.review.title
+        this.rank = review.review.rank
+        this.teacherSelected!.title = review.course.teachers
+        this.teacherSelected!.value = review.course.teachers
+        this.teacherSelected!.disabled = false
+        this.timeSelected!.title = parseYearSemester(review.course)
+        this.timeSelected!.value = parseYearSemester(review.course)
+        this.timeSelected!.disabled = false
+        this.courseId = review.course.code
+        if (this.timeSelected !== null && this.teacherSelected !== (null as ItemList | null)) {
+          this.courseGroup?.courseList.find((course) => {
+            if (course.teachers === this.teacherSelected?.title && parseYearSemester(course) === this.timeSelected?.title) {
+              this.courseId = course.codeId
+            }
+          })
+        } else this.courseId = this.courseGroup?.courseList[0].code ?? ''
+        // TODO review内容传给form
       }
     })
     this.loading = false

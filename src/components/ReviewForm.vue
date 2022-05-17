@@ -21,7 +21,7 @@
             :items="teachersList"
             item-text="title"
             item-value="value"
-            clearable
+            :disabled="reviewPosted"
             required
             label="任课教师"
             :rules="[(v) => !!v || '请选择任课教师']"
@@ -33,7 +33,7 @@
           ></v-select>
           <v-select
             :items="timesList"
-            clearable
+            :disabled="reviewPosted"
             required
             item-text="title"
             item-value="value"
@@ -106,7 +106,7 @@
             :items="teachersList"
             item-text="title"
             item-value="value"
-            clearable
+            :disabled="reviewPosted"
             required
             label="任课教师"
             :rules="[(v) => !!v || '请选择任课教师']"
@@ -118,7 +118,7 @@
           ></v-select>
           <v-select
             :items="timesList"
-            clearable
+            :disabled="reviewPosted"
             required
             item-text="title"
             item-value="value"
@@ -136,6 +136,7 @@
             label="课程编号"
             required
             readonly
+            :disabled="reviewPosted"
             dense
             class="subtitle-2 font-weight-regular mx-3 mt-6 mb-2"
             v-model="courseIdSelect"
@@ -216,13 +217,13 @@ export default Vue.extend({
     teacherSelected: {
       type: Object,
       default: () => {
-        return {}
+        return null
       }
     },
     timeSelected: {
       type: Object,
       default: () => {
-        return {}
+        return null
       }
     },
     courseIdSelected: {
@@ -356,9 +357,12 @@ export default Vue.extend({
     // selected items
     teacherSelected() {
       this.teacherSelect = this.teacherSelected as ItemList
+      this.banTime()
+      // TODO banTime() and banTeacher()
     },
     timeSelected() {
       this.timeSelect = this.timeSelected as ItemList
+      this.banTeachers()
     },
     reviewTitleFilled() {
       this.reviewTitle = this.reviewTitleFilled as string
@@ -377,7 +381,6 @@ export default Vue.extend({
   },
   methods: {
     banTeachers(): void {
-      console.log(this.coursesList)
       if (this.timeSelect === (null as unknown as ItemList)) {
         for (const teacher of this.teachersList) {
           teacher.disabled = false
@@ -488,7 +491,7 @@ export default Vue.extend({
                   id: toNumber(id),
                   review: reviewAdded
                 })
-                this.formDisplay = false
+                this.$emit('input', false)
                 this.reviewPosted = true
                 this.postingReviewLoading = false
               }
