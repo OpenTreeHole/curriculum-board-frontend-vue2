@@ -357,12 +357,9 @@ export default Vue.extend({
     // selected items
     teacherSelected() {
       this.teacherSelect = this.teacherSelected as ItemList
-      this.banTime()
-      // TODO banTime() and banTeacher()
     },
     timeSelected() {
       this.timeSelect = this.timeSelected as ItemList
-      this.banTeachers()
     },
     reviewTitleFilled() {
       this.reviewTitle = this.reviewTitleFilled as string
