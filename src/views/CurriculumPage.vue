@@ -278,9 +278,7 @@ export default Vue.extend({
         let noMatch = true
         this.courseGroup?.courseList.forEach((course) => {
           if (this.timeTags()[this.timeTag] === parseYearSemester(course)) {
-            if (course.teachers === teacherTag) {
-              noMatch = false
-            }
+            if (course.teachers === teacherTag && course.reviewList !== undefined && course.reviewList?.length > 0) noMatch = false
           }
         })
         return noMatch
@@ -300,67 +298,11 @@ export default Vue.extend({
         let noMatch = true
         this.courseGroup?.courseList.forEach((course) => {
           if (this.teacherTags()[this.teacherTag] === course.teachers) {
-            if (timeTag === parseYearSemester(course)) {
-              noMatch = false
-            }
+            if (timeTag === parseYearSemester(course) && course.reviewList !== undefined && course.reviewList?.length > 0) noMatch = false
           }
         })
         return noMatch
       }
-    },
-    banTeachers(): void {
-      if (this.timeSelected === null) {
-        for (const teacher of this.teachersSelectList) {
-          teacher.disabled = false
-        }
-      } else {
-        this.teachersSelectList.forEach((teacher) => {
-          teacher.disabled = true
-        })
-        this.courseGroup?.courseList.forEach((course) => {
-          if (this.timeSelected?.title === parseYearSemester(course)) {
-            for (const teacher of this.teachersSelectList) {
-              if (teacher.title === course.teachers) {
-                teacher.disabled = false
-              }
-            }
-          }
-        })
-      }
-      if (this.teacherSelected !== null && this.timeSelected !== (null as ItemList | null)) {
-        this.courseGroup?.courseList.find((course) => {
-          if (course.teachers === this.teacherSelected?.title && parseYearSemester(course) === this.timeSelected?.title) {
-            this.courseId = course.codeId
-          }
-        })
-      } else this.courseId = this.courseGroup?.courseList[0].code ?? ''
-    },
-    banTime(): void {
-      if (this.teacherSelected === null) {
-        for (const time of this.timeSelectList) {
-          time.disabled = false
-        }
-      } else {
-        this.timeSelectList.forEach((time) => {
-          time.disabled = true
-        })
-        this.courseGroup?.courseList.forEach((course) => {
-          if (this.teacherSelected?.title === course.teachers) {
-            for (const time of this.timeSelectList) {
-              if (time.title === parseYearSemester(course)) {
-                time.disabled = false
-              }
-            }
-          }
-        })
-      }
-      if (this.timeSelected !== null && this.teacherSelected !== (null as ItemList | null)) {
-        this.courseGroup?.courseList.find((course) => {
-          if (course.teachers === this.teacherSelected?.title && parseYearSemester(course) === this.timeSelected?.title) {
-            this.courseId = course.codeId
-          }
-        })
-      } else this.courseId = this.courseGroup?.courseList[0].code ?? ''
     },
     timeTags(): string[] {
       let timeSet = new Set<string>()
