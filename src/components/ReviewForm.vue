@@ -45,7 +45,7 @@
             v-model="timeSelect"
             return-object
           ></v-select>
-          <v-text-field required readonly class="subtitle-2 font-weight-regular" v-model="courseIdSelect" style="width: min-content"></v-text-field>
+          <v-text-field required readonly :disabled="reviewPosted" class="subtitle-2 font-weight-regular" v-model="courseIdSelect" style="width: min-content"></v-text-field>
         </v-row>
         <div :id="this.contentId" class="vditor"></div>
         <v-snackbar v-model="snackbar" :timeout="2000">
