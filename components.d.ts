@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
     ReviewCard: typeof import('./src/components/ReviewCard.vue')['default']
     ReviewEditor: typeof import('./src/components/ReviewEditor.vue')['default']
     ReviewFilter: typeof import('./src/components/ReviewFilter.vue')['default']
+    ReviewForm: typeof import('./src/components/ReviewForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TopNavBar: typeof import('./src/components/TopNavBar.vue')['default']

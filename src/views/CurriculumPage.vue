@@ -168,7 +168,8 @@
       </v-col>
     </v-row>
     <!-- 电脑表单  -->
-    <v-dialog v-model="reviewSheet" max-width="50%" class="d-none d-sm-flex">
+    <ReviewForm v-model="reviewSheet" :teacher-selected="teacherSelected"></ReviewForm>
+    <v-dialog v-model="reviewSheet22" max-width="50%" class="d-none d-sm-flex">
       <v-card class="pa-4 ma-0">
         <v-card-title>
           <span class="text-h6 mb-3">发布测评</span>
@@ -370,6 +371,7 @@ import { CourseGroup, PostReviewData, Review, ReviewWithCourse, TotalRank } from
 import * as api from '@/apis'
 import ReviewCard from '@/components/ReviewCard.vue'
 import ReviewEditor from '@/components/ReviewEditor.vue'
+import ReviewForm from '@/components/ReviewForm.vue'
 import { parseYearSemester } from '@/utils/course'
 import { toNumber } from 'lodash-es'
 import { addReview, modifyReview } from '@/apis'
@@ -382,7 +384,7 @@ export interface ItemList {
 }
 export default Vue.extend({
   name: 'CurriculumPage',
-  components: { ReviewEditor, ReviewCard },
+  components: { ReviewEditor, ReviewCard, ReviewForm },
   props: ['groupId'],
   data: () => ({
     posted: false,
@@ -393,7 +395,7 @@ export default Vue.extend({
     error: false,
     ErrorMessage: '',
     snackbar: false,
-    reviewSheet: false,
+    reviewSheet: true,
     postingReviewLoading: false,
     reviewTitle: '',
     reviewTitleRules: [(v: string) => !!v || '评论标题不能为空', (v: string) => v.length <= 20 || '评论标题不能超过20字'],
