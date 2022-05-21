@@ -47,7 +47,7 @@
           ></v-select>
           <v-text-field required readonly :disabled="reviewPosted" class="subtitle-2 font-weight-regular" v-model="courseIdSelect" style="width: min-content"></v-text-field>
         </v-row>
-        <div :id="this.contentId" class="vditor"></div>
+        <div ref="editor" class="d-block" style="font-size: x-small"></div>
         <v-snackbar v-model="snackbar" :timeout="2000">
           请输入{{ snackbarContent
           }}<template v-slot:action="{ attrs }">
@@ -143,7 +143,6 @@
             style="width: max-content; font-size: small"
           ></v-text-field>
         </v-row>
-        <ReviewEditor class="mt-2" style="font-size: small" ref="reviewEditor" />
         <v-snackbar v-model="snackbar" :timeout="2000"
           >请输入{{ snackbarContent
           }}<template v-slot:action="{ attrs }">
@@ -195,7 +194,8 @@ import { Course, CourseGroup, PostReviewData, Review } from '@/models'
 import { parseYearSemester } from '@/utils/course'
 import { addReview, modifyReview } from '@/apis'
 import { toNumber } from 'lodash-es'
-import Vditor from 'vditor'
+import Editor from '@toast-ui/editor'
+import '@toast-ui/editor/dist/toastui-editor.css'
 
 export interface ItemList {
   title: string
@@ -208,7 +208,7 @@ export default Vue.extend({
   props: {
     value: {
       type: Boolean,
-      default: () => false
+      default: false
     },
     reviewTitleFilled: {
       type: String,
@@ -267,7 +267,7 @@ export default Vue.extend({
       teachersList: this.teacherList as ItemList[],
       timesList: this.timeList as ItemList[],
       coursesList: this.courseGroup as CourseGroup,
-      editor: null as Vditor | null,
+      editor: null as Editor | null,
       // data for post review
       reviewTitle: this.reviewTitleFilled as string,
       teacherSelect: this.teacherSelected as ItemList,
@@ -341,11 +341,26 @@ export default Vue.extend({
     }
   },
   watch: {
+    value() {
+      this.$nextTick(function () {
+        if (this.value) {
+          this.editor = new Editor({
+            el: this.$refs.editor! as HTMLElement,
+            height: '500px',
+            initialEditType: 'markdown',
+            hideModeSwitch: true,
+            previewHighlight: true
+          })
+          this.$emit('editorReady')
+        }
+      })
+    },
     courseIdSelected() {
       this.courseIdSelect = this.courseIdSelected as string
     },
     // lists
     courseGroup() {
+      console.log(this.$refs.editor)
       this.coursesList = this.courseGroup as CourseGroup
     },
     teachersList() {
@@ -366,8 +381,6 @@ export default Vue.extend({
     },
     reviewContentPosted() {
       this.reviewContent = this.reviewContentPosted as string
-      console.log(111111)
-      this.editor?.setValue(this.reviewContentPosted)
     },
     rankScored() {
       this.rank = this.rankScored
@@ -505,25 +518,12 @@ export default Vue.extend({
       }
     }
   },
-  created() {
-    this.editor = new Vditor(this.contentId, {
-      height: window.innerHeight - 600,
-      placeholder: '说些什么......',
-      toolbar: [],
-      cache: {
-        enable: true
-      },
-      counter: {
-        enable: false
-      },
-      after: async () => {
-        this.editor?.setValue(this.reviewContentPosted)
-      }
-      /* TODO 添加模版 */
-    })
-    this.$emit('editorReady')
-  }
+  mounted() {}
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.CodeMirror-lines {
+  font-size: 1.1rem;
+}
+</style>
