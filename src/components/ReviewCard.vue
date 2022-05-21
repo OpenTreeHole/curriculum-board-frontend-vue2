@@ -132,9 +132,10 @@
           <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pt-lg-0 pt-md-0 pt-sm-0 pt-6">
             <v-col class="pa-0 ma-0pt-0">
               <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考 </v-card-text>
-              <v-card-text class="body-2 black--text pt-1 pb-2 px-2">
-                {{ review.review.content }}
-              </v-card-text>
+              <!-- md viewer -->
+              <div class="pl-3 pr-8">
+                <div class="body-2 black--text pt-3 pb-2 px-2 pa-3" :ref="'reviewContent' + review.review.id" />
+              </div>
             </v-col>
           </v-row>
         </v-col>
@@ -161,6 +162,8 @@ import Vue from 'vue'
 import { ReviewWithCourse } from '@/models'
 import { parseYearSemester } from '@/utils/course'
 import { voteForReview } from '@/apis'
+import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
+import '@toast-ui/editor/dist/toastui-editor-viewer.css'
 
 export default Vue.extend({
   name: 'ReviewCard',
@@ -172,6 +175,7 @@ export default Vue.extend({
   },
   data: () => ({
     isAuth: false,
+    viewer: null as Viewer | null,
     deleteReviewLoading: false,
     deleteCheck: false,
     remark: 0,
@@ -277,6 +281,12 @@ export default Vue.extend({
         this.review.review.remark = originalRemark
       }
     }
+  },
+  mounted() {
+    this.viewer = new Viewer({
+      el: this.$refs['reviewContent' + this.review.review.id] as HTMLElement,
+      initialValue: this.review.review.content
+    })
   }
 })
 </script>
