@@ -133,7 +133,7 @@
             <v-col class="pa-0 ma-0pt-0">
               <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考 </v-card-text>
               <!-- md viewer -->
-              <div class="pl-3 pr-8 pt-3">
+              <div class="md-viewer pl-3 pr-8 pt-3">
                 <div :ref="'reviewContent' + review.review.id" />
               </div>
             </v-col>
@@ -163,7 +163,6 @@ import { ReviewWithCourse } from '@/models'
 import { parseYearSemester } from '@/utils/course'
 import { voteForReview } from '@/apis'
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
-import '@toast-ui/editor/dist/toastui-editor-viewer.css'
 import '@/style/markdown-theme.css'
 
 export default Vue.extend({

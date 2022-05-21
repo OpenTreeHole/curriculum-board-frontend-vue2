@@ -47,7 +47,7 @@
           ></v-select>
           <v-text-field required readonly :disabled="reviewPosted" class="subtitle-2 font-weight-regular" v-model="courseIdSelect" style="width: min-content"></v-text-field>
         </v-row>
-        <div ref="editor" class="d-block"></div>
+        <div ref="editor" class="md-editor d-block"></div>
         <v-snackbar v-model="snackbar" :timeout="2000">
           请输入{{ snackbarContent
           }}<template v-slot:action="{ attrs }">
@@ -143,7 +143,7 @@
             style="width: max-content; font-size: small"
           ></v-text-field>
         </v-row>
-        <div ref="phoneEditor" class="d-block"></div>
+        <div ref="phoneEditor" class="md-editor d-block"></div>
         <v-snackbar v-model="snackbar" :timeout="2000"
           >请输入{{ snackbarContent
           }}<template v-slot:action="{ attrs }">
