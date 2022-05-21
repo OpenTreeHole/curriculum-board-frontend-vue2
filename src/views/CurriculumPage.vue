@@ -174,6 +174,7 @@
       :teacher-selected="teacherSelected"
       :course-id-selected="courseId"
       :time-selected="timeSelected"
+      :review-content-posted="reviewContent"
       :rank-scored="rank"
       :teacher-list="teachersSelectList"
       :time-list="timeSelectList"
@@ -212,6 +213,7 @@ export default Vue.extend({
     reviewSheet: false,
     postingReviewLoading: false,
     reviewTitle: '',
+    reviewContent: '',
     reviewTitleRules: [(v: string) => !!v || '评论标题不能为空', (v: string) => v.length <= 20 || '评论标题不能超过20字'],
     teacherTag: 0,
     timeTag: 0,
@@ -524,6 +526,7 @@ export default Vue.extend({
       if (review.review.isMe) {
         this.posted = true
         this.reviewTitle = review.review.title
+        this.reviewContent = review.review.content
         this.rank = review.review.rank
         this.teacherSelected!.title = review.course.teachers
         this.teacherSelected!.value = review.course.teachers

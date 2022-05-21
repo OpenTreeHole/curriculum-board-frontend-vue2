@@ -47,7 +47,7 @@
           ></v-select>
           <v-text-field required readonly :disabled="reviewPosted" class="subtitle-2 font-weight-regular" v-model="courseIdSelect" style="width: min-content"></v-text-field>
         </v-row>
-        <div ref="editor" class="d-block" @change="this.reviewContent = editor.getMarkdown()"></div>
+        <div ref="editor" class="d-block"></div>
         <v-snackbar v-model="snackbar" :timeout="2000">
           请输入{{ snackbarContent
           }}<template v-slot:action="{ attrs }">
@@ -86,7 +86,7 @@
       </v-row>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text v-on:click="$emit('input', $event.target.value)"> 取消</v-btn>
+        <v-btn color="blue darken-1" text @click="closeForm"> 取消</v-btn>
         <v-btn color="blue darken-1" text @click="postReview" :disabled="!valid" :loading="postingReviewLoading"> 发布</v-btn>
       </v-card-actions>
     </v-card>
@@ -143,6 +143,7 @@
             style="width: max-content; font-size: small"
           ></v-text-field>
         </v-row>
+        <div ref="phoneEditor" class="d-block"></div>
         <v-snackbar v-model="snackbar" :timeout="2000"
           >请输入{{ snackbarContent
           }}<template v-slot:action="{ attrs }">
@@ -150,7 +151,7 @@
           </template></v-snackbar
         >
       </v-form>
-      <v-card-title class="mb-2 mt-3"> 评分</v-card-title>
+      <v-card-title class="mb-0 mt-2"> 评分</v-card-title>
       <v-row class="mx-9">
         <v-col cols="12" class="d-flex pb-2">
           <span class="subtitle-1 mr-5">总体评分</span>
@@ -345,17 +346,27 @@ export default Vue.extend({
     value() {
       this.$nextTick(function () {
         if (this.value && !this.editorInitialized) {
-          this.editor = new Editor({
-            el: this.$refs.editor! as HTMLElement,
-            height: '500px',
-            initialEditType: 'markdown',
-            hideModeSwitch: true,
-            previewHighlight: true
-          })
+          if (this.$vuetify.breakpoint.xsOnly) {
+            this.editor = new Editor({
+              el: this.$refs.phoneEditor! as HTMLElement,
+              height: this.$vuetify.breakpoint.xsOnly ? '300px' : '500px',
+              initialEditType: 'markdown',
+              hideModeSwitch: true,
+              previewHighlight: true
+            })
+          } else {
+            this.editor = new Editor({
+              el: this.$refs.editor! as HTMLElement,
+              height: this.$vuetify.breakpoint.xsOnly ? '300px' : '500px',
+              initialEditType: 'markdown',
+              hideModeSwitch: true,
+              previewHighlight: true
+            })
+          }
+          if (this.reviewContent) {
+            this.editor?.setMarkdown(this.reviewContent)
+          }
           this.editorInitialized = true
-        }
-        if (this.reviewContent) {
-          this.editor?.setMarkdown(this.reviewContent)
         }
       })
     },
@@ -364,7 +375,6 @@ export default Vue.extend({
     },
     // lists
     courseGroup() {
-      console.log(this.$refs.editor)
       this.coursesList = this.courseGroup as CourseGroup
     },
     teachersList() {
@@ -384,7 +394,10 @@ export default Vue.extend({
       this.reviewTitle = this.reviewTitleFilled as string
     },
     reviewContentPosted() {
-      this.reviewContent = this.reviewContentPosted as string
+      if (!this.reviewContent) {
+        this.reviewContent = this.reviewContentPosted as string
+        this.editor?.setMarkdown(this.reviewContent)
+      }
     },
     rankScored() {
       this.rank = this.rankScored
@@ -394,6 +407,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    closeForm() {
+      this.reviewContent = this.editor!.getMarkdown()
+      this.$emit('input', false)
+    },
     banTeachers(): void {
       if (this.timeSelect === (null as unknown as ItemList)) {
         for (const teacher of this.teachersList) {
@@ -452,11 +469,11 @@ export default Vue.extend({
     },
     async postReview() {
       if ((this.$refs.reviewSheet as Vue & { validate: () => boolean }).validate()) {
-        if ((this.$refs.reviewEditor as any).getContent().length > 1) {
+        if (this.editor!.getMarkdown().trim().length >= 1) {
           if (this.rank.overall && this.rank.assessment && this.rank.content && this.rank.workload) {
             this.postingReviewLoading = true
             const review = {} as PostReviewData
-            review.content = (this.$refs.reviewEditor as any).getContent()
+            review.content = this.editor!.getMarkdown()
             review.rank = this.rank
             review.title = this.reviewTitle
             if (!this.posted) {
@@ -505,6 +522,7 @@ export default Vue.extend({
                   id: toNumber(id),
                   review: reviewAdded
                 })
+                this.reviewContent = this.editor!.getMarkdown()
                 this.$emit('input', false)
                 this.reviewPosted = true
                 this.postingReviewLoading = false
@@ -522,7 +540,9 @@ export default Vue.extend({
       }
     }
   },
-  mounted() {}
+  mounted() {
+    console.log(this.contentId)
+  }
 })
 </script>
 
