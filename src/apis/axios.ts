@@ -21,10 +21,8 @@ export const authAxios = axios.create()
 export const refreshAxios = axios.create()
 
 export const jwt = new JWTManager()
-jwt.needRefresh = (originalError) =>
-  originalError.response?.status === 401 && originalError.response.data.message && (originalError.response.data.message as string).includes('Authorization Failed.')
 jwt.refreshErrorCallback = async (refreshError) => {
-  if (refreshError.response?.status === 401 && refreshError.response.data.message && (refreshError.response.data.message as string).includes('Authorization Failed.')) {
+  if (refreshError.response?.status === 401) {
     Cookies.remove('access', { domain: config.cookieDomain })
     Cookies.remove('refresh', { domain: config.cookieDomain })
     if (router.currentRoute.name !== 'login') {

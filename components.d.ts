@@ -7,7 +7,6 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     MessageSnackbar: typeof import('./src/components/MessageSnackbar.vue')['default']
     ReviewCard: typeof import('./src/components/ReviewCard.vue')['default']
-    ReviewEditor: typeof import('./src/components/ReviewEditor.vue')['default']
     ReviewFilter: typeof import('./src/components/ReviewFilter.vue')['default']
     ReviewForm: typeof import('./src/components/ReviewForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
@@ -22,7 +21,6 @@ declare module '@vue/runtime-core' {
     VBtn: typeof import('vuetify/lib')['VBtn']
     VCard: typeof import('vuetify/lib')['VCard']
     VCardActions: typeof import('vuetify/lib')['VCardActions']
-    VCardSubtitle: typeof import('vuetify/lib')['VCardSubtitle']
     VCardText: typeof import('vuetify/lib')['VCardText']
     VCardTitle: typeof import('vuetify/lib')['VCardTitle']
     VChip: typeof import('vuetify/lib')['VChip']
@@ -37,7 +35,6 @@ declare module '@vue/runtime-core' {
     VExpansionPanels: typeof import('vuetify/lib')['VExpansionPanels']
     VForm: typeof import('vuetify/lib')['VForm']
     VIcon: typeof import('vuetify/lib')['VIcon']
-    VList: typeof import('vuetify/lib')['VList']
     VListItem: typeof import('vuetify/lib')['VListItem']
     VListItemContent: typeof import('vuetify/lib')['VListItemContent']
     VListItemSubtitle: typeof import('vuetify/lib')['VListItemSubtitle']
