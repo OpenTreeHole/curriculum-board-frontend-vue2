@@ -182,10 +182,10 @@ export default Vue.extend({
     like: false,
     unlike: false,
     rank: {
-      overall: 4,
-      content: 5,
-      workload: 2,
-      assessment: 3
+      overall: 0,
+      content: 0,
+      workload: 0,
+      assessment: 0
     }
   }),
   computed: {
@@ -226,6 +226,11 @@ export default Vue.extend({
     },
     years(): string {
       return parseYearSemester(this.review.course)
+    }
+  },
+  watch: {
+    'review.review.content'() {
+      this.viewer!.setMarkdown(this.review.review.content)
     }
   },
   beforeMount() {

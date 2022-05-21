@@ -114,7 +114,7 @@
                   <v-col cols="4" class="caption">{{ rankWordAssessment(semesterRank(reviews).assessment) }}</v-col>
                 </v-row>
               </v-expansion-panel-content>
-              <v-expansion-panel-content class="py-0 ma-0" v-else>
+              <v-expansion-panel-content class="py-0 ma-0 pl-2" v-else>
                 <v-subheader class="my-n4 mb-n7"> 评分太少, 不具有参考性 </v-subheader>
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -516,7 +516,6 @@ export default Vue.extend({
             }
           })
         } else this.courseId = this.courseGroup?.courseList[0].code ?? ''
-        // TODO review内容传给form
       }
     })
     this.loading = false
