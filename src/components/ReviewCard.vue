@@ -256,7 +256,6 @@ export default Vue.extend({
       this.like = !this.like
       try {
         const review = await voteForReview(this.review.review.id, true)
-        console.log(review)
         this.review.review.remark = review.remark
       } catch (e) {
         // Request failed, reverse to original status
@@ -272,7 +271,6 @@ export default Vue.extend({
       const originalRemark = this.review.review.remark
 
       // Compute status after vote
-      console.log()
       this.review.review.remark += this.like ? -2 : this.unlike ? 1 : -1
       this.like = false
       this.unlike = !this.like

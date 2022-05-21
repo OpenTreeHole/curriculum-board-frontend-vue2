@@ -192,7 +192,7 @@ export const voteForReview = async (reviewId: number, upvote: boolean) => {
   const response = await axios.patch(`/reviews/${reviewId}`, {
     upvote
   })
-  return new Review(camelizeKeys(response))
+  return new Review(camelizeKeys(response.data))
 }
 
 // jump to login page when return 401
