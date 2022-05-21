@@ -10,7 +10,7 @@
               </v-row>
               <v-row class="mt-1 flex-column">
                 <v-col :class="reviewRemarkClass" style="font-size: 20px; text-align: center">
-                  {{ this.remark }}
+                  {{ review.review.remark }}
                 </v-col>
               </v-row>
               <v-row style="font-size: 40px" class="mt-0 pt-1 grey--text flex-column">
@@ -85,18 +85,18 @@
                     :buffer-value="review.review.rank.overall * 20"
                     color="#5C6BC0"
                     height="10"
-                    class="d-inline-flex ml-1"
+                    class="d-inline-flex ml-2"
                     style="width: 60%; padding-top: 2px"
                   />
                 </div>
                 <div class="d-block">
-                  <span class="d-inline-flex" style="color: #3f51b5"> 内容 </span>
+                  <span class="d-inline-flex ml-3" style="color: #3f51b5"> 风格 </span>
                   <v-progress-linear
                     :value="review.review.rank.content * 20"
                     :buffer-value="review.review.rank.content * 20"
                     color="#5C6BC0"
                     height="10"
-                    class="d-inline-flex ml-4"
+                    class="d-inline-flex ml-2"
                     style="width: 60%; padding-top: 2px"
                   />
                 </div>
@@ -108,21 +108,21 @@
                       :buffer-value="review.review.rank.workload * 20"
                       color="#5C6BC0"
                       height="10"
-                      class="d-inline-flex ml-1"
+                      class="d-inline-flex ml-2"
                       style="width: 60%; padding-top: 2px"
                     />
                   </div>
                 </div>
                 <div class="d-block">
                   <div class="d-block">
-                    <span class="d-inline-flex" style="color: #3f51b5"> 考核 </span>
+                    <span class="d-inline-flex ml-3" style="color: #3f51b5"> 考核 </span>
                     <v-progress-linear
                       :value="review.review.rank.assessment * 20"
                       :buffer-value="review.review.rank.assessment * 20"
                       color="#5C6BC0"
                       height="10"
-                      class="d-inline-flex ml-4"
-                      style="width: 30%; padding-top: 2px"
+                      class="d-inline-flex ml-2"
+                      style="width: 60%; padding-top: 2px"
                     />
                   </div>
                 </div>
@@ -130,10 +130,10 @@
             </v-col>
           </v-row>
           <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pt-lg-0 pt-md-0 pt-sm-0 pt-6">
-            <v-col class="pa-0 ma-0pt-0">
+            <v-col class="pa-0 ma-0 pt-0">
               <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考 </v-card-text>
               <!-- md viewer -->
-              <div class="md-viewer pl-3 pr-8 pt-3">
+              <div class="md-viewer pl-3 pr-lg-8 pt-lg-3 pr-2 pt-0">
                 <div :ref="'reviewContent' + review.review.id" />
               </div>
             </v-col>
@@ -147,7 +147,7 @@
         <div class="pr-2 ml-auto">
           <v-card-text class="pa-1 pl-0 caption">
             总评分
-            <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;内容 <font-awesome-icon :class="rankColorContent" :icon="rankIconContent" />&nbsp;工作量
+            <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;风格 <font-awesome-icon :class="rankColorContent" :icon="rankIconContent" />&nbsp;工作量
             <font-awesome-icon :class="rankColorWorkload" :icon="rankIconWorkload" />&nbsp;考核
             <font-awesome-icon :class="rankColorAssessment" :icon="rankIconAssessment" />
           </v-card-text>
@@ -249,9 +249,9 @@ export default Vue.extend({
       this.review.review.remark += this.unlike ? 2 : this.like ? -1 : 1
       this.unlike = false
       this.like = !this.like
-
       try {
         const review = await voteForReview(this.review.review.id, true)
+        console.log(review)
         this.review.review.remark = review.remark
       } catch (e) {
         // Request failed, reverse to original status
@@ -267,6 +267,7 @@ export default Vue.extend({
       const originalRemark = this.review.review.remark
 
       // Compute status after vote
+      console.log()
       this.review.review.remark += this.like ? -2 : this.unlike ? 1 : -1
       this.like = false
       this.unlike = !this.like

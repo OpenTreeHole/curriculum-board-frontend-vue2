@@ -65,7 +65,7 @@
       </v-row>
       <v-row class="mx-3 pt-0">
         <v-col cols="12" class="d-flex pt-0 pb-2">
-          <span class="subtitle-1 mr-5">课程内容</span>
+          <span class="subtitle-1 mr-5">课程风格</span>
           <v-rating background-color="pink lighten-3" dense size="19" v-model="rank.content" :color="postRankColorContent"></v-rating>
           <span class="subtitle-2 grey--text ml-2" style="margin-top: 2px">{{ postRankWordContent }}</span>
         </v-col>
@@ -298,7 +298,7 @@ export default Vue.extend({
       return rankWordContent[this.rank.content]
     },
     postRankWordWorkload(): string {
-      const rankWordWorkload = ['无', '非常大', '大', '适中', '小', '非常小']
+      const rankWordWorkload = ['无', '非常小', '较小', '适中', '较大', '非常大']
       return rankWordWorkload[this.rank.workload]
     },
     postRankWordAssessment(): string {
