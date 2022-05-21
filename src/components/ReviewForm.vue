@@ -47,7 +47,7 @@
           ></v-select>
           <v-text-field required readonly :disabled="reviewPosted" class="subtitle-2 font-weight-regular" v-model="courseIdSelect" style="width: min-content"></v-text-field>
         </v-row>
-        <div ref="editor" class="d-block" style="font-size: x-small"></div>
+        <div ref="editor" class="d-block" @change="this.reviewContent = editor.getMarkdown()"></div>
         <v-snackbar v-model="snackbar" :timeout="2000">
           请输入{{ snackbarContent
           }}<template v-slot:action="{ attrs }">
@@ -283,7 +283,8 @@ export default Vue.extend({
       snackbarContent: '',
       reviewTitleRules: [(v: string) => !!v || '评论标题不能为空', (v: string) => v.length <= 20 || '评论标题不能超过20字'],
       // form loading
-      postingReviewLoading: false
+      postingReviewLoading: false,
+      editorInitialized: false
     }
   },
   computed: {
@@ -343,7 +344,7 @@ export default Vue.extend({
   watch: {
     value() {
       this.$nextTick(function () {
-        if (this.value) {
+        if (this.value && !this.editorInitialized) {
           this.editor = new Editor({
             el: this.$refs.editor! as HTMLElement,
             height: '500px',
@@ -351,7 +352,10 @@ export default Vue.extend({
             hideModeSwitch: true,
             previewHighlight: true
           })
-          this.$emit('editorReady')
+          this.editorInitialized = true
+        }
+        if (this.reviewContent) {
+          this.editor?.setMarkdown(this.reviewContent)
         }
       })
     },
