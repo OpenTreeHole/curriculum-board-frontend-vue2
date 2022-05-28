@@ -9,7 +9,7 @@
                 <font-awesome-icon icon="fa-solid fa-caret-up" :class="this.like ? 'blue--text' : 'grey--text'" @click="upVote" />
               </v-row>
               <v-row class="mt-1 flex-column">
-                <v-col :class="reviewRemarkClass" style="font-size: 20px; text-align: center">
+                <v-col :class="reviewRemarkClass()" style="font-size: 20px; text-align: center">
                   {{ review.review.remark }}
                 </v-col>
               </v-row>
@@ -189,9 +189,6 @@ export default Vue.extend({
     }
   }),
   computed: {
-    reviewRemarkClass(): string {
-      return this.remark < 0 ? 'ma-0 py-0 font-weight-regular red--text' : 'ma-0 py-0 font-weight-regular'
-    },
     rankColorOverall(): string {
       const rankColorOverall = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
       return rankColorOverall[this.review.review.rank.overall - 1]
@@ -231,6 +228,9 @@ export default Vue.extend({
   watch: {
     'review.review.content'() {
       this.viewer!.setMarkdown(this.review.review.content)
+    },
+    'review.review.remark'() {
+      this.remark = this.review.review.remark
     }
   },
   beforeMount() {
@@ -239,6 +239,9 @@ export default Vue.extend({
     else if (this.review.review.vote === -1) this.unlike = true
   },
   methods: {
+    reviewRemarkClass(): string {
+      return this.remark < 0 ? 'ma-0 py-0 font-weight-regular red--text' : 'ma-0 py-0 font-weight-regular'
+    },
     deleteReview() {
       console.log('delete review')
     },
@@ -259,6 +262,7 @@ export default Vue.extend({
       try {
         const review = await voteForReview(this.review.review.id, true)
         this.review.review.remark = review.remark
+        this.reviewRemarkClass()
       } catch (e) {
         // Request failed, reverse to original status
         this.unlike = originalUnlike
@@ -280,6 +284,7 @@ export default Vue.extend({
       try {
         const review = await voteForReview(this.review.review.id, false)
         this.review.review.remark = review.remark
+        this.reviewRemarkClass()
       } catch (e) {
         // Request failed, reverse to original status
         this.unlike = originalUnlike
