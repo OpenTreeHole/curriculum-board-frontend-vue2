@@ -289,7 +289,6 @@ export default Vue.extend({
     }
   },
   mounted() {
-    console.log(11111)
     this.viewer = new Viewer({
       el: this.$refs['reviewContent' + this.review.review.id] as HTMLElement,
       initialValue: this.review.review.content
