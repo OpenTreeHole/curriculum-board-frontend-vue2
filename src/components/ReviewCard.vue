@@ -235,6 +235,8 @@ export default Vue.extend({
   },
   beforeMount() {
     this.remark = this.review.review.remark
+    if (this.review.review.vote === 1) this.like = true
+    else if (this.review.review.vote === -1) this.unlike = true
   },
   methods: {
     deleteReview() {
