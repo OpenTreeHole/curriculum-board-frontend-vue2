@@ -1,6 +1,7 @@
 import { ChineseToken } from '@/types'
 import { load } from 'chinese-tokenizer'
 import { remove, uniq } from 'lodash-es'
+import { tokenText } from '@/apis/database'
 
 let tokenize: ((str: string) => ChineseToken[]) | undefined = undefined
 
@@ -13,14 +14,22 @@ export const toSuffixList = (list: string[]) => {
 }
 
 export const initializeTokenize = async () => {
-  const response = await fetch('/cedict_ts.u8', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'text/plain; charset=utf-8'
-    }
-  })
-  const text = await response.text()
-  tokenize = load(text)
+  if (localStorage.getItem('tokenText') !== '1') {
+    const response = await fetch('/cedict_ts.u8', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8'
+      }
+    })
+    const text = await response.text()
+    await tokenText.clear()
+    await tokenText.put({ text })
+    localStorage.setItem('tokenText', '1')
+    tokenize = load(text)
+  } else {
+    const text = (await tokenText.toArray())[0].text
+    tokenize = load(text)
+  }
 }
 
 export const generateIndex = (str: string) => {

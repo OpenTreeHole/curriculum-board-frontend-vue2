@@ -9,14 +9,17 @@ export interface CourseGroupModel {
 
 export class CourseGroupDexie extends Dexie {
   courseGroupTable!: Table<CourseGroupModel>
+  tokenText!: Table<{ text: string }>
 
   constructor() {
     super('courseGroups')
-    this.version(1.3).stores({
-      courseGroupTable: '&id, *index, courseGroups'
+    this.version(1.4).stores({
+      courseGroupTable: '&id, *index, courseGroups',
+      tokenText: 'text'
     })
   }
 }
 
 const db = new CourseGroupDexie()
 export const courseGroupTable = db.courseGroupTable
+export const tokenText = db.tokenText

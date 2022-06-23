@@ -140,8 +140,15 @@ export const addCourse = async (courseData: ICourseData) => {
   return new Course(data)
 }
 
+export const getCourseGroupHash = async () => {
+  const response = await axios.get('/courses/hash')
+  const { hash }: { hash: string } = camelizeKeys(response.data)
+  return hash
+}
+
 export const fetchCourseGroups = async () => {
-  if (localStorage.getItem('courseGroups') !== '1.3') {
+  const hash = await getCourseGroupHash()
+  if (localStorage.getItem('courseGroups') !== hash) {
     const response = await axios.get('/courses')
 
     const data: ICourseGroup[] = camelizeKeys(response.data)
@@ -149,7 +156,7 @@ export const fetchCourseGroups = async () => {
     await initializeTokenize()
 
     await courseGroupTable.bulkPut(data.map((courseGroup) => ({ id: courseGroup.id, index: [...generateIndex(courseGroup.name), courseGroup.code], courseGroup })))
-    localStorage.setItem('courseGroups', '1.3')
+    localStorage.setItem('courseGroups', hash)
   }
 }
 
