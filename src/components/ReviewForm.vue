@@ -1,6 +1,7 @@
 <template>
   <v-dialog
-    v-model="value"
+    :value="value"
+    @input="closeForm"
     max-width="50%"
     :fullscreen="this.$vuetify.breakpoint.xsOnly"
     :transition="this.$vuetify.breakpoint.xsOnly ? 'dialog-bottom-transition' : 'dialog-transition'"
