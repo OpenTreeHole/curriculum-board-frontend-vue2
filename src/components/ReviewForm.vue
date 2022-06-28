@@ -1,6 +1,6 @@
 <template>
   <v-dialog
-    v-bind:value="value"
+    v-model="value"
     max-width="50%"
     :fullscreen="this.$vuetify.breakpoint.xsOnly"
     :transition="this.$vuetify.breakpoint.xsOnly ? 'dialog-bottom-transition' : 'dialog-transition'"

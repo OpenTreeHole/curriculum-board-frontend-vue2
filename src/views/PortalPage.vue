@@ -135,137 +135,15 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    // eslint-disable-next-line no-constant-condition
-    if (0) {
-      this.$store.commit('addCourseGroup', {
-        newCourseGroup: new CourseGroup({
-          code: 'JXT114514',
-          courseList: [
-            new Course({
-              id: 1,
-              codeId: 'JXT114514.01',
-              code: 'JXT114514',
-              department: '嘉心糖',
-              teachers: '丁烷人',
-              credit: 4,
-              maxStudent: 114514,
-              semester: 1,
-              weekHour: 7,
-              year: '2022',
-              name: '嘉然今天吃七海nana7mi',
-              reviewList: [
-                {
-                  id: 1,
-                  timeCreated: '2022-04-09',
-                  timeUpdated: '2022-04-09',
-                  title: '绝世好课',
-                  content: '每个脆脆鲨都应该来听的必修课程每个脆脆鲨都应该来听的必修课程',
-                  reviewerId: 1,
-                  rank: {
-                    overall: 5,
-                    content: 4,
-                    workload: 3,
-                    assessment: 2
-                  },
-                  remark: 10,
-                  isMe: false
-                },
-                {
-                  id: 2,
-                  timeCreated: '2022-04-09',
-                  timeUpdated: '2022-04-09',
-                  title: 'A/414',
-                  content: '每个脆脆鲨都应该来听的必修课程',
-                  reviewerId: 2,
-                  rank: {
-                    overall: 4,
-                    content: 4,
-                    workload: 2,
-                    assessment: 2
-                  },
-                  remark: -110,
-                  isMe: false
-                },
-                {
-                  id: 3,
-                  timeCreated: '2022-04-09',
-                  timeUpdated: '2022-04-09',
-                  title: 'A/414',
-                  content: '每个脆脆鲨都应该来听的必修课程',
-                  reviewerId: 5,
-                  rank: {
-                    overall: 1,
-                    content: 2,
-                    workload: 1,
-                    assessment: 1
-                  },
-                  remark: 110,
-                  isMe: false
-                }
-              ]
-            }),
-            new Course({
-              id: 2,
-              codeId: 'JXT114514.02',
-              code: 'JXT114514',
-              department: '嘉心糖',
-              teachers: '丙烷人',
-              credit: 5,
-              maxStudent: 114514,
-              semester: 2,
-              weekHour: 7,
-              year: '2012',
-              name: '嘉然今天吃七海nana7mi',
-              reviewList: []
-            }),
-            new Course({
-              id: 3,
-              codeId: 'JXT114514.03',
-              code: 'JXT114514',
-              department: '嘉心糖',
-              teachers: '向晚',
-              credit: 6,
-              maxStudent: 114514,
-              semester: 2,
-              weekHour: 7,
-              year: '2023',
-              name: '嘉然今天吃七海nana7mi',
-              reviewList: [
-                {
-                  id: 3,
-                  timeCreated: '2022-04-09',
-                  timeUpdated: '2022-04-09',
-                  title: '你们A/没有自己的测评网站吗',
-                  content: '每个脆脆鲨都应该来听的必修课程',
-                  reviewerId: 7,
-                  rank: {
-                    overall: 4,
-                    content: 4,
-                    workload: 2,
-                    assessment: 2
-                  },
-                  remark: -110,
-                  isMe: true
-                }
-              ]
-            })
-          ],
-          department: '嘉心糖',
-          id: 1,
-          name: '嘉然今天吃七海nana7mi'
-        })
-      })
-    } else {
-      // this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
+    // this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
 
-      await api.fetchCourseGroups()
+    await api.fetchCourseGroups()
 
-      await initializeTokenize()
+    await initializeTokenize()
 
-      // console.log(generateIndex('毛泽东思想和中国特色社会主义理论体系概论（上）'))
+    // console.log(generateIndex('毛泽东思想和中国特色社会主义理论体系概论（上）'))
 
-      this.debouncedSearch()
-    }
+    this.debouncedSearch()
     this.loadingSearchResult = false
   }
 })
