@@ -13,7 +13,7 @@
                   {{ review.review.remark }}
                 </v-col>
               </v-row>
-              <v-row style="font-size: 40px" class="mt-0 pt-1 grey--text flex-column">
+              <v-row style="font-size: 40px" class="mt-0 pt-1 grey--text flex-column pb-1">
                 <font-awesome-icon :class="this.unlike ? 'red--text' : 'grey--text'" icon="fa-solid fa-caret-down" @click="downVote" />
               </v-row>
               <v-row class="pa-0">
@@ -24,6 +24,7 @@
                   <v-chip
                     x-small
                     label
+                    disabled
                     style="margin-top: 1px; text-align: center"
                     v-if="review.review.timeUpdated.slice(1, 20) !== review.review.timeCreated.slice(1, 20)"
                     class="mb-1"
@@ -80,57 +81,32 @@
               <v-card-text class="pa-1 pl-0 caption pt-2 grey--text d-sm-block align-end ml-auto d-none" style="height: 50%">
                 <div class="d-block align-self-end">
                   <span class="d-inline-flex" style="color: #3f51b5"> 总评分 </span>
-                  <v-progress-linear
-                    :value="review.review.rank.overall * 20"
-                    :buffer-value="review.review.rank.overall * 20"
-                    color="#5C6BC0"
-                    height="10"
-                    class="d-inline-flex ml-2"
-                    style="width: 60%; padding-top: 2px"
-                  />
+                  <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordOverall(this.rank.overall) }} </span>
                 </div>
                 <div class="d-block">
                   <span class="d-inline-flex ml-3" style="color: #3f51b5"> 风格 </span>
-                  <v-progress-linear
-                    :value="review.review.rank.content * 20"
-                    :buffer-value="review.review.rank.content * 20"
-                    color="#5C6BC0"
-                    height="10"
-                    class="d-inline-flex ml-2"
-                    style="width: 60%; padding-top: 2px"
-                  />
+                  <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordContent(review.review.rank.content) }} </span>
                 </div>
                 <div class="d-block">
                   <div class="d-block">
                     <span class="d-inline-flex" style="color: #3f51b5"> 工作量 </span>
-                    <v-progress-linear
-                      :value="review.review.rank.workload * 20"
-                      :buffer-value="review.review.rank.workload * 20"
-                      color="#5C6BC0"
-                      height="10"
-                      class="d-inline-flex ml-2"
-                      style="width: 60%; padding-top: 2px"
-                    />
+                    <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordWorkload(review.review.rank.workload) }} </span>
                   </div>
                 </div>
                 <div class="d-block">
                   <div class="d-block">
                     <span class="d-inline-flex ml-3" style="color: #3f51b5"> 考核 </span>
-                    <v-progress-linear
-                      :value="review.review.rank.assessment * 20"
-                      :buffer-value="review.review.rank.assessment * 20"
-                      color="#5C6BC0"
-                      height="10"
-                      class="d-inline-flex ml-2"
-                      style="width: 60%; padding-top: 2px"
-                    />
+                    <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordAssessment(review.review.rank.assessment) }} </span>
                   </div>
                 </div>
               </v-card-text>
             </v-col>
           </v-row>
-          <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pt-lg-0 pt-md-0 pt-sm-0 pt-6">
+          <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pt-lg-0 pt-md-0 pt-sm-0 pt-5">
             <v-col class="pa-0 ma-0 pt-0">
+              <div class="shrink pr-0 d-flex d-sm-none" style="text-align: left">
+                <v-card-text class="pa-0 pl-2 caption grey--text">{{ review.review.timeUpdated.slice(0, 10) }}</v-card-text>
+              </div>
               <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考 </v-card-text>
               <!-- md viewer -->
               <div class="md-viewer pl-3 pr-lg-8 pt-lg-3 pr-2 pt-0">
@@ -141,15 +117,12 @@
         </v-col>
       </v-row>
       <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)" class="d-flex align-content-space-between d-sm-none mt-1">
-        <div class="shrink pr-0 d-flex" style="text-align: left">
-          <v-card-text class="pa-1 pl-3 Caption grey--text">{{ review.review.timeUpdated.slice(0, 10) }}</v-card-text>
-        </div>
         <div class="pr-2 ml-auto">
-          <v-card-text class="pa-1 pl-0 caption">
-            总评分
-            <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;风格 <font-awesome-icon :class="rankColorContent" :icon="rankIconContent" />&nbsp;工作量
-            <font-awesome-icon :class="rankColorWorkload" :icon="rankIconWorkload" />&nbsp;考核
-            <font-awesome-icon :class="rankColorAssessment" :icon="rankIconAssessment" />
+          <v-card-text class="pa-1 pl-0" style='font-size: x-small; color: #3f51b5'>
+            总评分:
+            <span class="d-inline-flex" style="color: black"> {{ rankWordOverall(review.review.rank.overall) }} </span> &nbsp;风格:<span class="d-inline-flex ml-1" style="color: black"> {{ rankWordContent(review.review.rank.content) }} </span>&nbsp;工作量
+            <span class="d-inline-flex" style="color: black"> {{ rankWordWorkload(review.review.rank.workload) }} </span>&nbsp;考核:
+            <span class="d-inline-flex" style="color: black"> {{ rankWordAssessment(review.review.rank.assessment) }} </span>
           </v-card-text>
         </div>
       </v-row>
@@ -239,6 +212,22 @@ export default Vue.extend({
     else if (this.review.review.vote === -1) this.unlike = true
   },
   methods: {
+    rankWordOverall(rankOverall: number): string {
+      const rankWordOverall = ['无', '特别差评', '差评', '一般', '好评', '特别好评']
+      return rankWordOverall[rankOverall]
+    },
+    rankWordContent(rankContent: number): string {
+      const rankWordContent = ['无', '非常容易', '容易', '一般', '较难', '硬核']
+      return rankWordContent[rankContent]
+    },
+    rankWordWorkload(rankWorkload: number): string {
+      const rankWordWorkload = ['无', '非常小', '较小', '适中', '较大', '非常大']
+      return rankWordWorkload[rankWorkload]
+    },
+    rankWordAssessment(rankAssessment: number): string {
+      const rankWordAssessment = ['无', '非常严格', '严格', '适中', '宽松', '非常宽松']
+      return rankWordAssessment[rankAssessment]
+    },
     reviewRemarkClass(): string {
       return this.remark < 0 ? 'ma-0 py-0 font-weight-regular red--text' : 'ma-0 py-0 font-weight-regular'
     },
@@ -298,6 +287,7 @@ export default Vue.extend({
       el: this.$refs['reviewContent' + this.review.review.id] as HTMLElement,
       initialValue: this.review.review.content
     })
+    this.rank = this.review.review.rank
   }
 })
 </script>
