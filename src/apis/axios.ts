@@ -19,6 +19,7 @@ export class ApiError extends Error {
 
 export const authAxios = axios.create()
 export const refreshAxios = axios.create()
+export const cdnAxios = axios.create()
 
 export const jwt = new JWTManager()
 jwt.refreshErrorCallback = async (refreshError) => {
@@ -77,11 +78,15 @@ authAxios.interceptors.response.use((response) => response, jwt.responseErrorInt
 axios.defaults.baseURL = config.backendAPI
 authAxios.defaults.baseURL = config.authUrl
 refreshAxios.defaults.baseURL = config.authUrl
+cdnAxios.defaults.baseURL = config.cdnUrl
+
 axios.interceptors.request.use(requestInterceptor)
 authAxios.interceptors.request.use(requestInterceptor)
 refreshAxios.interceptors.request.use(refreshRequestInterceptor)
+
 axios.interceptors.response.use((response) => response, errorInterceptor)
 authAxios.interceptors.response.use((response) => response, errorInterceptor)
 refreshAxios.interceptors.response.use((response) => response, errorInterceptor)
+cdnAxios.interceptors.response.use((response) => response, errorInterceptor)
 
 export default axios

@@ -17,5 +17,6 @@ services:
       - VITE_AUTH_URL=${AUTH_URL}
       - VITE_AUTH_BASE_URL=${AUTH_BASE_URL}
       - VITE_COOKIE_DOMAIN=${COOKIE_DOMAIN}
+      - VITE_CDN_URL=${CDN_URL}
     ports:
       - 3000:80

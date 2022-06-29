@@ -1,5 +1,5 @@
 import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, PostReviewData, Review } from '@/models'
-import axios, { authAxios, jwt, refreshAxios } from '@/apis/axios'
+import axios, { authAxios, cdnAxios, jwt, refreshAxios } from '@/apis/axios'
 import config from '@/config'
 import { camelizeKeys, snakifyKeys } from '@/utils'
 import { IPunishment, IUserAuth, IUserAuthData, Punishment, UserAuth } from '@/models/user'
@@ -149,7 +149,7 @@ export const getCourseGroupHash = async () => {
 export const fetchCourseGroups = async () => {
   const hash = await getCourseGroupHash()
   if (localStorage.getItem('courseGroups') !== hash) {
-    const response = await axios.get('/courses')
+    const response = await cdnAxios.get('/courses')
 
     const data: ICourseGroup[] = camelizeKeys(response.data)
 
@@ -200,6 +200,10 @@ export const voteForReview = async (reviewId: number, upvote: boolean) => {
     upvote
   })
   return new Review(camelizeKeys(response.data))
+}
+
+export const getCedict = async () => {
+  return await cdnAxios.get('/static/cedict_ts.u8')
 }
 
 // jump to login page when return 401
