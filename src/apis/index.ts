@@ -152,10 +152,13 @@ export const fetchCourseGroups = async () => {
     const response = await cdnAxios.get('/courses')
 
     const data: ICourseGroup[] = camelizeKeys(response.data)
-
+    console.log('Camelized!')
     await initializeTokenize()
-
-    await courseGroupTable.bulkPut(data.map((courseGroup) => ({ id: courseGroup.id, index: [...generateIndex(courseGroup.name), courseGroup.code], courseGroup })))
+    console.log('Tokenizing!')
+    let datum = data.map((courseGroup) => ({ id: courseGroup.id, index: [...generateIndex(courseGroup.name), courseGroup.code], courseGroup }))
+    console.log('Putting! ')
+    await courseGroupTable.bulkPut(datum)
+    console.log('All set!')
     localStorage.setItem('courseGroups', hash)
   }
 }

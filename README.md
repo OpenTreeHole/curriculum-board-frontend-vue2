@@ -4,7 +4,7 @@ Frontend of Curriculum Board
 
 ## Deploy
 
-Install
+### Install
 This installation is just for frontend program. If you want to deploy the whole OpenTreeHole project, please visit Deploy Repo.
 
 This project continuously integrates with docker. Go check it out if you don't have docker locally installed.

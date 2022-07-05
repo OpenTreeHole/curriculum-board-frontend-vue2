@@ -15,7 +15,9 @@ export class CourseGroupDexie extends Dexie {
     super('courseGroups')
     this.version(1.4).stores({
       courseGroupTable: '&id, *index, courseGroups',
-      tokenText: 'text'
+      // NOTE: Unlike SQL, you don’t need to specify all columns but only the one you wish to index here.
+      // See https://dexie.org/docs/Version/Version.stores() for more details.
+      tokenText: '++'
     })
   }
 }
