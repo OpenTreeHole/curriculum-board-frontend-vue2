@@ -20,7 +20,8 @@
       <v-row class="mt-n8 px-16 mb-3">
         <v-overlay :value="this.courseGroupProgress !== 100" opacity="50">
           <div style="width: 35vmax">
-            <span class="mb-2 d-flex justify-center text-lg-h3 text-body-2 font-weight-bold">正在建立索引, 第一次会用时较久</span>
+            <h3 class="mb-2 justify-center d-none d-sm-flex">正在建立索引, 第一次会用时较久</h3>
+            <h4 class="mb-2 d-flex justify-center d-sm-none">正在建立索引, 第一次会用时较久</h4>
             <v-progress-linear v-model="courseGroupProgress" color="blue" rounded />
           </div>
         </v-overlay>
