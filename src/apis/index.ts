@@ -146,21 +146,31 @@ export const getCourseGroupHash = async () => {
   return hash
 }
 
-export const fetchCourseGroups = async () => {
+export const fetchCourseGroups = async (progress: (text: string, progress: number) => void = () => {}) => {
   const hash = await getCourseGroupHash()
   if (localStorage.getItem('courseGroups') !== hash) {
+    progress('Downloading course data...', 0)
     const response = await cdnAxios.get('/courses')
 
+    progress('Camelizing course data...', 10)
     const data: ICourseGroup[] = camelizeKeys(response.data)
-    console.log('Camelized!')
+
+    progress('Initializing token...', 20)
     await initializeTokenize()
-    console.log('Tokenizing!')
-    let datum = data.map((courseGroup) => ({ id: courseGroup.id, index: [...generateIndex(courseGroup.name), courseGroup.code], courseGroup }))
-    console.log('Putting! ')
+
+    progress('Mapping data...', 50)
+    const datum = data.map((courseGroup) => ({
+      id: courseGroup.id,
+      index: [...generateIndex(courseGroup.name), courseGroup.code],
+      courseGroup
+    }))
+
+    progress('Storing data...', 70)
     await courseGroupTable.bulkPut(datum)
-    console.log('All set!')
     localStorage.setItem('courseGroups', hash)
   }
+
+  progress('All set!', 100)
 }
 
 export const getCourseGroup = async (groupId: number) => {

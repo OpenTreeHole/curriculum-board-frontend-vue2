@@ -3,7 +3,7 @@
     <message-snackbar ref="message" />
     <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
     <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
-    <div class="d-flex justify-center">
+    <div class="justify-center">
       <v-row class="mx-6" id="search-bar" style="margin-top: 32vh">
         <v-col>
           <v-text-field
@@ -16,6 +16,11 @@
             filled
           ></v-text-field>
         </v-col>
+      </v-row>
+      <v-row class="mt-n8 px-16 mb-3">
+        <v-progress-linear v-model="courseGroupProgress" color="light-blue" rounded height="18">
+          <strong>{{ courseGroupProgressText }}</strong>
+        </v-progress-linear>
       </v-row>
     </div>
 
@@ -75,7 +80,9 @@ export default Vue.extend({
       searchText: '',
       searchResult: [] as CourseGroup[],
       inSearch: false,
-      noResult: false
+      noResult: false,
+      courseGroupProgress: 0,
+      courseGroupProgressText: ''
     }
   },
   watch: {
@@ -137,7 +144,10 @@ export default Vue.extend({
   async mounted() {
     // this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
 
-    await api.fetchCourseGroups()
+    await api.fetchCourseGroups((text, progress) => {
+      this.courseGroupProgressText = text
+      this.courseGroupProgress = progress
+    })
 
     await initializeTokenize()
 
