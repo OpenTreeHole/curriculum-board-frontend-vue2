@@ -149,28 +149,28 @@ export const getCourseGroupHash = async () => {
 export const fetchCourseGroups = async (progress: (text: string, progress: number) => void = () => {}) => {
   const hash = await getCourseGroupHash()
   if (localStorage.getItem('courseGroups') !== hash) {
-    progress('Downloading course data...', 0)
+    progress('正在下载课程数据...', 0)
     const response = await cdnAxios.get('/courses')
 
-    progress('Camelizing course data...', 10)
+    progress('正在格式化课程数据...', 10)
     const data: ICourseGroup[] = camelizeKeys(response.data)
 
-    progress('Initializing token...', 20)
+    progress('正在建立索引...', 20)
     await initializeTokenize()
 
-    progress('Mapping data...', 50)
+    progress('正在整理课程数据...', 50)
     const datum = data.map((courseGroup) => ({
       id: courseGroup.id,
       index: [...generateIndex(courseGroup.name), courseGroup.code],
       courseGroup
     }))
 
-    progress('Storing data...', 70)
+    progress('正在缓存课程数据...', 70)
     await courseGroupTable.bulkPut(datum)
     localStorage.setItem('courseGroups', hash)
   }
 
-  progress('All set!', 100)
+  progress('完成！', 100)
 }
 
 export const getCourseGroup = async (groupId: number) => {

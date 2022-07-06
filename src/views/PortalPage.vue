@@ -20,9 +20,11 @@
       <v-row class="mt-n8 px-16 mb-3">
         <v-overlay :value="this.courseGroupProgress !== 100" opacity="50">
           <div style="width: 35vmax">
-            <h3 class="mb-2 justify-center d-none d-sm-flex">正在建立索引, 第一次会用时较久</h3>
-            <h4 class="mb-2 d-flex justify-center d-sm-none">正在建立索引, 第一次会用时较久</h4>
+            <h3 class="mb-2 justify-center d-none d-sm-flex">{{ courseGroupProgressText }}</h3>
+            <h4 class="mb-2 d-flex justify-center d-sm-none">{{ courseGroupProgressText }}</h4>
             <v-progress-linear v-model="courseGroupProgress" color="blue" rounded />
+            <h3 class="mt-2 justify-center d-none d-sm-flex">第一次会用时较久</h3>
+            <h4 class="mt-2 d-flex justify-center d-sm-none">第一次会用时较久</h4>
           </div>
         </v-overlay>
       </v-row>
@@ -44,7 +46,7 @@
               <div class="pl-4">
                 <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
                   <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分</v-chip>
+                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分 </v-chip>
                 </v-list-item-subtitle>
                 <v-list-item-content text x-large class="ma-n2 pa-2 pb-3" style="height: initial">
                   <span class="font-weight-black fontsize-ensurer text-subtitle-1">
@@ -56,7 +58,7 @@
             </v-list-item>
           </recycle-scroller>
           <v-row style="text-align: center" v-if="this.noResult">
-            <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
+            <v-col class="text-h5 my-4 grey--text"> 无该课程</v-col>
           </v-row>
         </v-col>
         <v-spacer />
@@ -74,6 +76,7 @@ import { courseGroupTable } from '@/apis/database'
 import { initializeTokenize } from '@/utils/tokenize'
 import MessageSnackbar from '@/components/MessageSnackbar.vue'
 import { debounce } from 'lodash-es'
+
 export default Vue.extend({
   name: 'PortalPage',
   components: { MessageSnackbar },
@@ -85,7 +88,7 @@ export default Vue.extend({
       searchResult: [] as CourseGroup[],
       inSearch: false,
       noResult: false,
-      courseGroupProgress: 0,
+      courseGroupProgress: 100,
       courseGroupProgressText: ''
     }
   },
