@@ -18,9 +18,12 @@
         </v-col>
       </v-row>
       <v-row class="mt-n8 px-16 mb-3">
-        <v-progress-linear v-model="courseGroupProgress" color="light-blue" rounded height="18">
-          <strong>{{ courseGroupProgressText }}</strong>
-        </v-progress-linear>
+        <v-overlay :value="this.courseGroupProgress !== 100" opacity="50">
+          <div style="width: 35vmax">
+            <span class="mb-2 d-flex justify-center text-lg-h3 text-body-2 font-weight-bold">正在建立索引, 第一次会用时较久</span>
+            <v-progress-linear v-model="courseGroupProgress" color="blue" rounded />
+          </div>
+        </v-overlay>
       </v-row>
     </div>
 
