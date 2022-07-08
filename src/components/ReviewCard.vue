@@ -9,19 +9,27 @@
                 <font-awesome-icon icon="fa-solid fa-caret-up" :class="this.like ? 'blue--text' : 'grey--text'" @click="upVote" />
               </v-row>
               <v-row class="mt-1 flex-column">
-                <v-col :class="reviewRemarkClass" style="font-size: 20px; text-align: center">
-                  {{ this.remark }}
+                <v-col :class="reviewRemarkClass()" style="font-size: 20px; text-align: center">
+                  {{ review.review.remark }}
                 </v-col>
               </v-row>
-              <v-row style="font-size: 40px" class="mt-0 pt-1 grey--text flex-column">
+              <v-row style="font-size: 40px" class="mt-0 pt-1 grey--text flex-column pb-1">
                 <font-awesome-icon :class="this.unlike ? 'red--text' : 'grey--text'" icon="fa-solid fa-caret-down" @click="downVote" />
               </v-row>
               <v-row class="pa-0">
-                <v-card-text class="py-0 pb-1 grey--text d-none d-sm-block" style="font-size: 11px; text-align: center">{{ review.review.timeCreated }} </v-card-text>
+                <v-card-text class="py-0 pb-1 grey--text d-none d-sm-block" style="font-size: 11px; text-align: center">{{ review.review.timeUpdated.slice(0, 10) }} </v-card-text>
               </v-row>
               <v-row class="pa-0 my-0 mt-1">
-                <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 pt-lg-1 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
-                  <v-chip x-small label style="margin-top: 1px; margin-right: 10px" v-if="false" class="mb-1 d-block"> 已编辑 </v-chip>
+                <v-card-text class="caption grey--text pb-0 d-block justify-center pr-3 pt-lg-1 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
+                  <v-chip
+                    x-small
+                    label
+                    disabled
+                    style="margin-top: 1px; text-align: center"
+                    v-if="review.review.timeUpdated.slice(1, 20) !== review.review.timeCreated.slice(1, 20)"
+                    class="mb-1"
+                    >已编辑</v-chip
+                  >
                   <v-dialog v-model="deleteCheck" persistent max-width="290">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn v-if="isAuth" text x-small color="grey" class="align-content-end" v-bind="attrs" v-on="on">
@@ -38,7 +46,7 @@
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
-                  <v-btn v-if="review.review.isMe" class="d-none d-sm-flex mx-auto" text x-small color="grey" @click="editForm">
+                  <v-btn v-if="review.review.isMe" class="d-none d-sm-block mx-auto" text x-small color="grey" @click="editForm">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
                   <v-card-text v-else class="py-0 py-0 grey--text d-none d-sm-block" style="font-size: 11px; text-align: center">user{{ review.review.reviewerId }} </v-card-text>
@@ -46,7 +54,7 @@
               </v-row>
               <v-row class="pa-0 my-0 mt-0">
                 <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 py-1 align-content-end align-end d-none d-sm-block">
-                  <v-btn v-if="review.review.isMe" class="d-block d-sm-none mx-auto" @click="editPhoneForm" text x-small color="grey">
+                  <v-btn v-if="review.review.isMe" class="d-block d-sm-none mx-auto" @click="editForm" text x-small color="grey">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
                 </v-card-text>
@@ -73,75 +81,48 @@
               <v-card-text class="pa-1 pl-0 caption pt-2 grey--text d-sm-block align-end ml-auto d-none" style="height: 50%">
                 <div class="d-block align-self-end">
                   <span class="d-inline-flex" style="color: #3f51b5"> 总评分 </span>
-                  <v-progress-linear
-                    :value="review.review.rank.overall * 20"
-                    :buffer-value="review.review.rank.overall * 20"
-                    color="#5C6BC0"
-                    height="10"
-                    class="d-inline-flex ml-1"
-                    style="width: 60%; padding-top: 2px"
-                  />
+                  <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordOverall(this.rank.overall) }} </span>
                 </div>
                 <div class="d-block">
-                  <span class="d-inline-flex" style="color: #3f51b5"> 内容 </span>
-                  <v-progress-linear
-                    :value="review.review.rank.content * 20"
-                    :buffer-value="review.review.rank.content * 20"
-                    color="#5C6BC0"
-                    height="10"
-                    class="d-inline-flex ml-4"
-                    style="width: 60%; padding-top: 2px"
-                  />
+                  <span class="d-inline-flex ml-3" style="color: #3f51b5"> 风格 </span>
+                  <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordContent(this.rank.content) }} </span>
                 </div>
                 <div class="d-block">
                   <div class="d-block">
                     <span class="d-inline-flex" style="color: #3f51b5"> 工作量 </span>
-                    <v-progress-linear
-                      :value="review.review.rank.workload * 20"
-                      :buffer-value="review.review.rank.workload * 20"
-                      color="#5C6BC0"
-                      height="10"
-                      class="d-inline-flex ml-1"
-                      style="width: 60%; padding-top: 2px"
-                    />
+                    <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordWorkload(this.rank.workload) }} </span>
                   </div>
                 </div>
                 <div class="d-block">
                   <div class="d-block">
-                    <span class="d-inline-flex" style="color: #3f51b5"> 考核 </span>
-                    <v-progress-linear
-                      :value="review.review.rank.assessment * 20"
-                      :buffer-value="review.review.rank.assessment * 20"
-                      color="#5C6BC0"
-                      height="10"
-                      class="d-inline-flex ml-4"
-                      style="width: 30%; padding-top: 2px"
-                    />
+                    <span class="d-inline-flex ml-3" style="color: #3f51b5"> 考核 </span>
+                    <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordAssessment(this.rank.assessment) }} </span>
                   </div>
                 </div>
               </v-card-text>
             </v-col>
           </v-row>
-          <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pt-lg-0 pt-md-0 pt-sm-0 pt-6">
-            <v-col class="pa-0 ma-0pt-0">
+          <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pt-lg-0 pt-md-0 pt-sm-0 pt-5">
+            <v-col class="pa-0 ma-0 pt-0">
+              <div class="shrink pr-0 d-flex d-sm-none" style="text-align: left">
+                <v-card-text class="pa-0 pl-2 caption grey--text">{{ review.review.timeUpdated.slice(0, 10) }}</v-card-text>
+              </div>
               <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考 </v-card-text>
-              <v-card-text class="body-2 black--text pt-1 pb-2 px-2">
-                {{ review.review.content }}
-              </v-card-text>
+              <!-- md viewer -->
+              <div class="md-viewer pl-3 pr-lg-8 pt-lg-3 pr-2 pt-0">
+                <div :ref="'reviewContent' + review.review.id" />
+              </div>
             </v-col>
           </v-row>
         </v-col>
       </v-row>
       <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)" class="d-flex align-content-space-between d-sm-none mt-1">
-        <div class="shrink pr-0 d-flex" style="text-align: left">
-          <v-card-text class="pa-1 pl-3 Caption grey--text">{{ review.review.timeCreated }}</v-card-text>
-        </div>
         <div class="pr-2 ml-auto">
-          <v-card-text class="pa-1 pl-0 caption">
-            总评分
-            <font-awesome-icon :class="rankColorOverall" :icon="rankIconOverall" /> &nbsp;内容 <font-awesome-icon :class="rankColorContent" :icon="rankIconContent" />&nbsp;工作量
-            <font-awesome-icon :class="rankColorWorkload" :icon="rankIconWorkload" />&nbsp;考核
-            <font-awesome-icon :class="rankColorAssessment" :icon="rankIconAssessment" />
+          <v-card-text class="pa-1 pl-0" style='font-size: x-small; color: #3f51b5'>
+            总评分:
+            <span class="d-inline-flex" style="color: black"> {{ rankWordOverall(this.rank.overall) }} </span> &nbsp;风格:<span class="d-inline-flex ml-1" style="color: black"> {{ rankWordContent(this.rank.content) }} </span>&nbsp;工作量
+            <span class="d-inline-flex" style="color: black"> {{ rankWordWorkload(this.rank.workload) }} </span>&nbsp;考核:
+            <span class="d-inline-flex" style="color: black"> {{ rankWordAssessment(this.rank.assessment) }} </span>
           </v-card-text>
         </div>
       </v-row>
@@ -154,6 +135,8 @@ import Vue from 'vue'
 import { ReviewWithCourse } from '@/models'
 import { parseYearSemester } from '@/utils/course'
 import { voteForReview } from '@/apis'
+import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
+import '@/style/markdown-theme.css'
 
 export default Vue.extend({
   name: 'ReviewCard',
@@ -165,22 +148,20 @@ export default Vue.extend({
   },
   data: () => ({
     isAuth: false,
+    viewer: null as Viewer | null,
     deleteReviewLoading: false,
     deleteCheck: false,
     remark: 0,
     like: false,
     unlike: false,
     rank: {
-      overall: 4,
-      content: 5,
-      workload: 2,
-      assessment: 3
+      overall: 0,
+      content: 0,
+      workload: 0,
+      assessment: 0
     }
   }),
   computed: {
-    reviewRemarkClass(): string {
-      return this.remark < 0 ? 'ma-0 py-0 font-weight-regular red--text' : 'ma-0 py-0 font-weight-regular'
-    },
     rankColorOverall(): string {
       const rankColorOverall = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
       return rankColorOverall[this.review.review.rank.overall - 1]
@@ -217,19 +198,45 @@ export default Vue.extend({
       return parseYearSemester(this.review.course)
     }
   },
+  watch: {
+    'review.review.content'() {
+      this.viewer!.setMarkdown(this.review.review.content)
+    },
+    'review.review.remark'() {
+      this.remark = this.review.review.remark
+    },
+  },
   beforeMount() {
     this.remark = this.review.review.remark
+    if (this.review.review.vote === 1) this.like = true
+    else if (this.review.review.vote === -1) this.unlike = true
   },
   methods: {
+    rankWordOverall(rankOverall: number): string {
+      const rankWordOverall = ['无', '特别差评', '差评', '一般', '好评', '特别好评']
+      return rankWordOverall[rankOverall]
+    },
+    rankWordContent(rankContent: number): string {
+      const rankWordContent = ['无', '非常容易', '容易', '一般', '较难', '硬核']
+      return rankWordContent[rankContent]
+    },
+    rankWordWorkload(rankWorkload: number): string {
+      const rankWordWorkload = ['无', '非常小', '较小', '适中', '较大', '非常大']
+      return rankWordWorkload[rankWorkload]
+    },
+    rankWordAssessment(rankAssessment: number): string {
+      const rankWordAssessment = ['无', '非常严格', '严格', '适中', '宽松', '非常宽松']
+      return rankWordAssessment[rankAssessment]
+    },
+    reviewRemarkClass(): string {
+      return this.remark < 0 ? 'ma-0 py-0 font-weight-regular red--text' : 'ma-0 py-0 font-weight-regular'
+    },
     deleteReview() {
       console.log('delete review')
     },
-    async editForm(): Promise<void> {
+    editForm(): void {
       // console.log('openEditForm')
       this.$emit('openEditForm', this.review)
-    },
-    async editPhoneForm(): Promise<void> {
-      this.$emit('openPhoneEditForm', this.review)
     },
     async upVote(): Promise<void> {
       // Record original status
@@ -241,10 +248,10 @@ export default Vue.extend({
       this.review.review.remark += this.unlike ? 2 : this.like ? -1 : 1
       this.unlike = false
       this.like = !this.like
-
       try {
         const review = await voteForReview(this.review.review.id, true)
         this.review.review.remark = review.remark
+        this.reviewRemarkClass()
       } catch (e) {
         // Request failed, reverse to original status
         this.unlike = originalUnlike
@@ -266,6 +273,7 @@ export default Vue.extend({
       try {
         const review = await voteForReview(this.review.review.id, false)
         this.review.review.remark = review.remark
+        this.reviewRemarkClass()
       } catch (e) {
         // Request failed, reverse to original status
         this.unlike = originalUnlike
@@ -273,8 +281,18 @@ export default Vue.extend({
         this.review.review.remark = originalRemark
       }
     }
+  },
+  mounted() {
+    this.viewer = new Viewer({
+      el: this.$refs['reviewContent' + this.review.review.id] as HTMLElement,
+      initialValue: this.review.review.content
+    })
+    this.rank.overall = this.review.review.rank.overall
+    this.rank.content = this.review.review.rank.content
+    this.rank.workload = this.review.review.rank.workload
+    this.rank.assessment = this.review.review.rank.assessment
   }
 })
 </script>
 
-<style scoped></style>
+<style></style>

@@ -17,7 +17,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import MessageSnackbar from '@/components/MessageSnackbar.vue'
-import { voteForReview } from './apis'
 
 export default Vue.extend({
   name: 'App',
@@ -32,8 +31,18 @@ export default Vue.extend({
 })
 </script>
 <style>
+html,
 body {
-  overflow-x: hidden;
-  height: 100vh;
+  /*Do not add overflow-x: hidden to body element, or the vue-virtual-scroller would not work*/
+  height: 100%;
+}
+
+body {
+  font-size: 16px;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  margin: 0;
 }
 </style>

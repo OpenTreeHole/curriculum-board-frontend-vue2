@@ -11,7 +11,9 @@ export class ReviewWithCourse {
 export interface IReview extends IReviewData {
   id: number
   timeCreated: string
+  timeUpdated: string
   isMe: boolean
+  vote: number
 }
 
 export interface IReviewData {
@@ -79,8 +81,10 @@ export class Review implements IReview {
   rank: IRank
   remark: number
   timeCreated: string
+  timeUpdated: string
   title: string
   isMe: boolean
+  vote: number
   reviewerId: number
 
   constructor(review: IReview) {
@@ -89,8 +93,10 @@ export class Review implements IReview {
     this.rank = review.rank
     this.remark = review.remark
     this.timeCreated = review.timeCreated
+    this.timeUpdated = review.timeUpdated
     this.title = review.title
     this.isMe = review.isMe
+    this.vote = review.vote
     this.reviewerId = review.reviewerId
   }
 }

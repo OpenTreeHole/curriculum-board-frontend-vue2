@@ -1,64 +1,69 @@
 <template>
   <v-container>
-    <div id="search-bar">
-      <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
-      <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
-      <v-row no-gutters class="mt-3 mx-6">
+    <message-snackbar ref="message" />
+    <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
+    <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
+    <div class="justify-center">
+      <v-row class="mx-6" id="search-bar" style="margin-top: 32vh">
         <v-col>
           <v-text-field
             prepend-inner-icon="mdi-magnify"
-            style="margin-top: 32vh"
             placeholder="请输入课程名称或课程代码"
             v-model="searchText"
             outlined
-            class="d-none d-sm-block rounded-pill"
-            filled
-          ></v-text-field>
-          <v-text-field
-            prepend-inner-icon="mdi-magnify"
-            style="margin-top: 32vh"
-            placeholder="请输入课程名称或课程代码"
-            v-model="searchText"
-            outlined
-            dense
-            class="d-block d-sm-none rounded-pill"
+            :dense="$vuetify.breakpoint.xsOnly"
+            class="d-block rounded-pill"
             filled
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row class="d-flex align-center" v-if="this.loadingSearchResult && this.searchText !== ''">
-        <v-col style="text-align: center">
-          <v-progress-circular :size="60" color="primary" indeterminate class="d-none d-sm-inline-block"></v-progress-circular>
-          <v-progress-circular :size="40" color="primary" indeterminate class="d-inline-block d-sm-none"></v-progress-circular>
-        </v-col>
+      <v-row class="mt-n8 px-16 mb-3">
+        <v-overlay :value="this.courseGroupProgress !== 100" opacity="50">
+          <div style="width: 35vmax">
+            <h3 class="mb-2 justify-center d-none d-sm-flex">{{ courseGroupProgressText }}</h3>
+            <h4 class="mb-2 d-flex justify-center d-sm-none">{{ courseGroupProgressText }}</h4>
+            <v-progress-linear v-model="courseGroupProgress" color="blue" rounded />
+            <h3 class="mt-2 justify-center d-none d-sm-flex">第一次会用时较久</h3>
+            <h4 class="mt-2 d-flex justify-center d-sm-none">第一次会用时较久</h4>
+          </div>
+        </v-overlay>
       </v-row>
-      <transition name="fade" v-if="!loadingSearchResult">
-        <v-row class="ma-0 pa-0">
-          <v-spacer />
-          <v-col cols="12" lg="6" class="ma-0 pa-0">
-            <v-list v-if="inSearch">
-              <v-card v-for="(v, i) in searchResult" :key="i" class="pa-0 pl-3 v-card--hover mb-2">
-                <div @click="$router.push(`/group/${v.id}`)">
-                  <v-card-subtitle class="monospace grey--text py-0 pt-3 d-flex">
-                    <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                    <v-chip-group column>
-                      <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" disabled style="color: #303f9f" outlined>
-                        {{ credit }}学分</v-chip
-                      >
-                    </v-chip-group>
-                  </v-card-subtitle>
-                  <v-card-subtitle class="pt-1 text-lg-h6 text-subtitle-1">{{ v.department }} / {{ v.name }}</v-card-subtitle>
-                </div>
-              </v-card>
-            </v-list>
-            <v-row style="text-align: center" v-if="this.noResult">
-              <v-col class="text-h5 my-4 grey--text"> 无该课程 </v-col>
-            </v-row>
-          </v-col>
-          <v-spacer />
-        </v-row>
-      </transition>
     </div>
+
+    <v-row class="d-flex align-center" v-if="this.loadingSearchResult && this.searchText !== ''">
+      <v-col style="text-align: center">
+        <v-progress-circular :size="60" color="primary" indeterminate class="d-none d-sm-inline-block"></v-progress-circular>
+        <v-progress-circular :size="40" color="primary" indeterminate class="d-inline-block d-sm-none"></v-progress-circular>
+      </v-col>
+    </v-row>
+    <transition name="fade" v-if="!loadingSearchResult">
+      <v-row class="ma-0 pa-0">
+        <v-spacer />
+        <v-col cols="12" md="10" lg="7" xl="6" class="ma-0 pa-0">
+          <recycle-scroller :item-size="96" :items="searchResult" v-slot="{ item: v }" page-mode>
+            <v-divider></v-divider>
+            <v-list-item class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)">
+              <div class="pl-4">
+                <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
+                  <span class="mr-3 d-flex align-center">{{ v.code }}</span>
+                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分 </v-chip>
+                </v-list-item-subtitle>
+                <v-list-item-content text x-large class="ma-n2 pa-2 pb-3" style="height: initial">
+                  <span class="font-weight-black fontsize-ensurer text-subtitle-1">
+                    <span class="d-inline-block">{{ v.department }}&nbsp;/&nbsp;</span>
+                    <span class="d-inline-block mt-2">{{ v.name }}</span>
+                  </span>
+                </v-list-item-content>
+              </div>
+            </v-list-item>
+          </recycle-scroller>
+          <v-row style="text-align: center" v-if="this.noResult">
+            <v-col class="text-h5 my-4 grey--text"> 无该课程</v-col>
+          </v-row>
+        </v-col>
+        <v-spacer />
+      </v-row>
+    </transition>
   </v-container>
 </template>
 
@@ -67,12 +72,14 @@ import * as api from '@/apis'
 import { Course, CourseGroup } from '@/models'
 import Vue from 'vue'
 import gasp from 'gsap'
-import { match } from 'pinyin-pro'
-import { isDebug } from '@/utils'
-import _ from 'lodash'
+import { courseGroupTable } from '@/apis/database'
+import { initializeTokenize } from '@/utils/tokenize'
+import MessageSnackbar from '@/components/MessageSnackbar.vue'
+import { debounce } from 'lodash-es'
 
 export default Vue.extend({
   name: 'PortalPage',
+  components: { MessageSnackbar },
   data() {
     return {
       loadingSearchResult: true,
@@ -80,23 +87,12 @@ export default Vue.extend({
       searchText: '',
       searchResult: [] as CourseGroup[],
       inSearch: false,
-      noResult: false
+      noResult: false,
+      courseGroupProgress: 100,
+      courseGroupProgressText: ''
     }
   },
   watch: {
-    inSearch() {
-      if (this.inSearch) {
-        gasp.to('#search-bar', {
-          y: -100,
-          duration: 0.2
-        })
-      } else {
-        gasp.to('#search-bar', {
-          y: 0,
-          duration: 0.2
-        })
-      }
-    },
     searchText: {
       handler() {
         this.debouncedSearch()
@@ -105,20 +101,47 @@ export default Vue.extend({
     }
   },
   methods: {
-    debouncedSearch: _.debounce(function (this: any) {
+    debouncedSearch: debounce(async function (this: any) {
       this.noResult = false
       if (this.searchText.trim() == '') {
         this.searchResult = []
         this.inSearch = false
+        gasp.to('#search-bar', {
+          marginTop: '32vh',
+          flex: '0 0 100%',
+          duration: 0.3
+        })
         return
-      }
-      this.inSearch = true
+      } else {
+        const searchResultPromise = (async () => {
+          return (await courseGroupTable.where('index').startsWithAnyOfIgnoreCase(this.searchText).distinct().toArray()).map((courseGroup) => courseGroup.courseGroup)
+        })()
 
-      this.searchResult = (this.$store.state.data.courseGroup as CourseGroup[]).filter(
-        (course) => match(course.name, this.searchText) || [course.name, course.code].some((field) => field.includes(this.searchText))
-      )
-      this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
-    }, 600),
+        let flexShrinkProportion = 100
+        if (this.$vuetify.breakpoint.md) {
+          flexShrinkProportion = 93
+        } else if (this.$vuetify.breakpoint.lg) {
+          flexShrinkProportion = 65
+        } else if (this.$vuetify.breakpoint.xl) {
+          flexShrinkProportion = 60
+        }
+
+        if (!this.inSearch) {
+          await gasp
+            .to('#search-bar', {
+              marginTop: '3vh',
+              flex: '0 0 ' + flexShrinkProportion + '%',
+              duration: 0.3
+            })
+            .then()
+          this.inSearch = true
+        }
+
+        this.searchResult = await searchResultPromise
+
+        this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
+      }
+    }, 200),
     credits(courseList: Course[]): number[] {
       let creditsSet = new Set<number>()
       courseList.forEach((course) => creditsSet.add(course.credit))
@@ -126,125 +149,18 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    if (isDebug()) {
-      this.$store.commit('addCourseGroup', {
-        newCourseGroup: new CourseGroup({
-          code: 'JXT114514',
-          courseList: [
-            new Course({
-              id: 1,
-              codeId: 'JXT114514.01',
-              code: 'JXT114514',
-              department: '嘉心糖',
-              teachers: '丁烷人',
-              credit: 4,
-              maxStudent: 114514,
-              semester: 1,
-              weekHour: 7,
-              year: '2022',
-              name: '嘉然今天吃七海nana7mi',
-              reviewList: [
-                {
-                  id: 1,
-                  timeCreated: '2022-04-09',
-                  title: '绝世好课',
-                  content: '每个脆脆鲨都应该来听的必修课程每个脆脆鲨都应该来听的必修课程',
-                  reviewerId: 1,
-                  rank: {
-                    overall: 5,
-                    content: 4,
-                    workload: 3,
-                    assessment: 2
-                  },
-                  remark: 10,
-                  isMe: false
-                },
-                {
-                  id: 2,
-                  timeCreated: '2022-04-09',
-                  title: 'A/414',
-                  content: '每个脆脆鲨都应该来听的必修课程',
-                  reviewerId: 2,
-                  rank: {
-                    overall: 4,
-                    content: 4,
-                    workload: 2,
-                    assessment: 2
-                  },
-                  remark: -110,
-                  isMe: false
-                },
-                {
-                  id: 3,
-                  timeCreated: '2022-04-09',
-                  title: 'A/414',
-                  content: '每个脆脆鲨都应该来听的必修课程',
-                  reviewerId: 5,
-                  rank: {
-                    overall: 1,
-                    content: 2,
-                    workload: 1,
-                    assessment: 1
-                  },
-                  remark: 110,
-                  isMe: false
-                }
-              ]
-            }),
-            new Course({
-              id: 2,
-              codeId: 'JXT114514.02',
-              code: 'JXT114514',
-              department: '嘉心糖',
-              teachers: '丁烷人',
-              credit: 5,
-              maxStudent: 114514,
-              semester: 2,
-              weekHour: 7,
-              year: '2022',
-              name: '嘉然今天吃七海nana7mi',
-              reviewList: []
-            }),
-            new Course({
-              id: 3,
-              codeId: 'JXT114514.03',
-              code: 'JXT114514',
-              department: '嘉心糖',
-              teachers: '向晚',
-              credit: 6,
-              maxStudent: 114514,
-              semester: 2,
-              weekHour: 7,
-              year: '2023',
-              name: '嘉然今天吃七海nana7mi',
-              reviewList: [
-                {
-                  id: 3,
-                  timeCreated: '2022-04-09',
-                  title: '你们A/没有自己的测评网站吗',
-                  content: '每个脆脆鲨都应该来听的必修课程',
-                  reviewerId: 7,
-                  rank: {
-                    overall: 4,
-                    content: 4,
-                    workload: 2,
-                    assessment: 2
-                  },
-                  remark: -110,
-                  isMe: true
-                }
-              ]
-            })
-          ],
-          department: '嘉心糖',
-          id: 1,
-          name: '嘉然今天吃七海nana7mi'
-        })
-      })
-    } else {
-      this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
-      this.debouncedSearch()
-    }
+    // this.$store.commit('addCourseGroups', { newCourseGroups: await api.getCourseGroups() })
+
+    await api.fetchCourseGroups((text, progress) => {
+      this.courseGroupProgressText = text
+      this.courseGroupProgress = progress
+    })
+
+    await initializeTokenize()
+
+    // console.log(generateIndex('毛泽东思想和中国特色社会主义理论体系概论（上）'))
+
+    this.debouncedSearch()
     this.loadingSearchResult = false
   }
 })

@@ -18,6 +18,10 @@ export default defineConfig({
       {
         find: '@',
         replacement: path.resolve(__dirname, 'src')
+      },
+      {
+        find: /^fs$/,
+        replacement: require.resolve('rollup-plugin-node-builtins')
       }
     ],
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']

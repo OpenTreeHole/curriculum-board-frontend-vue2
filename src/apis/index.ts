@@ -1,9 +1,11 @@
 import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, PostReviewData, Review } from '@/models'
-import axios, { authAxios, jwt, refreshAxios } from '@/apis/axios'
+import axios, { authAxios, cdnAxios, jwt, refreshAxios } from '@/apis/axios'
 import config from '@/config'
 import { camelizeKeys, snakifyKeys } from '@/utils'
 import { IPunishment, IUserAuth, IUserAuthData, Punishment, UserAuth } from '@/models/user'
 import Cookies from 'js-cookie'
+import { courseGroupTable } from '@/apis/database'
+import { generateIndex, initializeTokenize } from '@/utils/tokenize'
 
 jwt.refresh = async () => (await refresh()).access
 
@@ -138,10 +140,37 @@ export const addCourse = async (courseData: ICourseData) => {
   return new Course(data)
 }
 
-export const getCourseGroups = async () => {
-  const response = await axios.get('/courses')
-  const data: ICourseGroup[] = camelizeKeys(response.data)
-  return data.map((v) => new CourseGroup(v))
+export const getCourseGroupHash = async () => {
+  const response = await axios.get('/courses/hash')
+  const { hash }: { hash: string } = camelizeKeys(response.data)
+  return hash
+}
+
+export const fetchCourseGroups = async (progress: (text: string, progress: number) => void = () => {}) => {
+  const hash = await getCourseGroupHash()
+  if (localStorage.getItem('courseGroups') !== hash) {
+    progress('正在下载课程数据...', 0)
+    const response = await cdnAxios.get('/courses')
+
+    progress('正在格式化课程数据...', 10)
+    const data: ICourseGroup[] = camelizeKeys(response.data)
+
+    progress('正在建立索引...', 20)
+    await initializeTokenize()
+
+    progress('正在整理课程数据...', 50)
+    const datum = data.map((courseGroup) => ({
+      id: courseGroup.id,
+      index: [...generateIndex(courseGroup.name), courseGroup.code],
+      courseGroup
+    }))
+
+    progress('正在缓存课程数据...', 70)
+    await courseGroupTable.bulkPut(datum)
+    localStorage.setItem('courseGroups', hash)
+  }
+
+  progress('完成！', 100)
 }
 
 export const getCourseGroup = async (groupId: number) => {
@@ -173,9 +202,9 @@ export const removeReview = async (reviewId: number): Promise<string> => {
   return response.data
 }
 
-export const modifyReview = async (reviewId: number, reviewData: IReviewData) => {
+export const modifyReview = async (reviewId: number, reviewData: PostReviewData) => {
   const response = await axios.put(`/reviews/${reviewId}`, reviewData)
-  const data: IReview = camelizeKeys(response)
+  const data: IReview = camelizeKeys(response.data)
   return new Review(data)
 }
 
@@ -183,7 +212,11 @@ export const voteForReview = async (reviewId: number, upvote: boolean) => {
   const response = await axios.patch(`/reviews/${reviewId}`, {
     upvote
   })
-  return new Review(camelizeKeys(response))
+  return new Review(camelizeKeys(response.data))
+}
+
+export const getCedict = async () => {
+  return await cdnAxios.get('/static/cedict_ts.u8')
 }
 
 // jump to login page when return 401

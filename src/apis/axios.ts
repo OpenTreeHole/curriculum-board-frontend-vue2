@@ -19,16 +19,11 @@ export class ApiError extends Error {
 
 export const authAxios = axios.create()
 export const refreshAxios = axios.create()
+export const cdnAxios = axios.create()
 
 export const jwt = new JWTManager()
-jwt.needRefresh = (originalError) =>
-  originalError.response?.status === 401 &&
-  (originalError.response.data.exp || (originalError.response.data.message && (originalError.response.data.message as string).includes('Bearer')))
 jwt.refreshErrorCallback = async (refreshError) => {
-  if (
-    refreshError.response?.status === 401 &&
-    (refreshError.response.data.exp || (refreshError.response.data.message && (refreshError.response.data.message as string).includes('Bearer')))
-  ) {
+  if (refreshError.response?.status === 401) {
     Cookies.remove('access', { domain: config.cookieDomain })
     Cookies.remove('refresh', { domain: config.cookieDomain })
     if (router.currentRoute.name !== 'login') {
@@ -83,11 +78,15 @@ authAxios.interceptors.response.use((response) => response, jwt.responseErrorInt
 axios.defaults.baseURL = config.backendAPI
 authAxios.defaults.baseURL = config.authUrl
 refreshAxios.defaults.baseURL = config.authUrl
+cdnAxios.defaults.baseURL = config.cdnUrl
+
 axios.interceptors.request.use(requestInterceptor)
 authAxios.interceptors.request.use(requestInterceptor)
 refreshAxios.interceptors.request.use(refreshRequestInterceptor)
+
 axios.interceptors.response.use((response) => response, errorInterceptor)
 authAxios.interceptors.response.use((response) => response, errorInterceptor)
 refreshAxios.interceptors.response.use((response) => response, errorInterceptor)
+cdnAxios.interceptors.response.use((response) => response, errorInterceptor)
 
 export default axios
