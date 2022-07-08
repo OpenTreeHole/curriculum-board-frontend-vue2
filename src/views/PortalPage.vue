@@ -18,12 +18,12 @@
         </v-col>
       </v-row>
       <v-row class="mt-n8 px-16 mb-3">
-        <v-overlay :value="this.courseGroupProgress !== 100" opacity="50">
+        <v-overlay opacity="50">
           <div style="width: 35vmax">
-            <h3 class="mb-2 justify-center d-none d-sm-flex">{{ courseGroupProgressText }}</h3>
+            <h2 class="mb-2 justify-center d-none d-sm-flex">{{ courseGroupProgressText }}</h2>
             <h4 class="mb-2 d-flex justify-center d-sm-none">{{ courseGroupProgressText }}</h4>
             <v-progress-linear v-model="courseGroupProgress" color="blue" rounded />
-            <h3 class="mt-2 justify-center d-none d-sm-flex">第一次会用时较久</h3>
+            <h2 class="mt-2 justify-center d-none d-sm-flex">第一次会用时较久</h2>
             <h4 class="mt-2 d-flex justify-center d-sm-none">第一次会用时较久</h4>
           </div>
         </v-overlay>
