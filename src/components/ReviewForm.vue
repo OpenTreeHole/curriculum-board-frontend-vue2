@@ -489,7 +489,6 @@ export default Vue.extend({
                 .then((res) => [res, null])) as [Review, Error]
               if (error) {
                 console.log(error)
-                this.postingReviewLoading = false
               } else if (reviewAdded) {
                 reviewAdded.isMe = true
                 this.$store.commit('addReview', {
@@ -498,10 +497,10 @@ export default Vue.extend({
                 })
                 this.formDisplay = false
                 this.reviewPosted = true
-                this.postingReviewLoading = false
                 this.$emit('input', false)
               }
               this.postingReviewLoading = false
+              this.$emit('post')
               // console.log(this.courseGroup)
             } else {
               let id = 0
@@ -516,7 +515,6 @@ export default Vue.extend({
                 .then((res) => [res, null])) as [Review, Error]
               if (error) {
                 console.log(error)
-                this.postingReviewLoading = false
               } else if (reviewAdded) {
                 reviewAdded.isMe = true
                 this.$store.commit('modifyReview', {
@@ -526,7 +524,6 @@ export default Vue.extend({
                 this.reviewContent = this.editor!.getMarkdown()
                 this.$emit('input', false)
                 this.reviewPosted = true
-                this.postingReviewLoading = false
               }
               this.postingReviewLoading = false
             }

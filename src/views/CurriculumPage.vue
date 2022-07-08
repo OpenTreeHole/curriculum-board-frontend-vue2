@@ -180,6 +180,7 @@
       :teacher-list="teachersSelectList"
       :time-list="timeSelectList"
       :posted="posted"
+      @post="posted = true"
     ></review-form>
   </v-container>
 </template>
