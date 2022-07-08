@@ -18,7 +18,7 @@
         </v-col>
       </v-row>
       <v-row class="mt-n8 px-16 mb-3">
-        <v-overlay opacity="50">
+        <v-overlay :value="this.courseGroupProgress !== 100" opacity="50">
           <div style="width: 35vmax">
             <h2 class="mb-2 justify-center d-none d-sm-flex">{{ courseGroupProgressText }}</h2>
             <h4 class="mb-2 d-flex justify-center d-sm-none">{{ courseGroupProgressText }}</h4>

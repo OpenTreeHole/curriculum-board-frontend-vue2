@@ -154,12 +154,6 @@ export default Vue.extend({
     remark: 0,
     like: false,
     unlike: false,
-    rank: {
-      overall: 0,
-      content: 0,
-      workload: 0,
-      assessment: 0
-    }
   }),
   computed: {
     rankColorOverall(): string {
@@ -288,10 +282,6 @@ export default Vue.extend({
       el: this.$refs['reviewContent' + this.review.review.id] as HTMLElement,
       initialValue: this.review.review.content
     })
-    this.rank.overall = this.review.review.rank.overall
-    this.rank.content = this.review.review.rank.content
-    this.rank.workload = this.review.review.rank.workload
-    this.rank.assessment = this.review.review.rank.assessment
   }
 })
 </script>
