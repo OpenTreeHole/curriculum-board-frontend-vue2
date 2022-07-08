@@ -81,22 +81,22 @@
               <v-card-text class="pa-1 pl-0 caption pt-2 grey--text d-sm-block align-end ml-auto d-none" style="height: 50%">
                 <div class="d-block align-self-end">
                   <span class="d-inline-flex" style="color: #3f51b5"> 总评分 </span>
-                  <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordOverall(this.rank.overall) }} </span>
+                  <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordOverall(this.review.review.rank.overall) }} </span>
                 </div>
                 <div class="d-block">
                   <span class="d-inline-flex ml-3" style="color: #3f51b5"> 风格 </span>
-                  <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordContent(this.rank.content) }} </span>
+                  <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordContent(this.review.review.rank.content) }} </span>
                 </div>
                 <div class="d-block">
                   <div class="d-block">
                     <span class="d-inline-flex" style="color: #3f51b5"> 工作量 </span>
-                    <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordWorkload(this.rank.workload) }} </span>
+                    <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordWorkload(this.review.review.rank.workload) }} </span>
                   </div>
                 </div>
                 <div class="d-block">
                   <div class="d-block">
                     <span class="d-inline-flex ml-3" style="color: #3f51b5"> 考核 </span>
-                    <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordAssessment(this.rank.assessment) }} </span>
+                    <span class="d-inline-flex ml-2" style="color: black"> {{ rankWordAssessment(this.review.review.rank.assessment) }} </span>
                   </div>
                 </div>
               </v-card-text>
@@ -120,9 +120,9 @@
         <div class="pr-2 ml-auto">
           <v-card-text class="pa-1 pl-0" style='font-size: x-small; color: #3f51b5'>
             总评分:
-            <span class="d-inline-flex" style="color: black"> {{ rankWordOverall(this.rank.overall) }} </span> &nbsp;风格:<span class="d-inline-flex ml-1" style="color: black"> {{ rankWordContent(this.rank.content) }} </span>&nbsp;工作量
-            <span class="d-inline-flex" style="color: black"> {{ rankWordWorkload(this.rank.workload) }} </span>&nbsp;考核:
-            <span class="d-inline-flex" style="color: black"> {{ rankWordAssessment(this.rank.assessment) }} </span>
+            <span class="d-inline-flex" style="color: black"> {{ rankWordOverall(this.review.review.rank.overall) }} </span> &nbsp;风格:<span class="d-inline-flex ml-1" style="color: black"> {{ rankWordContent(this.review.review.rank.content) }} </span>&nbsp;工作量
+            <span class="d-inline-flex" style="color: black"> {{ rankWordWorkload(this.review.review.rank.workload) }} </span>&nbsp;考核:
+            <span class="d-inline-flex" style="color: black"> {{ rankWordAssessment(this.review.review.rank.assessment) }} </span>
           </v-card-text>
         </div>
       </v-row>
@@ -154,12 +154,6 @@ export default Vue.extend({
     remark: 0,
     like: false,
     unlike: false,
-    rank: {
-      overall: 0,
-      content: 0,
-      workload: 0,
-      assessment: 0
-    }
   }),
   computed: {
     rankColorOverall(): string {
@@ -205,6 +199,7 @@ export default Vue.extend({
     'review.review.remark'() {
       this.remark = this.review.review.remark
     },
+
   },
   beforeMount() {
     this.remark = this.review.review.remark
@@ -287,10 +282,6 @@ export default Vue.extend({
       el: this.$refs['reviewContent' + this.review.review.id] as HTMLElement,
       initialValue: this.review.review.content
     })
-    this.rank.overall = this.review.review.rank.overall
-    this.rank.content = this.review.review.rank.content
-    this.rank.workload = this.review.review.rank.workload
-    this.rank.assessment = this.review.review.rank.assessment
   }
 })
 </script>
