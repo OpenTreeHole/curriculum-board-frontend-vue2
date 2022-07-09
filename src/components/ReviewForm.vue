@@ -110,6 +110,7 @@
             :disabled="reviewPosted"
             required
             label="任课教师"
+            clearable
             :rules="[(v) => !!v || '请选择任课教师']"
             class="font-weight-regular mx-3"
             style="width: min-content; font-size: small"
@@ -124,6 +125,7 @@
             item-text="title"
             item-value="value"
             label="课程时间"
+            clearable
             :rules="[(v) => !!v || '请选择课程时间']"
             class="font-weight-regular mx-3"
             style="width: min-content; font-size: small"
@@ -480,7 +482,7 @@ export default Vue.extend({
             if (!this.posted) {
               let id = 0
               this.coursesList.courseList.forEach((course) => {
-                if (course.codeId === this.courseIdSelect) {
+                if (course.codeId === this.courseIdSelect && course.teachers === this.teacherSelect.title && parseYearSemester(course) === this.timeSelect.title) {
                   id = course.id
                 }
               })
