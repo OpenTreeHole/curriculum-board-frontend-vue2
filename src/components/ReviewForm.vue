@@ -353,6 +353,7 @@ export default Vue.extend({
             this.editor = new Editor({
               el: this.$refs.phoneEditor! as HTMLElement,
               height: this.$vuetify.breakpoint.xsOnly ? '300px' : '500px',
+              toolbarItems: [],
               initialEditType: 'markdown',
               hideModeSwitch: true,
               previewHighlight: true
