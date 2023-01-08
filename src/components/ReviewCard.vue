@@ -2,7 +2,7 @@
   <v-container class="pa-0 mb-6">
     <v-card elevation="0">
       <v-row no-gutters class="d-flex justify-space-between ml-1 align-start align-content-start">
-        <v-col class="d-flex align-center justify-center pt-2 pt-lg-4 pt-md-4 pt-sm-4" cols="2" lg="1" md="1" sm="2">
+        <v-col class="d-flex align-center justify-center pt-2 pt-lg-4 pt-md-4 pt-sm-4" cols="1">
           <v-card class="pa-0 ma-0 mx-7 d-block justify-space-between" flat>
             <div class="pl-0">
               <v-row style="font-size: 40px" class="mt-0 grey--text flex-column">
@@ -49,7 +49,6 @@
                   <v-btn v-if="review.review.isMe" class="d-none d-sm-block mx-auto" text x-small color="grey" @click="editForm">
                     <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
                   </v-btn>
-                  <v-card-text v-else class="py-0 py-0 grey--text d-none d-sm-block" style="font-size: 11px; text-align: center">user{{ review.review.reviewerId }} </v-card-text>
                 </v-card-text>
               </v-row>
               <v-row class="pa-0 my-0 mt-0">

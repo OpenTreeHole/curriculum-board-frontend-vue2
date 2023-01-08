@@ -11,6 +11,7 @@ declare module '@vue/runtime-core' {
     ReviewForm: typeof import('./src/components/ReviewForm.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ToastuiEditorViewer: typeof import('./src/components/@toast-ui/editor/dist/toastui-editor-viewer.vue')['default']
     TopNavBar: typeof import('./src/components/TopNavBar.vue')['default']
     VApp: typeof import('vuetify/lib')['VApp']
     VAppBar: typeof import('vuetify/lib')['VAppBar']
