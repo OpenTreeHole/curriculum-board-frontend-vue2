@@ -40,9 +40,9 @@
       <v-row class="ma-0 pa-0">
         <v-spacer />
         <v-col cols="12" md="10" lg="7" xl="6" class="ma-0 pa-0">
-          <recycle-scroller :item-size="96" :items="searchResult" v-slot="{ item: v }" page-mode>
+          <DynamicScroller :min-item-size="96" :items="searchResult" v-slot="{ item: v }" page-mode>
             <v-divider></v-divider>
-            <v-list-item class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)">
+            <DynamicScrollerItem class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)" :item="v" :active="false">
               <div class="pl-4">
                 <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
                   <span class="mr-3 d-flex align-center">{{ v.code }}</span>
@@ -55,8 +55,8 @@
                   </span>
                 </v-list-item-content>
               </div>
-            </v-list-item>
-          </recycle-scroller>
+            </DynamicScrollerItem>
+          </DynamicScroller>
           <v-row style="text-align: center" v-if="this.noResult">
             <v-col class="text-h5 my-4 grey--text"> 无该课程</v-col>
           </v-row>
@@ -103,7 +103,9 @@ export default Vue.extend({
   methods: {
     debouncedSearch: debounce(async function (this: any) {
       this.noResult = false
+      // 先假定有结果
       if (this.searchText.trim() == '') {
+        // 如果没有输入，就不显示结果, 搜索框在页面中央
         this.searchResult = []
         this.inSearch = false
         gasp.to('#search-bar', {
@@ -113,6 +115,7 @@ export default Vue.extend({
         })
         return
       } else {
+        // 如果有输入，就显示结果, 搜索框在页面顶部
         const searchResultPromise = (async () => {
           return (await courseGroupTable.where('index').startsWithAnyOfIgnoreCase(this.searchText).distinct().toArray()).map((courseGroup) => courseGroup.courseGroup)
         })()
@@ -140,6 +143,28 @@ export default Vue.extend({
         this.searchResult = await searchResultPromise
 
         this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
+
+        // debug, 后面添加一个课程
+        this.searchResult.push({
+          id: '123',
+          name: '测试课程测试课测试测测试课程测试课测试测',
+          code: 'TEST',
+          department: '测试学院测试学院学园',
+          courseList: [
+            {
+              id: '123',
+              name: '测试课程',
+              code: 'TEST',
+              department: '测试学院学园',
+              credit: 2,
+              teacher: '测试老师',
+              time: '测试时间',
+              location: '测试地点',
+              description: '测试描述',
+              tags: ['测试标签']
+            }
+          ]
+        })
       }
     }, 200),
     credits(courseList: Course[]): number[] {
