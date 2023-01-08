@@ -42,8 +42,8 @@
         <v-col cols="12" md="10" lg="7" xl="6" class="ma-0 pa-0">
           <DynamicScroller :min-item-size="96" :items="searchResult" v-slot="{ item: v }" page-mode>
             <v-divider></v-divider>
-            <DynamicScrollerItem class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)" :item="v" :active="false">
-              <div class="pl-4">
+            <DynamicScrollerItem class="pa-0 pl-3 pt-1 pb-3" :item="v" :active="false">
+              <div class="pl-4" @click="$router.push(`/group/${v.id}`)">
                 <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
                   <span class="mr-3 d-flex align-center">{{ v.code }}</span>
                   <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold mr-1" color="#FB8C00" outlined> {{ credit }}学分 </v-chip>
