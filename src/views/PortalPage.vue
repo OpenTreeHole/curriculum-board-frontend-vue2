@@ -46,7 +46,7 @@
               <div class="pl-4">
                 <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
                   <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分 </v-chip>
+                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold mr-1" color="#FB8C00" outlined> {{ credit }}学分 </v-chip>
                 </v-list-item-subtitle>
                 <v-list-item-content text x-large class="ma-n2 pa-2 pb-3" style="height: initial">
                   <span class="font-weight-black fontsize-ensurer text-subtitle-1">
