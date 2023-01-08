@@ -76,6 +76,7 @@ import { courseGroupTable } from '@/apis/database'
 import { initializeTokenize } from '@/utils/tokenize'
 import MessageSnackbar from '@/components/MessageSnackbar.vue'
 import { debounce } from 'lodash-es'
+import { isDebug } from '@/utils'
 
 export default Vue.extend({
   name: 'PortalPage',
@@ -145,26 +146,28 @@ export default Vue.extend({
         this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
 
         // debug, 后面添加一个课程
-        this.searchResult.push({
-          id: '123',
-          name: '测试课程测试课测试测测试课程测试课测试测',
-          code: 'TEST',
-          department: '测试学院测试学院学园',
-          courseList: [
-            {
-              id: '123',
-              name: '测试课程',
-              code: 'TEST',
-              department: '测试学院学园',
-              credit: 2,
-              teacher: '测试老师',
-              time: '测试时间',
-              location: '测试地点',
-              description: '测试描述',
-              tags: ['测试标签']
-            }
-          ]
-        })
+        if (isDebug()) {
+          this.searchResult.push({
+            id: '123',
+            name: '测试课程测试课测试测测试课程测试课测试测',
+            code: 'TEST',
+            department: '测试学院测试学院学园',
+            courseList: [
+              {
+                id: '123',
+                name: '测试课程',
+                code: 'TEST',
+                department: '测试学院学园',
+                credit: 2,
+                teacher: '测试老师',
+                time: '测试时间',
+                location: '测试地点',
+                description: '测试描述',
+                tags: ['测试标签']
+              }
+            ]
+          })
+        }
       }
     }, 200),
     credits(courseList: Course[]): number[] {
