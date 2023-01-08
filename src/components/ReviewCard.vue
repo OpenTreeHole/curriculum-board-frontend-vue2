@@ -21,15 +21,6 @@
               </v-row>
               <v-row class="pa-0 my-0 mt-1">
                 <v-card-text class="caption grey--text pb-0 d-block justify-center pr-3 pt-lg-1 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
-                  <v-chip
-                    x-small
-                    label
-                    disabled
-                    style="margin-top: 1px; text-align: center"
-                    v-if="review.review.timeUpdated.slice(1, 20) !== review.review.timeCreated.slice(1, 20)"
-                    class="mb-1"
-                    >已编辑</v-chip
-                  >
                   <v-dialog v-model="deleteCheck" persistent max-width="290">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn v-if="isAuth" text x-small color="grey" class="align-content-end" v-bind="attrs" v-on="on">
@@ -101,16 +92,25 @@
               </v-card-text>
             </v-col>
           </v-row>
-          <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pt-lg-0 pt-md-0 pt-sm-0 pt-5">
+          <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pb-0 pt-lg-0 pt-md-0 pt-sm-0 pt-5">
             <v-col class="pa-0 ma-0 pt-0">
-              <div class="shrink pr-0 d-flex d-sm-none" style="text-align: left">
-                <v-card-text class="pa-0 pl-2 caption grey--text">{{ review.review.timeUpdated.slice(0, 10) }}</v-card-text>
-              </div>
               <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考 </v-card-text>
               <!-- md viewer -->
               <div class="md-viewer pl-3 pr-lg-8 pt-lg-3 pr-2 pt-0">
                 <div :ref="'reviewContent' + review.review.id" />
               </div>
+            </v-col>
+          </v-row>
+          <v-row class="justify-end my-3 pt-0" no-gutters>
+            <v-col cols="5" class="ml-0 pl-0 pt-0">
+              <v-card flat class="ml-0 pl-0 pt-0">
+                <v-card-text style="font-size: 3px" class="py-0 grey--text ml-0">已编辑</v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="5" class="mr-8">
+              <v-card flat color="rgba(118, 162, 176, 0.2)">
+                <v-card-text class="pa-0 pl-2 caption grey--text">{{ review.review.timeUpdated.slice(0, 10) }}</v-card-text>
+              </v-card>
             </v-col>
           </v-row>
         </v-col>
