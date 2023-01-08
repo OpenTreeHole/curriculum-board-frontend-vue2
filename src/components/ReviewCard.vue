@@ -71,7 +71,7 @@
                   <v-chip small label outlined color="accent" class="d-none d-sm-flex">{{ review.course.teachers }} </v-chip>
                   <v-chip x-small label outlined color="accent" class="s-flex d-sm-none">{{ review.course.teachers }} </v-chip>
                 </v-col>
-                <v-col class="shrink pr-0 pl-2 py-0 mt-0 mt-lg-2 mt-md-2 mt-sm-2">
+                <v-col class="shrink pr-0 pl-1 py-0 mt-0 mt-lg-2 mt-md-2 mt-sm-2">
                   <v-chip small label outlined color="#E91E63" class="d-none d-sm-flex">{{ years }}</v-chip>
                   <v-chip x-small label outlined color="#E91E63" class="s-flex d-sm-none">{{ years }}</v-chip>
                 </v-col>
@@ -118,10 +118,14 @@
       </v-row>
       <v-row no-gutters style="background-color: rgba(0, 0, 0, 0.04)" class="d-flex align-content-space-between d-sm-none mt-1">
         <div class="pr-2 ml-auto">
-          <v-card-text class="pa-1 pl-0" style='font-size: x-small; color: #3f51b5'>
+          <v-card-text class="pa-1 pl-0" style="font-size: x-small; color: #3f51b5">
             总评分:
-            <span class="d-inline-flex" style="color: black"> {{ rankWordOverall(this.review.review.rank.overall) }} </span> &nbsp;风格:<span class="d-inline-flex ml-1" style="color: black"> {{ rankWordContent(this.review.review.rank.content) }} </span>&nbsp;工作量
-            <span class="d-inline-flex" style="color: black"> {{ rankWordWorkload(this.review.review.rank.workload) }} </span>&nbsp;考核:
+            <span class="d-inline-flex" style="color: black"> {{ rankWordOverall(this.review.review.rank.overall) }} </span> &nbsp;风格:<span
+              class="d-inline-flex ml-1"
+              style="color: black"
+            >
+              {{ rankWordContent(this.review.review.rank.content) }} </span
+            >&nbsp;工作量 <span class="d-inline-flex" style="color: black"> {{ rankWordWorkload(this.review.review.rank.workload) }} </span>&nbsp;考核:
             <span class="d-inline-flex" style="color: black"> {{ rankWordAssessment(this.review.review.rank.assessment) }} </span>
           </v-card-text>
         </div>
@@ -153,7 +157,7 @@ export default Vue.extend({
     deleteCheck: false,
     remark: 0,
     like: false,
-    unlike: false,
+    unlike: false
   }),
   computed: {
     rankColorOverall(): string {
@@ -198,8 +202,7 @@ export default Vue.extend({
     },
     'review.review.remark'() {
       this.remark = this.review.review.remark
-    },
-
+    }
   },
   beforeMount() {
     this.remark = this.review.review.remark
