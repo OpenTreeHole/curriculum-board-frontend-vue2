@@ -4,7 +4,8 @@
     <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
     <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
     <div class="justify-center">
-      <v-row class="mx-6" id="search-bar" style="margin-top: 32vh">
+      <!--   Search Bar   -->
+      <v-row class="mx-6" id="search-bar" style="margin-top: 25vh">
         <v-col>
           <v-text-field
             prepend-inner-icon="mdi-magnify"
@@ -16,6 +17,17 @@
             filled
           ></v-text-field>
         </v-col>
+      </v-row>
+      <!--   Random Review   -->
+      <v-row justify="center">
+        <random-review-card
+          class="mx-6"
+          v-if="this.searchText === '' && !loadingRandomReview"
+          :review-content="this.randomReview.content"
+          :course-name="this.randomReview.course.name"
+          :user-id="this.randomReview.id"
+          :course-id="this.randomReview.course.id"
+        />
       </v-row>
       <v-row class="mt-n8 px-16 mb-3">
         <v-overlay :value="this.courseGroupProgress !== 100" opacity="50">
@@ -69,7 +81,7 @@
 
 <script lang="ts">
 import * as api from '@/apis'
-import { Course, CourseGroup } from '@/models'
+import { Course, CourseGroup, ReviewWithCourse } from '@/models'
 import Vue from 'vue'
 import gasp from 'gsap'
 import { courseGroupTable } from '@/apis/database'
@@ -77,10 +89,11 @@ import { initializeTokenize } from '@/utils/tokenize'
 import MessageSnackbar from '@/components/MessageSnackbar.vue'
 import { debounce } from 'lodash-es'
 import { isDebug } from '@/utils'
+import RandomReviewCard from '@/components/RandomReviewCard.vue'
 
 export default Vue.extend({
   name: 'PortalPage',
-  components: { MessageSnackbar },
+  components: { RandomReviewCard, MessageSnackbar },
   data() {
     return {
       loadingSearchResult: true,
@@ -90,7 +103,9 @@ export default Vue.extend({
       inSearch: false,
       noResult: false,
       courseGroupProgress: 100,
-      courseGroupProgressText: ''
+      courseGroupProgressText: '',
+      randomReview: {} as ReviewWithCourse,
+      loadingRandomReview: true
     }
   },
   watch: {
@@ -110,7 +125,7 @@ export default Vue.extend({
         this.searchResult = []
         this.inSearch = false
         gasp.to('#search-bar', {
-          marginTop: '32vh',
+          marginTop: '25vh',
           flex: '0 0 100%',
           duration: 0.3
         })
@@ -142,6 +157,7 @@ export default Vue.extend({
         }
 
         this.searchResult = await searchResultPromise
+        // console.log(this.searchResult)
 
         this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
 
@@ -183,6 +199,10 @@ export default Vue.extend({
       this.courseGroupProgressText = text
       this.courseGroupProgress = progress
     })
+
+    this.randomReview = await api.getRandomReview()
+    this.loadingRandomReview = false
+    // console.log(this.randomReview)
 
     await initializeTokenize()
 
