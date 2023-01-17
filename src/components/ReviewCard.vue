@@ -110,6 +110,8 @@
             <v-col cols="5" class="mr-8">
               <v-card flat color="rgba(118, 162, 176, 0.2)">
                 <v-card-text class="pa-0 pl-2 caption grey--text">{{ review.review.timeUpdated.slice(0, 10) }}</v-card-text>
+                <v-card-text class="pa-0 pl-2 caption grey--text">user {{ review.review.id }}</v-card-text>
+                <v-icon size="100">$medal1</v-icon>
               </v-card>
             </v-col>
           </v-row>

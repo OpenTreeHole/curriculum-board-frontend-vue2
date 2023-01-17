@@ -139,7 +139,7 @@
           <v-btn @click="reviewSheet = true" :disabled="loading || posted" elevation="0">发布测评</v-btn>
         </div>
       </v-col>
-      <v-col lg="8" class="mx-lg-0 mx-3">
+      <v-col lg="9" class="mx-lg-0 mx-3">
         <v-skeleton-loader v-if="loading" type="heading" class="ml-2 my-lg-4 mb-5"></v-skeleton-loader>
         <div v-if="!loading" class="d-none d-sm-block mt-10">
           <v-row style="text-align: center" v-if="reviews.length === 0">
