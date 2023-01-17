@@ -155,34 +155,6 @@ export default Vue.extend({
       const rankColorOverall = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
       return rankColorOverall[this.review.review.rank.overall - 1]
     },
-    rankColorContent(): string {
-      const rankColorContent = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
-      return rankColorContent[this.review.review.rank.content - 1]
-    },
-    rankColorWorkload(): string {
-      const rankColorWorkload = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
-      return rankColorWorkload[this.review.review.rank.workload - 1]
-    },
-    rankColorAssessment(): string {
-      const rankColorAssessment = ['red--text', 'black--text', 'grey--text', 'brown--text', 'orange--text']
-      return rankColorAssessment[this.review.review.rank.assessment - 1]
-    },
-    rankIconOverall(): string {
-      const rankIconOverall = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
-      return rankIconOverall[this.review.review.rank.overall - 1]
-    },
-    rankIconContent(): string {
-      const rankIconContent = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
-      return rankIconContent[this.review.review.rank.content - 1]
-    },
-    rankIconWorkload(): string {
-      const rankIconWorkload = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
-      return rankIconWorkload[this.review.review.rank.workload - 1]
-    },
-    rankIconAssessment(): string {
-      const rankIconAssessment = ['fa-solid fa-face-frown', 'fa-solid fa-face-meh', 'fa-solid fa-face-smile', 'fa-solid fa-face-laugh', 'fa-solid fa-face-grin-stars']
-      return rankIconAssessment[this.review.review.rank.assessment - 1]
-    },
     years(): string {
       return parseYearSemester(this.review.course)
     }
