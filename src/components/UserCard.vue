@@ -5,7 +5,7 @@
       <!--      <span style="font-size: 3px" class="py-0 grey&#45;&#45;text ml-0">已编辑</span>-->
     </v-row>
     <v-row align="center" class="mx-2 mx-lg-3 pa-0 py-2 pt-1 ma-0">
-      <span class="pa-0 pb-1 caption blue--text mr-5">user {{ this.review.id }}</span>
+      <span class="pa-0 pb-1 caption blue--text mr-5">user {{ this.review.reviewerId }}</span>
       <v-icon :size="$vuetify.breakpoint.xs ? '40' : '50'">$medal1</v-icon>
     </v-row>
   </v-card>
@@ -25,7 +25,10 @@ export default Vue.extend({
   name: 'UserCard',
   data: () => ({
     //
-  })
+  }),
+  mounted() {
+    //
+  }
 })
 </script>
 
