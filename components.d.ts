@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     ToastuiEditorViewer: typeof import('./src/components/@toast-ui/editor/dist/toastui-editor-viewer.vue')['default']
     TopNavBar: typeof import('./src/components/TopNavBar.vue')['default']
+    UserCard: typeof import('./src/components/UserCard.vue')['default']
     UserMedal: typeof import('./src/components/UserMedal.vue')['default']
     VApp: typeof import('vuetify/lib')['VApp']
     VAppBar: typeof import('vuetify/lib')['VAppBar']

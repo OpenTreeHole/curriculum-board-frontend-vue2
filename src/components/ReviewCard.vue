@@ -95,7 +95,7 @@
           <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pb-0 pt-lg-0 pt-md-0 pt-sm-0 pt-5">
             <v-col class="pa-0 ma-0 pt-0">
               <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考 </v-card-text>
-              <!-- md viewer -->
+              <!-- markdown viewer -->
               <div class="md-viewer pl-3 pr-lg-8 pt-lg-3 pr-2 pt-0">
                 <div :ref="'reviewContent' + review.review.id" />
               </div>
@@ -107,13 +107,7 @@
                 <v-card-text style="font-size: 3px" class="py-0 grey--text ml-0">已编辑</v-card-text>
               </v-card>
             </v-col>
-            <v-col cols="5" class="mr-8">
-              <v-card flat color="rgba(118, 162, 176, 0.2)">
-                <v-card-text class="pa-0 pl-2 caption grey--text">{{ review.review.timeUpdated.slice(0, 10) }}</v-card-text>
-                <v-card-text class="pa-0 pl-2 caption grey--text">user {{ review.review.id }}</v-card-text>
-                <v-icon size="100">$medal1</v-icon>
-              </v-card>
-            </v-col>
+            <v-col cols="5" class="mr-8"> <user-card :review="this.review.review" /> </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -142,9 +136,13 @@ import { parseYearSemester } from '@/utils/course'
 import { voteForReview } from '@/apis'
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
 import '@/style/markdown-theme.css'
+import UserCard from '@/components/UserCard.vue'
 
 export default Vue.extend({
   name: 'ReviewCard',
+  components: {
+    UserCard
+  },
   props: {
     review: {
       type: ReviewWithCourse,
