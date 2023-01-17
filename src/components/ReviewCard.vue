@@ -1,61 +1,56 @@
 <template>
-  <v-container class="pa-0 mb-6">
+  <v-container class="pa-0 mb-10">
     <v-card elevation="0">
       <v-row no-gutters class="d-flex justify-space-between ml-1 align-start align-content-start">
         <v-col class="d-flex align-center justify-center pt-2 pt-lg-4 pt-md-4 pt-sm-4" cols="1">
-          <v-card class="pa-0 ma-0 mx-7 d-block justify-space-between" flat>
-            <div class="pl-0">
-              <v-row style="font-size: 40px" class="mt-0 grey--text flex-column">
-                <font-awesome-icon icon="fa-solid fa-caret-up" :class="this.like ? 'blue--text' : 'grey--text'" @click="upVote" />
-              </v-row>
-              <v-row class="mt-1 flex-column">
-                <v-col :class="reviewRemarkClass()" style="font-size: 20px; text-align: center">
-                  {{ review.review.remark }}
-                </v-col>
-              </v-row>
-              <v-row style="font-size: 40px" class="mt-0 pt-1 grey--text flex-column pb-1">
-                <font-awesome-icon :class="this.unlike ? 'red--text' : 'grey--text'" icon="fa-solid fa-caret-down" @click="downVote" />
-              </v-row>
-              <v-row class="pa-0">
-                <v-card-text class="py-0 pb-1 grey--text d-none d-sm-block" style="font-size: 11px; text-align: center">{{ review.review.timeUpdated.slice(0, 10) }} </v-card-text>
-              </v-row>
-              <v-row class="pa-0 my-0 mt-1">
-                <v-card-text class="caption grey--text pb-0 d-block justify-center pr-3 pt-lg-1 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
-                  <v-dialog v-model="deleteCheck" persistent max-width="290">
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn v-if="isAuth" text x-small color="grey" class="align-content-end" v-bind="attrs" v-on="on">
-                        <v-icon small style="padding-bottom: 0; padding-right: 2px">mdi-trash-can</v-icon>
-                      </v-btn>
-                    </template>
-                    <v-card>
-                      <v-card-title class="text-h5"> 是否删除测评? </v-card-title>
-                      <v-card-text class="pb-1"> 您不可以撤销此操作 </v-card-text>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" text @click="deleteCheck = false"> 取消 </v-btn>
-                        <v-btn color="red darken-1" text @click="deleteReview" :loading="deleteReviewLoading"> 删除 </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
-                  <v-btn v-if="review.review.isMe" class="d-none d-sm-block mx-auto" text x-small color="grey" @click="editForm">
-                    <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
-                  </v-btn>
-                </v-card-text>
-              </v-row>
-              <v-row class="pa-0 my-0 mt-0">
-                <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 py-1 align-content-end align-end d-none d-sm-block">
-                  <v-btn v-if="review.review.isMe" class="d-block d-sm-none mx-auto" @click="editForm" text x-small color="grey">
-                    <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
-                  </v-btn>
-                </v-card-text>
-              </v-row>
-            </div>
+          <v-card class="pa-0 ma-0 d-block justify-space-between" flat>
+            <v-row style="font-size: 40px" class="mt-0 grey--text flex-column">
+              <font-awesome-icon icon="fa-solid fa-caret-up" :class="this.like ? 'blue--text' : 'grey--text'" @click="upVote" />
+            </v-row>
+            <v-row class="mt-1 flex-column">
+              <v-col :class="reviewRemarkClass()" style="font-size: 20px; text-align: center">
+                {{ review.review.remark }}
+              </v-col>
+            </v-row>
+            <v-row style="font-size: 40px" class="mt-0 pt-1 grey--text flex-column pb-1">
+              <font-awesome-icon :class="this.unlike ? 'red--text' : 'grey--text'" icon="fa-solid fa-caret-down" @click="downVote" />
+            </v-row>
+            <v-row class="pa-0 my-0 mt-1">
+              <v-card-text class="caption grey--text pb-0 d-block justify-center pr-3 pt-lg-1 pt-md-3 pt-sm-3 align-content-end align-end pt-1">
+                <v-dialog v-model="deleteCheck" persistent max-width="290">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn v-if="isAuth" text x-small color="grey" class="align-content-end" v-bind="attrs" v-on="on">
+                      <v-icon small style="padding-bottom: 0; padding-right: 2px">mdi-trash-can</v-icon>
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title class="text-h5"> 是否删除测评? </v-card-title>
+                    <v-card-text class="pb-1"> 您不可以撤销此操作 </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="deleteCheck = false"> 取消 </v-btn>
+                      <v-btn color="red darken-1" text @click="deleteReview" :loading="deleteReviewLoading"> 删除 </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+                <v-btn v-if="review.review.isMe" class="d-none d-sm-block mx-auto" text x-small color="grey" @click="editForm">
+                  <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
+                </v-btn>
+              </v-card-text>
+            </v-row>
+            <v-row class="pa-0 my-0 mt-0">
+              <v-card-text class="caption grey--text pb-0 d-flex justify-end pr-3 py-1 align-content-end align-end d-none d-sm-block">
+                <v-btn v-if="review.review.isMe" class="d-block d-sm-none mx-auto" @click="editForm" text x-small color="grey">
+                  <v-icon small style="padding-right: 2px">mdi-pencil</v-icon>
+                </v-btn>
+              </v-card-text>
+            </v-row>
           </v-card>
         </v-col>
         <v-col class="pa-0 ma-0">
           <v-row class="pa-0">
             <v-col class="pa-0">
-              <v-card-title class="text-h6 font-weight-bold pt-2 pb-0 pl-6"> {{ review.review.title }}</v-card-title>
+              <v-card-title class="text-subtitle-1 font-weight-bold pt-2 pb-0 pl-6"> {{ review.review.title }}</v-card-title>
               <v-row align="center" justify="start" class="ml-3 mt-0 pl-2 align-start align-content-start">
                 <v-col class="shrink pr-0 pl-1 py-0 mt-0 mt-lg-2 mt-md-2 mt-sm-2">
                   <v-chip small label outlined color="accent" class="d-none d-sm-flex">{{ review.course.teachers }} </v-chip>
@@ -92,7 +87,7 @@
               </v-card-text>
             </v-col>
           </v-row>
-          <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pb-0 pt-lg-0 pt-md-0 pt-sm-0 pt-5">
+          <v-row class="pa-lg-0 ma-lg-0 pa-md-0 ma-md-0 pa-sm-0 ma-sm-0 pa-4 pb-0 pt-lg-0 pt-md-0 pt-sm-0 pt-3">
             <v-col class="pa-0 ma-0 pt-0">
               <v-card-text class="red--text py-0 shrink" v-if="review.review.remark <= -5" style="font-size: x-small">* 此测评被多人反对, 请谨慎参考 </v-card-text>
               <!-- markdown viewer -->
@@ -101,13 +96,10 @@
               </div>
             </v-col>
           </v-row>
-          <v-row class="justify-end my-3 pt-0" no-gutters>
-            <v-col cols="5" class="ml-0 pl-0 pt-0">
-              <v-card flat class="ml-0 pl-0 pt-0">
-                <v-card-text style="font-size: 3px" class="py-0 grey--text ml-0">已编辑</v-card-text>
-              </v-card>
-            </v-col>
-            <v-col cols="5" class="mr-8"> <user-card :review="this.review.review" /> </v-col>
+          <v-row class="justify-end my-3 py-3" no-gutters>
+            <div :style="$vuetify.breakpoint.xs ? 'width: 150px' : 'width: 210px'">
+              <user-card class="mr-lg-10 mr-5" :review="this.review.review" />
+            </div>
           </v-row>
         </v-col>
       </v-row>
