@@ -1,9 +1,9 @@
 let config = {
-  backendAPI: 'https://testcb.fduhole.com/',
-  authUrl: 'https://testAuth.fduhole.com/api/',
-  authBaseUrl: 'http://localhost:8080/',
-  cookieDomain: 'localhost',
-  cdnUrl: 'http://ecysl.ltd/api/'
+  backendAPI: 'https://danke.jingyijun.xyz:9443/api/',
+  authUrl: 'https://auth.jingyijun.xyz:9443/api/',
+  authBaseUrl: 'https://auth.jingyijun.xyz:9443/',
+  cookieDomain: 'jingyijun.xyz',
+  cdnUrl: '/api/'
 }
 
 if (import.meta.env) {

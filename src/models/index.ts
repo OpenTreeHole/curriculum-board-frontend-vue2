@@ -13,6 +13,7 @@ export interface IReview extends IReviewData {
   timeCreated: string
   timeUpdated: string
   isMe: boolean
+  extra: IExtra | null
   vote: number
 }
 
@@ -49,6 +50,14 @@ export class TotalRank implements IRank {
     this.assessment = totalRank.assessment
   }
 }
+
+export interface IExtra {
+  achievement: {
+    name: string
+    obtain_date: string
+  }
+}
+
 export interface ICourse extends ICourseData {
   id: number
   reviewList: IReview[] | undefined
@@ -84,6 +93,7 @@ export class Review implements IReview {
   timeUpdated: string
   title: string
   isMe: boolean
+  extra: IExtra | null
   vote: number
   reviewerId: number
 
@@ -96,6 +106,7 @@ export class Review implements IReview {
     this.timeUpdated = review.timeUpdated
     this.title = review.title
     this.isMe = review.isMe
+    this.extra = review.extra || null
     this.vote = review.vote
     this.reviewerId = review.reviewerId
   }

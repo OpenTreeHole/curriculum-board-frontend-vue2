@@ -1,4 +1,4 @@
-import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, PostReviewData, Review } from '@/models'
+import { Course, CourseGroup, ICourse, ICourseData, ICourseGroup, IReview, IReviewData, PostReviewData, Review, ReviewWithCourse } from '@/models'
 import axios, { authAxios, cdnAxios, jwt, refreshAxios } from '@/apis/axios'
 import config from '@/config'
 import { camelizeKeys, snakifyKeys } from '@/utils'
@@ -138,6 +138,12 @@ export const addCourse = async (courseData: ICourseData) => {
   const response = await axios.post('/courses', courseData)
   const data: ICourse = camelizeKeys(response.data)
   return new Course(data)
+}
+
+// get a random review
+export const getRandomReview = async () => {
+  const response = await axios.get('/reviews/random')
+  return camelizeKeys(response.data)
 }
 
 export const getCourseGroupHash = async () => {

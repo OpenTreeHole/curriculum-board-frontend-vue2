@@ -147,12 +147,12 @@
           ></v-text-field>
         </v-row>
         <div ref="phoneEditor" class="md-editor d-block"></div>
-        <v-snackbar v-model="snackbar" :timeout="2000"
-          >请输入{{ snackbarContent
-          }}<template v-slot:action="{ attrs }">
+        <v-snackbar v-model="snackbar" :timeout="2000">
+          请输入{{ snackbarContent }}
+          <template v-slot:action="{ attrs }">
             <v-btn color="blue" text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
-          </template></v-snackbar
-        >
+          </template>
+        </v-snackbar>
       </v-form>
       <v-card-title class="mb-0 mt-2"> 评分</v-card-title>
       <v-row class="mx-9">
@@ -543,9 +543,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style scoped>
-.CodeMirror-lines {
-  font-size: 1.1rem;
-}
-</style>

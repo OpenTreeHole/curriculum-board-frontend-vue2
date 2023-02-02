@@ -4,7 +4,8 @@
     <!--      <h1 style="margin-top: 28vh" class="justify-center d-none d-lg-flex d-xl-none">请输入课程名称</h1>-->
     <!--      <h3 style="margin-top: 28vh" class="d-flex justify-center d-lg-none d-xl-flex">请输入课程名称</h3>-->
     <div class="justify-center">
-      <v-row class="mx-6" id="search-bar" style="margin-top: 32vh">
+      <!--   Search Bar   -->
+      <v-row class="mx-6" id="search-bar" style="margin-top: 25vh">
         <v-col>
           <v-text-field
             prepend-inner-icon="mdi-magnify"
@@ -16,6 +17,17 @@
             filled
           ></v-text-field>
         </v-col>
+      </v-row>
+      <!--   Random Review   -->
+      <v-row justify="center">
+        <random-review-card
+          class="mx-6"
+          v-if="this.searchText === '' && !loadingRandomReview"
+          :review-content="this.randomReview.content"
+          :course-name="this.randomReview.course.name"
+          :user-id="this.randomReview.id"
+          :course-id="this.randomReview.course.id"
+        />
       </v-row>
       <v-row class="mt-n8 px-16 mb-3">
         <v-overlay :value="this.courseGroupProgress !== 100" opacity="50">
@@ -40,13 +52,13 @@
       <v-row class="ma-0 pa-0">
         <v-spacer />
         <v-col cols="12" md="10" lg="7" xl="6" class="ma-0 pa-0">
-          <recycle-scroller :item-size="96" :items="searchResult" v-slot="{ item: v }" page-mode>
+          <DynamicScroller :min-item-size="96" :items="searchResult" v-slot="{ item: v }" page-mode>
             <v-divider></v-divider>
-            <v-list-item class="pa-0 pl-3 pt-1 pb-3" @click="$router.push(`/group/${v.id}`)">
-              <div class="pl-4">
+            <DynamicScrollerItem class="pa-0 pl-3 pt-1 pb-3" :item="v" :active="false">
+              <div class="pl-4" @click="$router.push(`/group/${v.id}`)">
                 <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
                   <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold" color="#FB8C00" outlined> {{ credit }}学分 </v-chip>
+                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold mr-1" color="#FB8C00" outlined> {{ credit }}学分 </v-chip>
                 </v-list-item-subtitle>
                 <v-list-item-content text x-large class="ma-n2 pa-2 pb-3" style="height: initial">
                   <span class="font-weight-black fontsize-ensurer text-subtitle-1">
@@ -55,8 +67,8 @@
                   </span>
                 </v-list-item-content>
               </div>
-            </v-list-item>
-          </recycle-scroller>
+            </DynamicScrollerItem>
+          </DynamicScroller>
           <v-row style="text-align: center" v-if="this.noResult">
             <v-col class="text-h5 my-4 grey--text"> 无该课程</v-col>
           </v-row>
@@ -69,17 +81,19 @@
 
 <script lang="ts">
 import * as api from '@/apis'
-import { Course, CourseGroup } from '@/models'
+import { Course, CourseGroup, ReviewWithCourse } from '@/models'
 import Vue from 'vue'
 import gasp from 'gsap'
 import { courseGroupTable } from '@/apis/database'
 import { initializeTokenize } from '@/utils/tokenize'
 import MessageSnackbar from '@/components/MessageSnackbar.vue'
 import { debounce } from 'lodash-es'
+import { isDebug } from '@/utils'
+import RandomReviewCard from '@/components/RandomReviewCard.vue'
 
 export default Vue.extend({
   name: 'PortalPage',
-  components: { MessageSnackbar },
+  components: { RandomReviewCard, MessageSnackbar },
   data() {
     return {
       loadingSearchResult: true,
@@ -89,7 +103,9 @@ export default Vue.extend({
       inSearch: false,
       noResult: false,
       courseGroupProgress: 100,
-      courseGroupProgressText: ''
+      courseGroupProgressText: '',
+      randomReview: {} as ReviewWithCourse,
+      loadingRandomReview: true
     }
   },
   watch: {
@@ -103,16 +119,19 @@ export default Vue.extend({
   methods: {
     debouncedSearch: debounce(async function (this: any) {
       this.noResult = false
+      // 先假定有结果
       if (this.searchText.trim() == '') {
+        // 如果没有输入，就不显示结果, 搜索框在页面中央
         this.searchResult = []
         this.inSearch = false
         gasp.to('#search-bar', {
-          marginTop: '32vh',
+          marginTop: '25vh',
           flex: '0 0 100%',
           duration: 0.3
         })
         return
       } else {
+        // 如果有输入，就显示结果, 搜索框在页面顶部
         const searchResultPromise = (async () => {
           return (await courseGroupTable.where('index').startsWithAnyOfIgnoreCase(this.searchText).distinct().toArray()).map((courseGroup) => courseGroup.courseGroup)
         })()
@@ -138,8 +157,33 @@ export default Vue.extend({
         }
 
         this.searchResult = await searchResultPromise
+        // console.log(this.searchResult)
 
         this.noResult = this.searchResult.length == 0 && !this.loadingSearchResult
+
+        // debug, 后面添加一个课程
+        if (isDebug()) {
+          this.searchResult.push({
+            id: '123',
+            name: '测试课程测试课测试测测试课程测试课测试测',
+            code: 'TEST',
+            department: '测试学院测试学院学园',
+            courseList: [
+              {
+                id: '123',
+                name: '测试课程',
+                code: 'TEST',
+                department: '测试学院学园',
+                credit: 2,
+                teacher: '测试老师',
+                time: '测试时间',
+                location: '测试地点',
+                description: '测试描述',
+                tags: ['测试标签']
+              }
+            ]
+          })
+        }
       }
     }, 200),
     credits(courseList: Course[]): number[] {
@@ -155,6 +199,10 @@ export default Vue.extend({
       this.courseGroupProgressText = text
       this.courseGroupProgress = progress
     })
+
+    this.randomReview = await api.getRandomReview()
+    this.loadingRandomReview = false
+    // console.log(this.randomReview)
 
     await initializeTokenize()
 
