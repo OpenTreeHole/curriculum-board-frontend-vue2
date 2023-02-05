@@ -12,7 +12,7 @@
   </v-card>
 </template>
 
-<script>
+<script lang="ts">
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer'
 import '@/style/markdown-theme.css'
 import Vue from 'vue'

@@ -7,27 +7,15 @@
       <!--   Search Bar   -->
       <v-row class="mx-6" id="search-bar" style="margin-top: 25vh">
         <v-col>
-          <v-text-field
-            prepend-inner-icon="mdi-magnify"
-            placeholder="请输入课程名称或课程代码"
-            v-model="searchText"
-            outlined
-            :dense="$vuetify.breakpoint.xsOnly"
-            class="d-block rounded-pill"
-            filled
-          ></v-text-field>
+          <v-text-field prepend-inner-icon="mdi-magnify" placeholder="请输入课程名称或课程代码" v-model="searchText" outlined
+            :dense="$vuetify.breakpoint.xsOnly" class="d-block rounded-pill" filled></v-text-field>
         </v-col>
       </v-row>
       <!--   Random Review   -->
       <v-row justify="center">
-        <random-review-card
-          class="mx-6"
-          v-if="this.searchText === '' && !loadingRandomReview"
-          :review-content="this.randomReview.content"
-          :course-name="this.randomReview.course.name"
-          :user-id="this.randomReview.id"
-          :course-id="this.randomReview.course.id"
-        />
+        <random-review-card class="mx-6" v-if="this.searchText === '' && !loadingRandomReview"
+          :review-content="this.randomReview.content" :course-name="this.randomReview.course.name"
+          :user-id="this.randomReview.review.reviewerId" :course-id="this.randomReview.course.id" />
       </v-row>
       <v-row class="mt-n8 px-16 mb-3">
         <v-overlay :value="this.courseGroupProgress !== 100" opacity="50">
@@ -44,8 +32,10 @@
 
     <v-row class="d-flex align-center" v-if="this.loadingSearchResult && this.searchText !== ''">
       <v-col style="text-align: center">
-        <v-progress-circular :size="60" color="primary" indeterminate class="d-none d-sm-inline-block"></v-progress-circular>
-        <v-progress-circular :size="40" color="primary" indeterminate class="d-inline-block d-sm-none"></v-progress-circular>
+        <v-progress-circular :size="60" color="primary" indeterminate
+          class="d-none d-sm-inline-block"></v-progress-circular>
+        <v-progress-circular :size="40" color="primary" indeterminate
+          class="d-inline-block d-sm-none"></v-progress-circular>
       </v-col>
     </v-row>
     <transition name="fade" v-if="!loadingSearchResult">
@@ -58,7 +48,8 @@
               <div class="pl-4" @click="$router.push(`/group/${v.id}`)">
                 <v-list-item-subtitle class="monospace grey--text pt-3 pb-1 d-flex">
                   <span class="mr-3 d-flex align-center">{{ v.code }}</span>
-                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)" class="font-weight-bold mr-1" color="#FB8C00" outlined> {{ credit }}学分 </v-chip>
+                  <v-chip label small :key="credit" v-for="credit in credits(v.courseList)"
+                    class="font-weight-bold mr-1" color="#FB8C00" outlined> {{ credit }}学分 </v-chip>
                 </v-list-item-subtitle>
                 <v-list-item-content text x-large class="ma-n2 pa-2 pb-3" style="height: initial">
                   <span class="font-weight-black fontsize-ensurer text-subtitle-1">
@@ -214,4 +205,6 @@ export default Vue.extend({
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
