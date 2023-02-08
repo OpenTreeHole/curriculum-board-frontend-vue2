@@ -165,7 +165,6 @@
           </v-row>
           <review-card v-for="(v, i) in reviews" :key="'reviewOnPhone' + i" :review="v" @openEditForm="reviewSheet = true" class="mb-5"></review-card>
         </div>
-        <div class="my-8"></div>
       </v-col>
     </v-row>
     <review-form
