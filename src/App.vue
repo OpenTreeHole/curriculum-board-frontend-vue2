@@ -33,7 +33,9 @@ export default Vue.extend({
 <style>
 html,
 body {
-  /*Do not add overflow-x: hidden to body element, or the vue-virtual-scroller would not work*/
+  /*Do not add overflow-x ??: hidden to body element, or the vue-virtual-scroller would not work*/
+  /*do actually fix the problem*/
+  overflow-x: hidden;
   height: 100%;
 }
 
