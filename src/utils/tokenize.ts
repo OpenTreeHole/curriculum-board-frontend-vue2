@@ -1,6 +1,6 @@
 import { ChineseToken } from '@/types'
 import { load } from 'chinese-tokenizer'
-import { remove, uniq } from 'lodash-es'
+import { uniq } from 'lodash-es'
 import { tokenText } from '@/apis/database'
 import config from '@/config'
 
@@ -31,6 +31,11 @@ export const initializeTokenize = async () => {
     }
   } else {
     const text = (await tokenText.toArray())[0].text
+    // catch error when tokenText is empty
+    if (!text) {
+      localStorage.removeItem('tokenText')
+      await initializeTokenize()
+    }
     tokenize = load(text)
   }
 }

@@ -480,19 +480,24 @@ export default Vue.extend({
             review.content = this.editor!.getMarkdown()
             review.rank = this.rank
             review.title = this.reviewTitle
+            // if not posted, post review and add to store, else edit review
             if (!this.posted) {
+              // if not posted, post review and add to store
               let id = 0
+              // find course id
               this.coursesList.courseList.forEach((course) => {
                 if (course.codeId === this.courseIdSelect && course.teachers === this.teacherSelect.title && parseYearSemester(course) === this.timeSelect.title) {
                   id = course.id
                 }
               })
+              // post review
               let [reviewAdded, error] = (await addReview(toNumber(id), review)
                 .catch((error) => [null, error])
                 .then((res) => [res, null])) as [Review, Error]
               if (error) {
                 console.log(error)
               } else if (reviewAdded) {
+                // add review to store
                 reviewAdded.isMe = true
                 this.$store.commit('addReview', {
                   id: toNumber(id),
@@ -506,19 +511,22 @@ export default Vue.extend({
               this.$emit('post')
               // console.log(this.courseGroup)
             } else {
+              // edit review
               let id = 0
+              // find review id
               this.coursesList.courseList.forEach((course) => {
                 course.reviewList?.forEach((review) => {
-                  review.isMe = true
-                  id = review.id
+                  if (review.isMe) id = review.id
                 })
               })
+              // edit review
               let [reviewAdded, error] = (await modifyReview(toNumber(id), review)
                 .catch((error) => [null, error])
                 .then((res) => [res, null])) as [Review, Error]
               if (error) {
                 console.log(error)
               } else if (reviewAdded) {
+                // modify review in store
                 reviewAdded.isMe = true
                 this.$store.commit('modifyReview', {
                   id: toNumber(id),

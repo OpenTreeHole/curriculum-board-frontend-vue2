@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="ma-0 pa-0">
+  <v-container class="ma-0 pa-0">
     <v-breadcrumbs style="background-color: #fbfbfd" class="pl-4">
       <v-skeleton-loader v-if="loading" type="heading" width="70%" height="40%" class="d-none d-sm-flex" />
       <v-skeleton-loader v-if="loading" type="heading" width="100%" height="20%" class="d-block d-sm-none" />

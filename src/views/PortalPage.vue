@@ -26,7 +26,7 @@
           :review-content="this.randomReview.content"
           :course-name="this.randomReview.course.name"
           :user-id="this.randomReview.id"
-          :course-id="this.randomReview.course.id"
+          :course-id="this.randomReview.groupId"
         />
       </v-row>
       <v-row class="mt-n8 px-16 mb-3">
