@@ -11,6 +11,7 @@
         <router-view :key="$route.fullPath" />
       </keep-alive>
     </v-main>
+    <v-system-bar height="20" color="white" class="d-flex justify-end pr-3"><span style="font-size: xx-small">v1.1.2</span></v-system-bar>
   </v-app>
 </template>
 
@@ -33,9 +34,7 @@ export default Vue.extend({
 <style>
 html,
 body {
-  /*Do not add overflow-x ??: hidden to body element, or the vue-virtual-scroller would not work*/
-  /*do actually fix the problem*/
-  overflow-x: hidden;
+  /*Do not add overflow-x: hidden to body element, or the vue-virtual-scroller would not work*/
   height: 100%;
 }
 
