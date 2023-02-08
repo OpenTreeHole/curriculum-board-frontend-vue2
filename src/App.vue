@@ -11,6 +11,7 @@
         <router-view :key="$route.fullPath" />
       </keep-alive>
     </v-main>
+    <v-system-bar height="20" color="white" class="d-flex justify-end pr-3"><span style="font-size: xx-small">v1.1.2</span></v-system-bar>
   </v-app>
 </template>
 
