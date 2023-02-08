@@ -30,11 +30,18 @@ export const initializeTokenize = async () => {
       tokenize = load(text)
     }
   } else {
+    // catch error when tokenText.toArray() is empty
+    if ((await tokenText.toArray()).length === 0) {
+      localStorage.removeItem('tokenText')
+      await initializeTokenize()
+      return
+    }
     const text = (await tokenText.toArray())[0].text
-    // catch error when tokenText is empty
+    // catch error when tokenText.text is empty
     if (!text) {
       localStorage.removeItem('tokenText')
       await initializeTokenize()
+      return
     }
     tokenize = load(text)
   }
