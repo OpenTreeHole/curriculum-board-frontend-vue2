@@ -1,13 +1,13 @@
 <template>
-  <v-card class="pa-3 mb-10" shaped>
-    <!--    <v-card class="pa-3" @click="$router.push(`/group/${this.courseId}`)">-->
+  <!--  <v-card class="pa-3">-->
+  <v-card class="pa-3" @click="$router.push(`/group/${courseId}`)">
     <v-card-title class="text-subtitle-1 py-1">
       {{ this.courseName }}
     </v-card-title>
-    <v-card-text class="py-0"> user {{ this.userId }}:</v-card-text>
+    <!--    <v-card-text class="py-0"> user {{ this.userId }}:</v-card-text>-->
     <!-- markdown viewer -->
     <div class="md-viewer pl-4 pr-lg-8 pt-lg-0 pr-2 pt-0">
-      <div :ref="'reviewContent' + userId" />
+      <div :id="'reviewContent' + userId" />
     </div>
   </v-card>
 </template>
@@ -38,7 +38,7 @@ export default Vue.extend({
     }
   },
   data: () => ({
-    viewer: null
+    viewer: Viewer as any
   }),
   watch: {
     reviewContent() {
@@ -47,7 +47,7 @@ export default Vue.extend({
   },
   mounted() {
     this.viewer = new Viewer({
-      el: this.$refs['reviewContent' + this.userId],
+      el: document.getElementById('reviewContent' + this.userId)!,
       initialValue: this.reviewContent
     })
   }

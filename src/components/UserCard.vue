@@ -1,12 +1,17 @@
 <template>
   <v-card flat color="rgba(63, 81, 180, 0.07)">
-    <v-row justify="space-between" class="mx-2 mx-lg-3 pa-0 pt-1 pt-lg-2 ma-0">
+    <v-row justify="space-between" class="mx-2 mx-lg-1 pa-0 pt-1 pt-lg-2 ma-0">
       <span class="pa-0 caption grey--text">{{ this.review.timeCreated.slice(0, 10) }}</span>
       <!--      <span style="font-size: 3px" class="py-0 grey&#45;&#45;text ml-0">已编辑</span>-->
     </v-row>
-    <v-row align="center" class="mx-2 mx-lg-3 pa-0 py-2 pt-1 ma-0">
-      <span class="pa-0 pb-1 caption blue--text mr-5">user {{ this.review.reviewerId }}</span>
-      <v-icon :size="$vuetify.breakpoint.xs ? '40' : '50'" v-if="review.extra !== null">$medal1</v-icon>
+    <v-row align="center" class="mx-2 mx-lg-3 pa-0 py-2 pt-1 ma-0 d-inline-block">
+      <span class="pa-0 pb-1 caption blue--text">user {{ this.review.reviewerId }}</span>
+      <div class="d-block mt-1">
+        <v-icon :size="$vuetify.breakpoint.xs ? '50' : '50'" v-if="review.extra !== null && JSON.stringify(review.extra.achievements).includes('蛋壳开荒者')">$medal1</v-icon>
+        <v-icon :size="$vuetify.breakpoint.xs ? '50' : '50'" class="ml-1" v-if="review.extra !== null && JSON.stringify(review.extra.achievements).includes('蛋壳奠基者')"
+          >$medal2</v-icon
+        >
+      </div>
     </v-row>
   </v-card>
 </template>

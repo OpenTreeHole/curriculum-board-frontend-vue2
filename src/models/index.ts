@@ -52,10 +52,12 @@ export class TotalRank implements IRank {
 }
 
 export interface IExtra {
-  achievement: {
-    name: string
-    obtain_date: string
-  }
+  achievements: IAchievement[] | null
+}
+
+export interface IAchievement {
+  name: string
+  obtain_date: string
 }
 
 export interface ICourse extends ICourseData {
