@@ -23,7 +23,14 @@ export const cdnAxios = axios.create()
 
 export const jwt = new JWTManager()
 jwt.refreshErrorCallback = async (refreshError) => {
-  if (refreshError.response?.status === 401) {
+  if (refreshError.response === undefined) {
+    if (router.currentRoute.name !== 'login') {
+      await router.replace({
+        name: 'login'
+      })
+      return Promise.reject(new ApiError(refreshError, '网络错误，请检查网络连接'))
+    }
+  } else if (refreshError.response.status === 401) {
     Cookies.remove('access', { domain: config.cookieDomain })
     Cookies.remove('refresh', { domain: config.cookieDomain })
     if (router.currentRoute.name !== 'login') {
