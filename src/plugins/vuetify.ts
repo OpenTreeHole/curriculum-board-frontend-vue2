@@ -1,23 +1,11 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
-import UserMedal1 from '@/components/UserMedal1.vue'
-import UserMedal2 from '@/components/UserMedal2.vue'
+
 // 2022-4-26 (@w568w): Is it necessary to import it from 'vuetify/lib', rather than 'vuetify/lib/framework' or 'vuetify'?
 // From the source all of them are semantically identical. Is there anything to do with tree-shaking process?
 Vue.use(Vuetify)
 
 export default new Vuetify({
-  icons: {
-    iconfont: 'mdiSvg',
-    values: {
-      medal1: {
-        component: UserMedal1
-      },
-      medal2: {
-        component: UserMedal2
-      }
-    }
-  },
   theme: {
     dark: false,
     themes: {

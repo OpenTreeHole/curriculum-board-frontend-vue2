@@ -6,26 +6,28 @@
     </v-row>
     <v-row align="center" class="mx-2 mx-lg-3 pa-0 py-2 pt-1 ma-0 d-inline-block">
       <span class="pa-0 pb-1 caption blue--text">user {{ this.review.reviewerId }}</span>
-      <div class="d-block mt-1">
-        <v-icon :size="$vuetify.breakpoint.xs ? '50' : '50'" v-if="review.extra !== null && JSON.stringify(review.extra.achievements).includes('蛋壳开荒者')">$medal1</v-icon>
-        <v-icon :size="$vuetify.breakpoint.xs ? '50' : '50'" class="ml-1" v-if="review.extra !== null && JSON.stringify(review.extra.achievements).includes('蛋壳奠基者')"
-          >$medal2</v-icon
-        >
-      </div>
     </v-row>
+    <user-medals 
+      class="pb-2 mx-2"
+      :review="review"
+    ></user-medals>
   </v-card>
 </template>
 
 <script>
 import { Review } from '@/models'
 import Vue from 'vue'
+import UserMedals from '@/components/UserMedals.vue'
 
 export default Vue.extend({
   props: {
     review: {
       type: Review,
       required: true
-    }
+    },
+  },
+  components: {
+    UserMedals,
   },
   name: 'UserCard',
   data: () => ({
