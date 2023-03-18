@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     UserMedal: typeof import('./src/components/UserMedal.vue')['default']
     UserMedal1: typeof import('./src/components/UserMedal1.vue')['default']
     UserMedal2: typeof import('./src/components/UserMedal2.vue')['default']
+    UserMedals: typeof import('./src/components/UserMedals.vue')['default']
     VApp: typeof import('vuetify/lib')['VApp']
     VAppBar: typeof import('vuetify/lib')['VAppBar']
     VBanner: typeof import('vuetify/lib')['VBanner']
